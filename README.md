@@ -1,4 +1,4 @@
-# ghp_app
+# ghp_society_management
 
 A new Flutter project.
 

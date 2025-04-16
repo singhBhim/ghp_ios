@@ -1,6 +1,6 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_checkouts_history_details/resident_checkouts_details_cubit.dart';
-import 'package:ghp_app/model/resident_checkout_history_details_model.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_checkouts_history_details/resident_checkouts_details_cubit.dart';
+import 'package:ghp_society_management/model/resident_checkout_history_details_model.dart';
 import 'package:intl/intl.dart';
 
 class ResidentCheckoutsHistoryDetails extends StatefulWidget {
@@ -356,7 +356,7 @@ class _ResidentCheckoutsHistoryDetailsState
                                             children: [
                                               index == 0
                                                   ? Text(
-                                                      'Date : ${formatDateOnly(residentsCheckoutsData.logs![0].checkinAt!.toString())} (${formatCheckoutDate(residentsCheckoutsData.logs![0].checkinAt!.toString())})',
+                                                      'Date : ${formatDateOnly(residentsCheckoutsData.logs![0].checkinAt!.toString())}',
                                                       style: const TextStyle(
                                                           fontSize: 14))
                                                   : const SizedBox(),
@@ -376,10 +376,25 @@ class _ResidentCheckoutsHistoryDetailsState
                                                           'In-Time : ${checkIn()}',
                                                           style: const TextStyle(
                                                               fontSize: 12)),
-                                                      trailing: Text(
-                                                          'Out-Time : ${checkOut()}',
+                                                      subtitle: Text(
+                                                          'Entry By : QR Code',
                                                           style: const TextStyle(
-                                                              fontSize: 12)))),
+                                                              fontSize: 12)),
+                                                      trailing: Column(
+                                                        mainAxisAlignment:MainAxisAlignment.center,
+                                                        children: [
+                                                          Text(
+                                                              'Out-Time : ${checkOut()}',
+                                                              style: const TextStyle(
+                                                                  fontSize: 12)),
+                                                          SizedBox(height: 4),
+
+                                                          Text(
+                                                              'Exited By : Manual',
+                                                              style: const TextStyle(
+                                                                  fontSize: 12)),
+                                                        ],
+                                                      ))),
                                             ],
                                           );
                                         })

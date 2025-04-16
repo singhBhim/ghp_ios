@@ -28,6 +28,7 @@ class AppTheme {
   static var resolvedStatusColor = Color(0XFFB3C9EA);
   static var takeButtonColor = Color(0xFFFAB36C);
   static var resolvedButtonColor = Color(0xFF5075D0);
+  static var blueColor = Color(0xFF0159A8);
 }
 
 String convertDateTimeFormat(DateTime inputDate) {

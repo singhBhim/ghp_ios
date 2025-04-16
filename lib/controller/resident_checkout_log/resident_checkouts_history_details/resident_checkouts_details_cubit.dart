@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/model/resident_checkout_history_details_model.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/model/resident_checkout_history_details_model.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 import 'package:meta/meta.dart';
 part 'resident_checkouts_details_state.dart';
 

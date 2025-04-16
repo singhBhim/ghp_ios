@@ -1225,6 +1225,8 @@ PODS:
     - Flutter
   - flutter_ringtone_player (0.0.1):
     - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
   - geolocator_apple (1.2.0):
     - Flutter
     - FlutterMacOS
@@ -1405,6 +1407,10 @@ PODS:
   - permission_handler_apple (9.3.0):
     - Flutter
   - PromisesObjC (2.4.0)
+  - razorpay-pod (1.4.0)
+  - razorpay_flutter (1.1.10):
+    - Flutter
+    - razorpay-pod
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -1434,12 +1440,14 @@ DEPENDENCIES:
   - flutter_file_dialog (from `.symlinks/plugins/flutter_file_dialog/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_ringtone_player (from `.symlinks/plugins/flutter_ringtone_player/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/darwin`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - mobile_scanner (from `.symlinks/plugins/mobile_scanner/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - razorpay_flutter (from `.symlinks/plugins/razorpay_flutter/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
@@ -1477,6 +1485,7 @@ SPEC REPOS:
     - MLKitVision
     - nanopb
     - PromisesObjC
+    - razorpay-pod
     - TOCropViewController
 
 EXTERNAL SOURCES:
@@ -1498,6 +1507,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_ringtone_player:
     :path: ".symlinks/plugins/flutter_ringtone_player/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/darwin"
   image_cropper:
@@ -1510,6 +1521,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  razorpay_flutter:
+    :path: ".symlinks/plugins/razorpay_flutter/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
@@ -1547,6 +1560,7 @@ SPEC CHECKSUMS:
   flutter_file_dialog: 4c014a45b105709a27391e266c277d7e588e9299
   flutter_local_notifications: ff50f8405aaa0ccdc7dcfb9022ca192e8ad9688f
   flutter_ringtone_player: 15eba85187230b87b2512f0e1b92225618bc03e7
+  fluttertoast: 21eecd6935e7064cc1fcb733a4c5a428f3f24f0f
   geolocator_apple: 66b711889fd333205763b83c9dcf0a57a28c7afd
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleMLKit: eff9e23ec1d90ea4157a1ee2e32a4f610c5b3318
@@ -1568,6 +1582,8 @@ SPEC CHECKSUMS:
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  razorpay-pod: cb5b5439697bdda9c57d68a92b3e5b0ce1d2f2f3
+  razorpay_flutter: 84b3bfd206ae9c9c2a9ba585524a1b3d8102b6c1
   share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d

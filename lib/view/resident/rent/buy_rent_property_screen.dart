@@ -1,5 +1,5 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/view/resident/rent/property_detail_screen.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/view/resident/rent/property_detail_screen.dart';
 
 class BuyPropertyScreen extends StatefulWidget {
   const BuyPropertyScreen({super.key});

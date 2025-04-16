@@ -1,8 +1,8 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/sos_management/sos_history/sos_history_cubit.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_history/sos_history_cubit.dart';
 
-import 'package:ghp_app/model/sos_history_model.dart';
-import 'package:ghp_app/view/resident/sos/sos_history_details.dart';
+import 'package:ghp_society_management/model/sos_history_model.dart';
+import 'package:ghp_society_management/view/resident/sos/sos_history_details.dart';
 
 class SosHistoryPage extends StatefulWidget {
   const SosHistoryPage({super.key});

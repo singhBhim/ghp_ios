@@ -1,4 +1,4 @@
-package com.example.ghp_app
+package com.example.ghp_society_management
 
 import io.flutter.embedding.android.FlutterActivity
 

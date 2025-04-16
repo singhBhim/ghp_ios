@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/model/service_request_history_model.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/model/service_request_history_model.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 

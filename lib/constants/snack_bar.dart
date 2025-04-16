@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:searchbar_animation/searchbar_animation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void snackBar(BuildContext context, String title, IconData icon, Color color) {
@@ -205,4 +206,52 @@ String formatShiftTime(String shiftTime) {
   );
 
   return DateFormat('hh:mm a').format(dateTime); // Convert to AM/PM format
+}
+
+// CUSTOM APPBAR
+AppBar customAppbar(
+    {required BuildContext context,
+    required String title,
+    required bool searchBarOpen,
+    required TextEditingController textController,
+    Function()? onExpansionComplete,
+    Function()? onCollapseComplete,
+    Function(bool)? onPressButton,
+    Function? onChanged}) {
+  return AppBar(
+    iconTheme: const IconThemeData(color: Colors.white),
+    title: searchBarOpen
+        ? const SizedBox()
+        : Text(title,
+            style: GoogleFonts.nunitoSans(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600))),
+    actions: [
+      SearchBarAnimation(
+        searchBoxColour: Colors.white,
+        buttonColour: AppTheme.primaryLiteColor,
+        searchBoxWidth:
+            MediaQuery.of(context).size.width * 0.92, // Fix Overflow
+        isSearchBoxOnRightSide: false,
+        textEditingController: textController,
+        isOriginalAnimation: true,
+        enableKeyboardFocus: true,
+        enteredTextStyle: GoogleFonts.nunitoSans(
+            textStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600)),
+        onExpansionComplete: onExpansionComplete,
+        onCollapseComplete: onCollapseComplete,
+        onPressButton: onPressButton,
+        onChanged: onChanged,
+        trailingWidget: const Icon(Icons.search, size: 20, color: Colors.white),
+        secondaryButtonWidget:
+            const Icon(Icons.close, size: 20, color: Colors.white),
+        buttonWidget: const Icon(Icons.search, size: 20, color: Colors.white),
+      ),
+    ],
+  );
 }

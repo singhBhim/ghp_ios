@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/view/resident/complaint/complaint_category.dart';
-import 'package:ghp_app/view/resident/complaint/get_all_complaints.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/controller/user_profile/user_profile_cubit.dart';
+import 'package:ghp_society_management/view/resident/bills/my_bills.dart';
+import 'package:ghp_society_management/view/resident/complaint/complaint_category.dart';
+import 'package:ghp_society_management/view/resident/complaint/get_all_complaints.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ComplaintScreen extends StatefulWidget {

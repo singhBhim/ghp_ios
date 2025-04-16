@@ -1,10 +1,10 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/parcel/checkout_parcel/checkout_parcel_cubit.dart';
-import 'package:ghp_app/controller/parcel/delete_parcel/delete_parcel_cubit.dart';
-import 'package:ghp_app/controller/parcel/deliver_parcel/deliver_parcel_cubit.dart';
-import 'package:ghp_app/model/parcel_listing_model.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
-import 'package:ghp_app/view/security_staff/parcel_flow_security_staff/parcel_details_page.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/parcel/checkout_parcel/checkout_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/delete_parcel/delete_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/deliver_parcel/deliver_parcel_cubit.dart';
+import 'package:ghp_society_management/model/parcel_listing_model.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/security_staff/parcel_flow_security_staff/parcel_details_page.dart';
 
 List<Map<String, dynamic>> filterOptions = [
   {"menu": "All", "menu_id": 1},

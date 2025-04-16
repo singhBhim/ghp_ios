@@ -1,11 +1,11 @@
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/rent_or_sell_property/delete_property/delete_property_cubit.dart';
-import 'package:ghp_app/model/buy_or_rent_property_model.dart';
-import 'package:ghp_app/view/resident/rent/property_detail_screen.dart';
-import 'package:ghp_app/view/resident/rent/update_rent_property.dart';
-import 'package:ghp_app/view/resident/rent/update_sell_property.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/rent_or_sell_property/delete_property/delete_property_cubit.dart';
+import 'package:ghp_society_management/model/buy_or_rent_property_model.dart';
+import 'package:ghp_society_management/view/resident/rent/property_detail_screen.dart';
+import 'package:ghp_society_management/view/resident/rent/update_rent_property.dart';
+import 'package:ghp_society_management/view/resident/rent/update_sell_property.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
 
 class ManagePropertyScreen extends StatefulWidget {
   const ManagePropertyScreen({super.key});

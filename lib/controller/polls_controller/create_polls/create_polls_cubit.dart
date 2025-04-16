@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/constants/local_storage.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/constants/local_storage.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 import 'package:http/http.dart' as http;
 
 part 'create_polls_state.dart';

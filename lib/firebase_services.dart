@@ -1,12 +1,11 @@
 import 'dart:async';
-// import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/accept_request/accept_request_cubit.dart';
-import 'package:ghp_app/view/resident/sos/sos_incoming_alert.dart';
-import 'package:ghp_app/view/resident/visitors/incomming_request.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/accept_request/accept_request_cubit.dart';
+import 'package:ghp_society_management/view/resident/sos/sos_incoming_alert.dart';
+import 'package:ghp_society_management/view/resident/visitors/incomming_request.dart';
 import 'package:vibration/vibration.dart';
 
 // Initialize global variables
@@ -15,7 +14,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Initialize Firebase Analytics
-// FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+// AnalyticsFirebaseAnalytics analytics = FirebaseAnalytics.instance;
 // FirebaseAnalyticsObserver analyticsObserver =
 //     FirebaseAnalyticsObserver(analytics: analytics);
 

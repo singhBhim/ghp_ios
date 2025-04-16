@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/constants/local_storage.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/constants/local_storage.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 import 'package:meta/meta.dart';
 part 'check_out_state.dart';
 

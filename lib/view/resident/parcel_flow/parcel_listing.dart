@@ -1,13 +1,15 @@
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/parcel/create_parcel/create_parcel_cubit.dart';
-import 'package:ghp_app/controller/parcel/delete_parcel/delete_parcel_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_complaint/parcel_complaint_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_listing/parcel_listing_cubit.dart';
-import 'package:ghp_app/controller/parcel/receive_parcel/receive_parcel_cubit.dart';
-import 'package:ghp_app/view/resident/parcel_flow/create_parcel.dart';
-import 'package:ghp_app/view/resident/parcel_flow/parcel_management.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/parcel/create_parcel/create_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/delete_parcel/delete_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_complaint/parcel_complaint_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_listing/parcel_listing_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/receive_parcel/receive_parcel_cubit.dart';
+import 'package:ghp_society_management/model/user_profile_model.dart';
+import 'package:ghp_society_management/view/resident/bills/my_bills.dart';
+import 'package:ghp_society_management/view/resident/parcel_flow/create_parcel.dart';
+import 'package:ghp_society_management/view/resident/parcel_flow/parcel_management.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
 import 'package:intl/intl.dart';
 
 class ParcelListingPage extends StatefulWidget {
@@ -21,13 +23,16 @@ class _ParcelListingPageState extends State<ParcelListingPage> {
   final ScrollController _scrollController = ScrollController();
 
   late ParcelListingCubit _parcelListingCubit;
+  late UserProfileCubit _userProfileCubit;
 
   @override
   void initState() {
     _parcelListingCubit = ParcelListingCubit()..fetchParcelListingApi('all');
     _scrollController.addListener(_onScroll);
-
     super.initState();
+    print("UserProfileCubit Called");
+    _userProfileCubit = UserProfileCubit();
+    _userProfileCubit.fetchUserProfile();
   }
 
   late BuildContext dialogueContext;
@@ -37,8 +42,11 @@ class _ParcelListingPageState extends State<ParcelListingPage> {
     setState(() {});
   }
 
+  bool _dialogShown = false;
+
   @override
   void dispose() {
+    _dialogShown = false; // Reset for next time
     _scrollController.dispose();
     super.dispose();
   }
@@ -102,6 +110,17 @@ class _ParcelListingPageState extends State<ParcelListingPage> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        // BlocListener<UserProfileCubit, UserProfileState>(
+        //   listenWhen: (previous, current) {
+        //     return current is UserProfileLoaded && !_dialogShown;
+        //   },
+        //   listener: (context, state) {
+        //     if (state is UserProfileLoaded) {
+        //       _dialogShown = true;
+        //
+        //     }
+        //   },
+        // ),
         BlocListener<ParcelManagementCubit, ParcelManagementState>(
             listener: (context, state) {
           if (state is CreateParcelSuccess) {
@@ -191,13 +210,47 @@ class _ParcelListingPageState extends State<ParcelListingPage> {
       ],
       child: Scaffold(
         backgroundColor: AppTheme.backgroundColor,
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: AppTheme.primaryColor,
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (builder) => const CreateParcelPage()));
-            },
-            child: const Icon(Icons.add, color: Colors.white)),
+        floatingActionButton: BlocBuilder<UserProfileCubit, UserProfileState>(
+          bloc: _userProfileCubit,
+          builder: (context, profileState) {
+            if (profileState is UserProfileLoaded) {
+              Future.delayed(const Duration(milliseconds: 5), () {
+                List<UnpaidBill> billData =
+                    profileState.userProfile.first.data!.unpaidBills!;
+                if (billData.isNotEmpty) {
+                  checkPaymentReminder(
+                      context: context,
+                      myUnpaidBill: profileState
+                          .userProfile.first.data!.unpaidBills!.first);
+                }
+              });
+            }
+            return FloatingActionButton(
+              backgroundColor: AppTheme.primaryColor,
+              onPressed: () {
+                if (profileState is UserProfileLoaded) {
+                  List<UnpaidBill> billData =
+                      profileState.userProfile.first.data!.unpaidBills!;
+
+                  if (billData.isNotEmpty || billData != null) {
+                    String status = checkBillStatus(context, billData.first);
+
+                    if (status == 'overdue') {
+                      overDueBillAlertDialog(context, billData.first);
+                    } else {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (builder) => const CreateParcelPage()));
+                    }
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (builder) => const CreateParcelPage()));
+                  }
+                }
+              },
+              child: const Icon(Icons.add, color: Colors.white),
+            );
+          },
+        ),
         body: SafeArea(
           child: Column(
             children: [

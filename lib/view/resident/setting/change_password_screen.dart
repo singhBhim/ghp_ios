@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChangePasswordScreen extends StatefulWidget {

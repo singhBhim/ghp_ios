@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/download_share_gatepass.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/download_file/download_document_cubit.dart';
-import 'package:ghp_app/model/visitors_listing_model.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/download_share_gatepass.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/download_file/download_document_cubit.dart';
+import 'package:ghp_society_management/model/visitors_listing_model.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 

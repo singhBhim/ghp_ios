@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:ghp_app/constants/download_share_gatepass.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/download_share_gatepass.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 import 'package:meta/meta.dart';
 import 'package:screenshot/screenshot.dart';
 import '../../model/outgoing_document_model.dart';

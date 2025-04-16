@@ -1,6 +1,6 @@
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/model/user_model.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/model/user_model.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 import 'package:uuid/uuid.dart';
 

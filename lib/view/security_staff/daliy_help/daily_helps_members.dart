@@ -1,10 +1,10 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/daliy_helps_member/daily_help_listing/daily_help_cubit.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
-import 'package:ghp_app/model/daily_help_members_modal.dart';
-import 'package:ghp_app/view/security_staff/daliy_help/daily_help_details.dart';
-import 'package:ghp_app/view/security_staff/scan_qr.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/daliy_helps_member/daily_help_listing/daily_help_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
+import 'package:ghp_society_management/model/daily_help_members_modal.dart';
+import 'package:ghp_society_management/view/security_staff/daliy_help/daily_help_details.dart';
+import 'package:ghp_society_management/view/security_staff/scan_qr.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
 class DailyHelpListingHistory extends StatefulWidget {

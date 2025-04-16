@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ghp_app/model/service_request_history_model.dart';
+import 'package:ghp_society_management/model/service_request_history_model.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   final ServiceHistoryModel data;

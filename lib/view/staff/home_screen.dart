@@ -1,11 +1,11 @@
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/model/service_request_model.dart';
-import 'package:ghp_app/model/user_profile_model.dart';
-import 'package:ghp_app/view/dashboard/bottom_nav_screen.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
-import 'package:ghp_app/view/society/select_society_screen.dart';
-import 'package:ghp_app/view/staff/mark_done_screen.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/model/service_request_model.dart';
+import 'package:ghp_society_management/model/user_profile_model.dart';
+import 'package:ghp_society_management/view/dashboard/bottom_nav_screen.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/society/select_society_screen.dart';
+import 'package:ghp_society_management/view/staff/mark_done_screen.dart';
 import 'package:pinput/pinput.dart';
 
 class StaffHomeScreen extends StatefulWidget {
@@ -135,611 +135,616 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
               }
             },
             child: Scaffold(
-              backgroundColor: AppTheme.backgroundColor,
-              body: SafeArea(
-                child: Column(
-                  children: [
-                    BlocBuilder<UserProfileCubit, UserProfileState>(
-                      builder: (context, state) {
-                        if (state is UserProfileLoaded) {
-                          User? user = state.userProfile.first.data!.user!;
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 12),
-                            child: Row(
-                              children: [
-                                GestureDetector(
-                                    onTap: () {
-                                      profileViewAlertDialog(
-                                          context, state.userProfile.first);
-                                    },
-                                    child: user.image != null
-                                        ? CircleAvatar(
-                                            radius: 25.h,
-                                            backgroundImage: NetworkImage(
-                                                user.image.toString()))
-                                        : const CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage: AssetImage(
-                                                'assets/images/default.jpg'))),
-                                Flexible(
-                                  child: ListTile(
-                                      contentPadding: const EdgeInsets.symmetric(
-                                          horizontal: 12),
-                                      title: Text(state.userProfile.first.data!.user!.name.toString(),
-                                          style: GoogleFonts.nunitoSans(
-                                              textStyle: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16.sp,
-                                                  fontWeight:
-                                                      FontWeight.w500))),
-                                      subtitle:
-                                          Text(state.userProfile.first.data!.user!.categoryName.toString(),
-                                              style: GoogleFonts.nunitoSans(
-                                                  textStyle: TextStyle(
-                                                      color: Colors.green,
-                                                      fontSize: 14.sp))),
-                                      trailing: serviceProviderHeaderWidget(
-                                          context, state.userProfile.first.data!.user!.id.toString(), state.userProfile.first.data!.user!.name, state.userProfile.first.data!.user!.image ?? '')),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 12),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage: AssetImage(
-                                        'assets/images/default.jpg')),
-                                Flexible(
-                                  child: ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 12),
-                                    title: Text('Hello user',
-                                        style: GoogleFonts.nunitoSans(
-                                            textStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18.sp,
-                                                fontWeight: FontWeight.w500))),
-                                    subtitle: Text("Service Provider",
-                                        style: GoogleFonts.nunitoSans(
-                                            textStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14.sp))),
-                                    trailing: headerWidget(context, '', '', ''),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    SizedBox(height: 15.h),
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          context.read<ServiceRequestCubit>().serviceRequest();
-                        },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 0.8,
-                          width: double.infinity,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                          ),
-                          child: BlocBuilder<ServiceRequestCubit,
-                              ServiceRequestState>(
-                            builder: (context, state) {
-                              if (state is ServiceRequestsLoading) {
-                                return const SizedBox(
-                                    width: double.infinity,
-                                    child: Column(
+              appBar: AppBar(
+                  leadingWidth: double.infinity,
+                  leading: BlocBuilder<UserProfileCubit, UserProfileState>(
+                    builder: (context, state) {
+                      if (state is UserProfileLoaded) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                        onTap: () {
+                                          profileViewAlertDialog(
+                                              context, state.userProfile.first);
+                                        },
+                                        child: state.userProfile.first.data!
+                                                    .user!.image !=
+                                                null
+                                            ? CircleAvatar(
+                                                radius: 22.h,
+                                                backgroundImage: NetworkImage(
+                                                    state.userProfile.first
+                                                        .data!.user!.image
+                                                        .toString()))
+                                            : const CircleAvatar(
+                                                radius: 22,
+                                                backgroundImage: AssetImage(
+                                                    'assets/images/default.jpg'))),
+                                    const SizedBox(width: 10),
+                                    Flexible(
+                                      child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                            CrossAxisAlignment.start,
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          CircularProgressIndicator()
-                                        ]));
-                              } else if (state is ServiceRequestsLoaded) {
-                                List<ServiceRequestData> runningServiceList =
-                                    state.serviceHistory.first.data!
-                                        .serviceRunning!.data!;
-                                List<ServiceRequestData> requestServicesList =
-                                    state.serviceHistory.first.data!
-                                        .serviceRequests!.data!;
+                                          Text(
+                                              state.userProfile.first.data!
+                                                  .user!.name
+                                                  .toString(),
+                                              style: GoogleFonts.nunitoSans(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      overflow: TextOverflow
+                                                          .ellipsis))),
+                                          const SizedBox(height: 3),
+                                          Text(
+                                              state.userProfile.first.data!
+                                                  .user!.categoryName
+                                                  .toString(),
+                                              style: GoogleFonts.nunitoSans(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500)))
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                  ],
+                                ),
+                              ),
+                              headerWidget(
+                                  context,
+                                  state.userProfile.first.data!.user!.id
+                                      .toString(),
+                                  state.userProfile.first.data!.user!.name
+                                      .toString(),
+                                  state.userProfile.first.data!.user!.image ??
+                                      '',
+                                  index: 2)
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const CircleAvatar(
+                                        radius: 22,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/default.jpg')),
+                                    const SizedBox(width: 10),
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text("Loading...",
+                                              style: GoogleFonts.nunitoSans(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      overflow: TextOverflow
+                                                          .ellipsis))),
+                                          const SizedBox(height: 3),
+                                          Text('TOWER LOADING...',
+                                              style: GoogleFonts.nunitoSans(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 11.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500)))
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10)
+                                  ],
+                                ),
+                              ),
+                              headerWidget(context, '', '', '',
+                                  isDemo: true, index: 1)
+                            ],
+                          ),
+                        );
+                      }
+                    },
+                  )),
+              body: RefreshIndicator(
+                onRefresh: () async {
+                  context.read<ServiceRequestCubit>().serviceRequest();
+                },
+                child: BlocBuilder<ServiceRequestCubit, ServiceRequestState>(
+                  builder: (context, state) {
+                    if (state is ServiceRequestsLoading) {
+                      return const SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [CircularProgressIndicator()]));
+                    } else if (state is ServiceRequestsLoaded) {
+                      List<ServiceRequestData> runningServiceList = state
+                          .serviceHistory.first.data!.serviceRunning!.data!;
+                      List<ServiceRequestData> requestServicesList = state
+                          .serviceHistory.first.data!.serviceRequests!.data!;
 
-                                return SingleChildScrollView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(height: 20.h),
-                                        Text('Running Service',
-                                            style: GoogleFonts.nunitoSans(
-                                                textStyle: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 18.sp,
-                                                    fontWeight:
-                                                        FontWeight.w600))),
-                                        SizedBox(height: 10.h),
-                                        if (runningServiceList.isEmpty)
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Column(
+                      return SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 10.h),
+                              Text('Running Service',
+                                  style: GoogleFonts.nunitoSans(
+                                      textStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w600))),
+                              SizedBox(height: 10.h),
+                              if (runningServiceList.isEmpty)
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Image.asset('assets/images/not-found.png',
+                                          height: 250),
+                                      Text('Current Not Running Services!',
+                                          style: GoogleFonts.nunitoSans(
+                                              textStyle: TextStyle(
+                                                  color:
+                                                      Colors.deepPurpleAccent,
+                                                  fontSize: 16.sp))),
+                                    ],
+                                  ),
+                                )
+                              else
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: EdgeInsets.zero,
+                                  itemCount: runningServiceList.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    List<ServiceRequestData> runningList = state
+                                        .serviceHistory
+                                        .first
+                                        .data!
+                                        .serviceRunning!
+                                        .data!;
+                                    DateTime startDate =
+                                        runningList[index].startAt!;
+
+                                    String day = startDate.day.toString();
+                                    String formattedDate =
+                                        "$day ${monthYear(startDate).toString()}";
+
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xFFC1EAFE),
+                                            borderRadius:
+                                                BorderRadius.circular(5.r)),
+                                        child: Column(
+                                          children: [
+                                            Row(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                Image.asset(
-                                                    'assets/images/not-found.png',
-                                                    height: 250),
-                                                Text(
-                                                    'Current Not Running Services!',
-                                                    style: GoogleFonts.nunitoSans(
-                                                        textStyle: TextStyle(
-                                                            color: Colors
-                                                                .deepPurpleAccent,
-                                                            fontSize: 16.sp))),
-                                              ],
-                                            ),
-                                          )
-                                        else
-                                          ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            padding: EdgeInsets.zero,
-                                            itemCount:
-                                                runningServiceList.length,
-                                            shrinkWrap: true,
-                                            itemBuilder: (context, index) {
-                                              List<ServiceRequestData>
-                                                  runningList = state
-                                                      .serviceHistory
-                                                      .first
-                                                      .data!
-                                                      .serviceRunning!
-                                                      .data!;
-                                              DateTime startDate =
-                                                  runningList[index].startAt!;
-
-                                              String day =
-                                                  startDate.day.toString();
-                                              String formattedDate =
-                                                  "$day ${monthYear(startDate).toString()}";
-
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 5),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xFFC1EAFE),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5.r)),
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Flexible(
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8),
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Text(
-                                                                      runningList[
-                                                                              index]
-                                                                          .area
-                                                                          .toString(),
-                                                                      style: GoogleFonts.nunitoSans(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontSize: 18
-                                                                              .sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w600)),
-                                                                  Text(
-                                                                      "Complaint By : ${runningList[index].member!.name.toString()}",
-                                                                      style: GoogleFonts.nunitoSans(
-                                                                          color: Colors
-                                                                              .pink,
-                                                                          fontSize: 12
-                                                                              .sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w600)),
-                                                                  Text(
-                                                                      'TOWER: ${runningList[index].blockName} - FLOOR: ${runningList[index].floorNumber} - Property NO: ${runningList[index].aprtNo}'
-                                                                          .toUpperCase(),
-                                                                      style: GoogleFonts.nunitoSans(
-                                                                          color: AppTheme
-                                                                              .staffPrimaryColor,
-                                                                          fontSize: 10
-                                                                              .sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w600)),
-                                                                  Text(
-                                                                      runningList[index]
-                                                                          .description
-                                                                          .toString(),
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      maxLines:
-                                                                          3,
-                                                                      style: GoogleFonts.nunitoSans(
-                                                                          color: const Color(
-                                                                              0xFF131313),
-                                                                          fontSize: 12
-                                                                              .sp,
-                                                                          fontWeight:
-                                                                              FontWeight.w500)),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(10),
-                                                            child: Image.asset(
-                                                              'assets/images/staff_banner.png',
-                                                              height: 100.h,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Divider(
-                                                          color: Colors.grey
-                                                              .withOpacity(0.1),
-                                                          height: 0),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 8,
-                                                                horizontal: 8),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Text(
-                                                                    'Start At : ',
-                                                                    style: GoogleFonts.nunitoSans(
-                                                                        color: AppTheme
-                                                                            .staffPrimaryColor,
-                                                                        fontSize:
-                                                                            12.sp)),
-                                                                Text(
-                                                                    '${formattedDate.toString()} ${formatTime(startDate).toString()}',
-                                                                    style: GoogleFonts.nunitoSans(
-                                                                        color: AppTheme
-                                                                            .staffPrimaryColor,
-                                                                        fontSize: 12
-                                                                            .sp,
-                                                                        fontWeight:
-                                                                            FontWeight.w600)),
-                                                              ],
-                                                            ),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                enterOtpAlertDialogue(
-                                                                    runningList[
-                                                                            index]
-                                                                        .id);
-                                                              },
-                                                              child: Container(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical:
-                                                                        5),
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                4),
-                                                                    color: AppTheme
-                                                                        .staffPrimaryColor
-                                                                        .withOpacity(
-                                                                            0.8)),
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    'Complete Service',
-                                                                    style: GoogleFonts.nunitoSans(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            14.sp),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
+                                                Flexible(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                            runningList[index]
+                                                                .area
+                                                                .toString(),
+                                                            style: GoogleFonts
+                                                                .nunitoSans(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        18.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600)),
+                                                        Text(
+                                                            "Complaint By : ${runningList[index].member!.name.toString()}",
+                                                            style: GoogleFonts
+                                                                .nunitoSans(
+                                                                    color: Colors
+                                                                        .pink,
+                                                                    fontSize:
+                                                                        12.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600)),
+                                                        Text(
+                                                            'TOWER: ${runningList[index].blockName} - FLOOR: ${runningList[index].floorNumber} - Property NO: ${runningList[index].aprtNo}'
+                                                                .toUpperCase(),
+                                                            style: GoogleFonts.nunitoSans(
+                                                                color: AppTheme
+                                                                    .staffPrimaryColor,
+                                                                fontSize: 10.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600)),
+                                                        Text(
+                                                            runningList[index]
+                                                                .description
+                                                                .toString(),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            maxLines: 3,
+                                                            style: GoogleFonts.nunitoSans(
+                                                                color: const Color(
+                                                                    0xFF131313),
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500)),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                        SizedBox(height: 10.h),
-                                        Text('Service Requests',
-                                            style: GoogleFonts.nunitoSans(
-                                                textStyle: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 18.sp,
-                                                    fontWeight:
-                                                        FontWeight.w600))),
-                                        SizedBox(height: 10.h),
-                                        requestServicesList.isEmpty
-                                            ? Align(
-                                                alignment: Alignment.center,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Image.asset(
-                                                        'assets/images/not-found.png',
-                                                        height: 250),
-                                                    Text(
-                                                        'Currently Services Request Not Found!',
-                                                        style: GoogleFonts.nunitoSans(
-                                                            textStyle: TextStyle(
-                                                                color: Colors
-                                                                    .deepPurpleAccent,
-                                                                fontSize:
-                                                                    16.sp))),
-                                                  ],
-                                                ),
-                                              )
-                                            : ListView.builder(
-                                                physics:
-                                                    const NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemCount:
-                                                    requestServicesList.length,
-                                                itemBuilder: (context, index) {
-                                                  List<ServiceRequestData>
-                                                      requestList = state
-                                                          .serviceHistory
-                                                          .first
-                                                          .data!
-                                                          .serviceRequests!
-                                                          .data!;
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  child: Image.asset(
+                                                    'assets/images/staff_banner.png',
+                                                    height: 100.h,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            Divider(
+                                                color: Colors.grey
+                                                    .withOpacity(0.1),
+                                                height: 0),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text('Start At : ',
+                                                          style: GoogleFonts
+                                                              .nunitoSans(
+                                                                  color: AppTheme
+                                                                      .staffPrimaryColor,
+                                                                  fontSize:
+                                                                      12.sp)),
+                                                      Text(
+                                                          '${formattedDate.toString()} ${formatTime(startDate).toString()}',
+                                                          style: GoogleFonts
+                                                              .nunitoSans(
+                                                                  color: AppTheme
+                                                                      .staffPrimaryColor,
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600)),
+                                                    ],
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      enterOtpAlertDialogue(
+                                                          runningList[index]
+                                                              .id);
+                                                    },
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4),
+                                                          color: AppTheme
+                                                              .staffPrimaryColor
+                                                              .withOpacity(
+                                                                  0.8)),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Complete Service',
+                                                          style: GoogleFonts
+                                                              .nunitoSans(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      14.sp),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              SizedBox(height: 10.h),
+                              Text('Service Requests',
+                                  style: GoogleFonts.nunitoSans(
+                                      textStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w600))),
+                              SizedBox(height: 10.h),
+                              requestServicesList.isEmpty
+                                  ? Align(
+                                      alignment: Alignment.center,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/not-found.png',
+                                              height: 250),
+                                          Text(
+                                              'Currently Services Request Not Found!',
+                                              style: GoogleFonts.nunitoSans(
+                                                  textStyle: TextStyle(
+                                                      color: Colors
+                                                          .deepPurpleAccent,
+                                                      fontSize: 16.sp))),
+                                        ],
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: requestServicesList.length,
+                                      itemBuilder: (context, index) {
+                                        List<ServiceRequestData> requestList =
+                                            state.serviceHistory.first.data!
+                                                .serviceRequests!.data!;
 
-                                                  DateTime assignedDate =
-                                                      requestList[index]
-                                                          .assignedAt!;
+                                        DateTime assignedDate =
+                                            requestList[index].assignedAt!;
 
-                                                  String day = assignedDate.day
-                                                      .toString();
-                                                  return Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            bottom: 10),
+                                        String day =
+                                            assignedDate.day.toString();
+                                        return Container(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 10),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.r),
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xFFE5E5E5))),
+                                          child: Column(
+                                            children: [
+                                              ListTile(
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 10),
+                                                  dense: true,
+                                                  leading: Container(
                                                     decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(10.r),
-                                                        border: Border.all(
-                                                            color: const Color(
-                                                                0xFFE5E5E5))),
-                                                    child: Column(
-                                                      children: [
-                                                        ListTile(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10),
-                                                            dense: true,
-                                                            leading: Container(
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(10
-                                                                              .r),
-                                                                  color: const Color(
-                                                                      0xFFF2F1FE)),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        10.0),
-                                                                child:
-                                                                    Image.asset(
-                                                                  ImageAssets
-                                                                      .serviceRequestImage,
-                                                                  height: 32.h,
-                                                                  width: 25,
-                                                                ),
-                                                              ),
+                                                        color: const Color(
+                                                            0xFFF2F1FE)),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: Image.asset(
+                                                        ImageAssets
+                                                            .serviceRequestImage,
+                                                        height: 32.h,
+                                                        width: 25,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  title: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Flexible(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Text(
+                                                                requestList[
+                                                                        index]
+                                                                    .area
+                                                                    .toString(),
+                                                                style: GoogleFonts.nunitoSans(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600)),
+                                                            Text(
+                                                              "Complaint By : ${requestList[index].member!.name.toString()}",
+                                                              style: GoogleFonts.nunitoSans(
+                                                                  color: Colors
+                                                                      .pink,
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600),
                                                             ),
-                                                            title: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Flexible(
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
-                                                                    children: [
-                                                                      Text(
-                                                                          requestList[index]
-                                                                              .area
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          CircleAvatar(
+                                                              radius: 16,
+                                                              child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          1),
+                                                                  child: CircleAvatar(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      child: Text(
+                                                                          day
                                                                               .toString(),
                                                                           style: GoogleFonts.nunitoSans(
-                                                                              color: Colors.black,
-                                                                              fontSize: 16,
-                                                                              fontWeight: FontWeight.w600)),
-                                                                      Text(
-                                                                        "Complaint By : ${requestList[index].member!.name.toString()}",
-                                                                        style: GoogleFonts.nunitoSans(
-                                                                            color: Colors
-                                                                                .pink,
-                                                                            fontSize:
-                                                                                12,
-                                                                            fontWeight:
-                                                                                FontWeight.w600),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  children: [
-                                                                    CircleAvatar(
-                                                                        radius:
-                                                                            16,
-                                                                        child: Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(1),
-                                                                            child: CircleAvatar(backgroundColor: Colors.white, child: Text(day.toString(), style: GoogleFonts.nunitoSans(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.bold))))),
-                                                                    Text(
-                                                                        monthYear(
-                                                                            assignedDate),
-                                                                        style: GoogleFonts.nunitoSans(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontSize: 12))
-                                                                  ],
-                                                                )
-                                                              ],
-                                                            ),
-                                                            subtitle: Text(
-                                                                "TOWER:  ${requestList[index].blockName}  FLOOR:  ${requestList[index].floorNumber}   property NO:  ${requestList[index].aprtNo}"
-                                                                    .toUpperCase(),
-                                                                style: GoogleFonts
-                                                                    .nunitoSans(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                            10))),
-                                                        Divider(
-                                                            color: Colors.grey
-                                                                .withOpacity(
-                                                                    0.2)),
-                                                        Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              actionButton(
-                                                                  onTap: () {
-                                                                    serviceDetailAlertDialogue(
-                                                                        requestList[
-                                                                            index]);
-                                                                  },
-                                                                  icon: Icons
-                                                                      .design_services,
-                                                                  text:
-                                                                      "Start Service",
-                                                                  color: Colors
-                                                                      .lightBlue),
-                                                              actionButton(
-                                                                  onTap:
-                                                                      () async {
-                                                                    await phoneCallLauncher(requestList[
-                                                                            index]
-                                                                        .member!
-                                                                        .phone
-                                                                        .toString());
-                                                                  },
-                                                                  icon: Icons
-                                                                      .phone,
-                                                                  text:
-                                                                      "Call To Resident",
-                                                                  color: Colors
-                                                                      .deepPurpleAccent)
-                                                            ]),
-                                                        const SizedBox(
-                                                            height: 5)
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                      ],
+                                                                              color: Colors.grey,
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold))))),
+                                                          Text(
+                                                              monthYear(
+                                                                  assignedDate),
+                                                              style: GoogleFonts
+                                                                  .nunitoSans(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          12))
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                  subtitle: Text(
+                                                      "TOWER:  ${requestList[index].blockName}  FLOOR:  ${requestList[index].floorNumber}   property NO:  ${requestList[index].aprtNo}"
+                                                          .toUpperCase(),
+                                                      style: GoogleFonts
+                                                          .nunitoSans(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 10))),
+                                              Divider(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2)),
+                                              Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    actionButton(
+                                                        onTap: () {
+                                                          serviceDetailAlertDialogue(
+                                                              requestList[
+                                                                  index]);
+                                                        },
+                                                        icon: Icons
+                                                            .design_services,
+                                                        text: "Start Service",
+                                                        color:
+                                                            Colors.lightBlue),
+                                                    actionButton(
+                                                        onTap: () async {
+                                                          await phoneCallLauncher(
+                                                              requestList[index]
+                                                                  .member!
+                                                                  .phone
+                                                                  .toString());
+                                                        },
+                                                        icon: Icons.phone,
+                                                        text:
+                                                            "Call To Resident",
+                                                        color: Colors
+                                                            .deepPurpleAccent)
+                                                  ]),
+                                              const SizedBox(height: 5)
+                                            ],
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  ),
-                                );
-                              } else if (state is ServiceRequestsFailed) {
-                                return const SizedBox(
-                                  width: double.infinity,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Center(
-                                          child: Text(
-                                              'No Service requests Found')),
-                                    ],
-                                  ),
-                                );
-                              } else if (state
-                                  is ServiceRequestsInternetError) {
-                                return const SizedBox(
-                                  width: double.infinity,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Center(
-                                          child: Text(
-                                        'Internet connection error',
-                                        style: TextStyle(color: Colors.red),
-                                      )),
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                return const SizedBox();
-                              }
-                            },
+                            ],
                           ),
                         ),
-                      ),
-                    )
-                  ],
+                      );
+                    } else if (state is ServiceRequestsFailed) {
+                      return const SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(child: Text('No Service requests Found')),
+                          ],
+                        ),
+                      );
+                    } else if (state is ServiceRequestsInternetError) {
+                      return const SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                                child: Text(
+                              'Internet connection error',
+                              style: TextStyle(color: Colors.red),
+                            )),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
                 ),
               ),
             ),

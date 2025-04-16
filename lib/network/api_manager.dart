@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
-import 'package:ghp_app/constants/local_storage.dart';
+import 'package:ghp_society_management/constants/local_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 

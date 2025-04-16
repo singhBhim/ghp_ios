@@ -2,13 +2,13 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/controller/members/members_cubit.dart';
-import 'package:ghp_app/controller/members_element/members_element_cubit.dart';
-import 'package:ghp_app/model/members_element_model.dart';
-import 'package:ghp_app/model/members_model.dart';
-import 'package:ghp_app/model/user_model.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/controller/members/members_cubit.dart';
+import 'package:ghp_society_management/controller/members_element/members_element_cubit.dart';
+import 'package:ghp_society_management/model/members_element_model.dart';
+import 'package:ghp_society_management/model/members_model.dart';
+import 'package:ghp_society_management/model/user_model.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
@@ -48,6 +48,7 @@ class _MemberScreenState extends State<ChatMemberScreen> {
   }
 
   List<Block> memberBlocsList = [];
+  UserModel? userList;
 
   late BuildContext dialogContext;
   @override

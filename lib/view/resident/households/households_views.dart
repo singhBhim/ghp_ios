@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/user_profile/user_profile_cubit.dart';
-import 'package:ghp_app/model/user_profile_model.dart';
-import 'package:ghp_app/view/resident/resident_profile/resident_gatepass.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/user_profile/user_profile_cubit.dart';
+import 'package:ghp_society_management/model/user_profile_model.dart';
+import 'package:ghp_society_management/view/resident/resident_profile/resident_gatepass.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HouseholdsViews extends StatefulWidget {

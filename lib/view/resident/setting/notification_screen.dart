@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/notification_settings/get_notification_settings/get_notification_settings_cubit.dart';
-import 'package:ghp_app/controller/notification_settings/update_notification_settings/update_notification_settings_cubit.dart';
-import 'package:ghp_app/model/get_notification_settings_model.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/notification_settings/get_notification_settings/get_notification_settings_cubit.dart';
+import 'package:ghp_society_management/controller/notification_settings/update_notification_settings/update_notification_settings_cubit.dart';
+import 'package:ghp_society_management/model/get_notification_settings_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NotificationScreen extends StatefulWidget {

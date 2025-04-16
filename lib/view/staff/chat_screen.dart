@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/controller/chat/group_controller.dart';
-import 'package:ghp_app/model/group_model.dart';
-import 'package:ghp_app/view/chat/delete_chat_dialogue.dart';
-import 'package:ghp_app/view/chat/messaging_screen.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/controller/chat/group_controller.dart';
+import 'package:ghp_society_management/model/group_model.dart';
+import 'package:ghp_society_management/view/chat/delete_chat_dialogue.dart';
+import 'package:ghp_society_management/view/chat/messaging_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 

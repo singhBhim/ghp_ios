@@ -5,14 +5,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/verify_otp/verify_otp_cubit.dart';
-import 'package:ghp_app/view/dashboard/bottom_nav_screen.dart';
-import 'package:ghp_app/view/security_staff/dashboard/bottom_navigation.dart';
-import 'package:ghp_app/view/staff/bottom_nav_screen.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/verify_otp/verify_otp_cubit.dart';
+import 'package:ghp_society_management/view/dashboard/bottom_nav_screen.dart';
+import 'package:ghp_society_management/view/security_staff/dashboard/bottom_navigation.dart';
+import 'package:ghp_society_management/view/Staff/bottom_nav_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 
@@ -112,7 +112,7 @@ class _OtpScreenState extends State<OtpScreen> {
             decoration: BoxDecoration(
                 color: Colors.black,
                 borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(20.r))),
+                BorderRadius.vertical(top: Radius.circular(20.r))),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,

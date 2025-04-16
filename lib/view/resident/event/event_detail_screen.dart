@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EventDetailScreen extends StatefulWidget {

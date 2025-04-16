@@ -112,4 +112,5 @@ class Routes {
   static String dailyHelpsMembers = 'society/members?type=daily_help';
   static String dailyHelpsMembersDetails =
       'resident/daily-help-checkin-details/';
+  static String billPayment = 'bill/payment-details';
 }

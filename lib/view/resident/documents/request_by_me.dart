@@ -1,13 +1,13 @@
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/documents/delete_request/delete_request_cubit.dart';
-import 'package:ghp_app/controller/documents/outgoing_documents/outgoing_documents_cubit.dart';
-import 'package:ghp_app/controller/documents/send_request/send_request_docs_cubit.dart';
-import 'package:ghp_app/controller/download_file/download_document_cubit.dart';
-import 'package:ghp_app/model/outgoing_document_model.dart';
-import 'package:ghp_app/view/resident/documents/send_request_documents_screen.dart';
-import 'package:ghp_app/view/resident/documents/view_docs_details.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/documents/delete_request/delete_request_cubit.dart';
+import 'package:ghp_society_management/controller/documents/outgoing_documents/outgoing_documents_cubit.dart';
+import 'package:ghp_society_management/controller/documents/send_request/send_request_docs_cubit.dart';
+import 'package:ghp_society_management/controller/download_file/download_document_cubit.dart';
+import 'package:ghp_society_management/model/outgoing_document_model.dart';
+import 'package:ghp_society_management/view/resident/documents/send_request_documents_screen.dart';
+import 'package:ghp_society_management/view/resident/documents/view_docs_details.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 

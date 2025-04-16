@@ -1,17 +1,19 @@
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/visitors/delete_visitors/delete_visitor_cubit.dart';
-import 'package:ghp_app/controller/visitors/incoming_request/incoming_request_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/accept_request/accept_request_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/not_responding/not_responde_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitors_feedback/visitors_feedback_cubit.dart';
-import 'package:ghp_app/model/incoming_visitors_request_model.dart';
-import 'package:ghp_app/model/visitors_listing_model.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
-import 'package:ghp_app/view/resident/visitors/add_visitor_screen.dart';
-import 'package:ghp_app/view/resident/visitors/generate_qr_code.dart';
-import 'package:ghp_app/view/resident/visitors/incomming_request.dart';
-import 'package:ghp_app/view/resident/visitors/visitors_details_page.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/visitors/delete_visitors/delete_visitor_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/incoming_request/incoming_request_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/accept_request/accept_request_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/not_responding/not_responde_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitors_feedback/visitors_feedback_cubit.dart';
+import 'package:ghp_society_management/model/incoming_visitors_request_model.dart';
+import 'package:ghp_society_management/model/user_profile_model.dart';
+import 'package:ghp_society_management/model/visitors_listing_model.dart';
+import 'package:ghp_society_management/view/resident/bills/my_bills.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/resident/visitors/add_visitor_screen.dart';
+import 'package:ghp_society_management/view/resident/visitors/generate_qr_code.dart';
+import 'package:ghp_society_management/view/resident/visitors/incomming_request.dart';
+import 'package:ghp_society_management/view/resident/visitors/visitors_details_page.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 
@@ -24,16 +26,16 @@ class VisitorScreen extends StatefulWidget {
 class _VisitorScreenState extends State<VisitorScreen> {
   late VisitorsListingCubit _visitorsListingCubit;
   final ScrollController _scrollController = ScrollController();
-
+  late UserProfileCubit _userProfileCubit;
   @override
   void initState() {
     super.initState();
-
     context.read<IncomingRequestCubit>().fetchIncomingRequest();
-
     _visitorsListingCubit = VisitorsListingCubit();
     fetchData();
     _scrollController.addListener(_onScroll);
+    _userProfileCubit = UserProfileCubit();
+    _userProfileCubit.fetchUserProfile();
   }
 
   Future<void> fetchData() async {
@@ -66,26 +68,22 @@ class _VisitorScreenState extends State<VisitorScreen> {
     return MultiBlocListener(
       listeners: [
         BlocListener<IncomingRequestCubit, IncomingRequestState>(
-          listener: (context, state) {
-            if (state is IncomingRequestLoaded) {
-              IncomingVisitorsModel incomingVisitorsRequest =
-                  state.incomingVisitorsRequest;
-              if (incomingVisitorsRequest.lastCheckinDetail!.status ==
-                  'requested') {
-                Navigator.push(
+            listener: (context, state) {
+          if (state is IncomingRequestLoaded) {
+            IncomingVisitorsModel incomingVisitorsRequest =
+                state.incomingVisitorsRequest;
+            if (incomingVisitorsRequest.lastCheckinDetail!.status ==
+                'requested') {
+              Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => VisitorsIncomingRequestPage(
-                      incomingVisitorsRequest: incomingVisitorsRequest,
-                      fromForegroundMsg: true,
-                      setPageValue: (value) {},
-                    ),
-                  ),
-                );
-              }
+                      builder: (context) => VisitorsIncomingRequestPage(
+                          incomingVisitorsRequest: incomingVisitorsRequest,
+                          fromForegroundMsg: true,
+                          setPageValue: (value) {})));
             }
-          },
-        ),
+          }
+        }),
         BlocListener<AcceptRequestCubit, AcceptRequestState>(
           listener: (context, state) {
             if (state is AcceptRequestSuccessfully) {
@@ -183,14 +181,48 @@ class _VisitorScreenState extends State<VisitorScreen> {
       ],
       child: Scaffold(
         backgroundColor: AppTheme.backgroundColor,
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: AppTheme.primaryColor,
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (builder) =>
-                      AddVisitorScreen(isTypeResidence: true)));
-            },
-            child: const Icon(Icons.add, color: Colors.white)),
+        floatingActionButton: BlocBuilder<UserProfileCubit, UserProfileState>(
+            bloc: _userProfileCubit,
+            builder: (context, profileState) {
+              if (profileState is UserProfileLoaded) {
+                Future.delayed(const Duration(milliseconds: 5), () {
+                  List<UnpaidBill> billData =
+                      profileState.userProfile.first.data!.unpaidBills!;
+                  if (billData.isNotEmpty) {
+                    checkPaymentReminder(
+                        context: context,
+                        myUnpaidBill: profileState
+                            .userProfile.first.data!.unpaidBills!.first);
+                  }
+                });
+              }
+              return FloatingActionButton(
+                  backgroundColor: AppTheme.primaryColor,
+                  onPressed: () {
+                    if (profileState is UserProfileLoaded) {
+                      List<UnpaidBill> billData =
+                          profileState.userProfile.first.data!.unpaidBills!;
+
+                      if (billData.isNotEmpty || billData != null) {
+                        String status =
+                            checkBillStatus(context, billData.first);
+
+                        if (status == 'overdue') {
+                          overDueBillAlertDialog(context, billData.first);
+                        } else {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (builder) =>
+                                  AddVisitorScreen(isTypeResidence: true)));
+                        }
+                      } else {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (builder) =>
+                                AddVisitorScreen(isTypeResidence: true)));
+                      }
+                    }
+                  },
+                  child: const Icon(Icons.add, color: Colors.white));
+            }),
         body: SafeArea(
           child: Column(
             children: [

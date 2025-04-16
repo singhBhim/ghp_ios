@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/visitors/incoming_request/incoming_request_cubit.dart';
-import 'package:ghp_app/model/incoming_visitors_request_model.dart';
-import 'package:ghp_app/view/dashboard/bottom_nav_screen.dart';
-import 'package:ghp_app/view/resident/onboarding/onboarding_screen.dart';
-import 'package:ghp_app/view/resident/visitors/incomming_request.dart';
-import 'package:ghp_app/view/security_staff/dashboard/bottom_navigation.dart';
-import 'package:ghp_app/view/staff/bottom_nav_screen.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/visitors/incoming_request/incoming_request_cubit.dart';
+import 'package:ghp_society_management/model/incoming_visitors_request_model.dart';
+import 'package:ghp_society_management/view/dashboard/bottom_nav_screen.dart';
+import 'package:ghp_society_management/view/resident/onboarding/onboarding_screen.dart';
+import 'package:ghp_society_management/view/resident/visitors/incomming_request.dart';
+import 'package:ghp_society_management/view/security_staff/dashboard/bottom_navigation.dart';
+import 'package:ghp_society_management/view/staff/bottom_nav_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/model/members_model.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/model/members_model.dart';
 import 'package:meta/meta.dart';
 import '../../network/api_manager.dart';
 part 'members_state.dart';

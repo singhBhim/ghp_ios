@@ -1,14 +1,14 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/notification/notification_listing/notification_list_cubit.dart';
-import 'package:ghp_app/controller/refer_property/refer_property_element/refer_property_element_cubit.dart';
-import 'package:ghp_app/controller/sos_management/sos_element/sos_element_cubit.dart';
-import 'package:ghp_app/controller/visitors/incoming_request/incoming_request_cubit.dart';
-import 'package:ghp_app/model/incoming_visitors_request_model.dart';
-import 'package:ghp_app/view/resident/bills/bill_screen.dart';
-import 'package:ghp_app/view/resident/documents/docuements_page.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
-import 'package:ghp_app/view/resident/setting/setting_screen.dart';
-import 'package:ghp_app/view/resident/visitors/incomming_request.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/notification/notification_listing/notification_list_cubit.dart';
+import 'package:ghp_society_management/controller/refer_property/refer_property_element/refer_property_element_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_element/sos_element_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/incoming_request/incoming_request_cubit.dart';
+import 'package:ghp_society_management/model/incoming_visitors_request_model.dart';
+import 'package:ghp_society_management/view/resident/bills/bill_screen.dart';
+import 'package:ghp_society_management/view/resident/documents/docuements_page.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/resident/setting/setting_screen.dart';
+import 'package:ghp_society_management/view/resident/visitors/incomming_request.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -154,7 +154,7 @@ class DashboardState extends State<Dashboard> {
                       color: Colors.black,
                     ),
                   ),
-                  activeColor: Colors.grey),
+                  activeColor: AppTheme.blueColor),
               BottomNavyBarItem(
                   title: Text(
                     'Bills',
@@ -174,7 +174,7 @@ class DashboardState extends State<Dashboard> {
                       color: Colors.black,
                     ),
                   ),
-                  activeColor: Colors.grey),
+                  activeColor: AppTheme.blueColor),
               BottomNavyBarItem(
                   title: Text(
                     'Documents',
@@ -194,27 +194,19 @@ class DashboardState extends State<Dashboard> {
                       color: Colors.black,
                     ),
                   ),
-                  activeColor: Colors.grey),
+                  activeColor: AppTheme.blueColor),
               BottomNavyBarItem(
-                  title: Text(
-                    'Setting',
-                    style: GoogleFonts.nunitoSans(
-                      textStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
+                  title: Text('Setting',
+                      style: GoogleFonts.nunitoSans(
+                          textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500))),
                   icon: Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
-                    child: Image.asset(
-                      ImageAssets.settingImage,
-                      height: 18.h,
-                      color: Colors.black,
-                    ),
-                  ),
-                  activeColor: Colors.grey),
+                      padding: const EdgeInsets.only(left: 5.0),
+                      child: Image.asset(ImageAssets.settingImage,
+                          height: 18.h, color: Colors.black)),
+                  activeColor: AppTheme.blueColor),
             ],
           ),
         ),

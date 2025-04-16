@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/controller/my_bills/my_bills_cubit.dart';
-import 'package:ghp_app/view/resident/bills/bill_detail_screen.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/controller/my_bills/my_bills_cubit.dart';
+import 'package:ghp_society_management/payment_gateway_service.dart';
+import 'package:ghp_society_management/view/resident/bills/bill_detail_screen.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+
+import '../../../model/user_profile_model.dart';
 
 class MyBillsPage extends StatefulWidget {
   final String types;
-
   MyBillsPage({required this.types});
 
   @override
@@ -71,7 +74,7 @@ class MyBillsPageState extends State<MyBillsPage> {
             shrinkWrap: true,
             itemCount:
                 state.hasMore ? state.bills.length + 1 : state.bills.length,
-            physics: const BouncingScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               if (index == state.bills.length) {
                 return const Center(
@@ -79,11 +82,13 @@ class MyBillsPageState extends State<MyBillsPage> {
               }
               final bill = state.bills[index];
               int delay = bill.dueDateRemainDays!;
-              delayData() {
+              String delayData() {
                 if (delay > 0) {
-                  return "Due in ${bill.dueDateRemainDays.toString()} Days";
+                  return "Due in ${bill.dueDateRemainDays} Days";
                 } else {
-                  return "${bill.dueDateDelayDays.toString()} Days Delay";
+                  return bill.dueDateDelayDays == 0
+                      ? 'Today Is Last Day'
+                      : "${bill.dueDateDelayDays} Days Delay";
                 }
               }
 
@@ -92,60 +97,74 @@ class MyBillsPageState extends State<MyBillsPage> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey.withOpacity(0.2)),
                     borderRadius: BorderRadius.circular(5)),
-                child: ListTile(
-                  dense: true,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                  leading: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.r),
-                        color: const Color(0xFFF2F1FE)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset(ImageAssets.receiptImage,
-                          height: 30.h,
-                          width: 30.h,
-                          color: bill.status == 'unpaid'
-                              ? Colors.red.withOpacity(0.5)
-                              : Colors.cyanAccent.withOpacity(0.5)),
-                    ),
-                  ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(bill.service!.name.toString(),
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 16)),
-                      Text(bill.invoiceNumber.toString(),
-                          style: const TextStyle(
-                              color: Colors.deepPurpleAccent, fontSize: 12)),
-                    ],
-                  ),
-                  subtitle: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text("₹${bill.amount.toString().replaceAll('.00', '')}",
-                          style: const TextStyle(
-                              color: Colors.blue, fontSize: 14)),
-                      const SizedBox(width: 18),
-                      Text(delayData().toString(),
-                          style: const TextStyle(color: Colors.red)),
-                    ],
-                  ),
-                  trailing: GestureDetector(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) =>
-                                BillDetailScreen(billId: bill.id.toString()))),
-                    child: CircleAvatar(
-                      backgroundColor: AppTheme.greyColor,
-                      child: Icon(
-                        Icons.navigate_next,
-                        color: AppTheme.darkgreyColor,
+                child: Column(
+                  children: [
+                    ListTile(
+                        dense: true,
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => BillDetailScreen(
+                                    billId: bill.id.toString()))),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 8),
+                        leading: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                color: const Color(0xFFF2F1FE)),
+                            child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Image.asset(ImageAssets.receiptImage,
+                                    height: 20.h,
+                                    width: 25.h,
+                                    color: bill.status == 'unpaid'
+                                        ? Colors.red.withOpacity(0.5)
+                                        : Colors.cyanAccent.withOpacity(0.5)))),
+                        title: Text(bill.service!.name.toString(),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 16)),
+                        subtitle: Text(bill.invoiceNumber.toString(),
+                            style: TextStyle(
+                                color: AppTheme.blueColor, fontSize: 12)),
+                        trailing: GestureDetector(
+                          onTap: () => payBillFun(
+                              double.parse(bill.amount.toString()), context),
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 7),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: bill.status == 'paid'
+                                      ? Colors.green.withOpacity(0.3)
+                                      : Colors.red.withOpacity(0.3)),
+                              child: Text(
+                                  bill.status == 'paid' ? "Paid" : "Unpaid",
+                                  style: TextStyle(
+                                      color: bill.status == 'paid'
+                                          ? Colors.green
+                                          : Colors.red,
+                                      fontWeight: FontWeight.w600))),
+                        )),
+                    Divider(height: 0, color: Colors.grey.withOpacity(0.2)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                              "Amount ${bill.status == 'paid' ? 'Paid' : "Due"}: ₹${bill.amount.toString().replaceAll('.00', '')}",
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 14)),
+                          const SizedBox(width: 20),
+                          bill.status == 'paid'
+                              ? const SizedBox()
+                              : Text(delayData().toString(),
+                                  style: const TextStyle(color: Colors.red))
+                        ],
                       ),
-                    ),
-                  ),
+                    )
+                  ],
                 ),
               );
             },
@@ -170,4 +189,49 @@ class MyBillsPageState extends State<MyBillsPage> {
       },
     );
   }
+}
+
+/// DUE BILL MANAGEMENT
+void checkPaymentReminder(
+    {required BuildContext context, required UnpaidBill myUnpaidBill}) {
+  print("कोई ड्यू मैसेज नहीं दिखाना है।");
+  if (myUnpaidBill != null && myUnpaidBill.status == 'unpaid') {
+    DateTime today = DateTime.now();
+    DateTime dueDate = DateTime.parse(myUnpaidBill.dueDate.toString());
+
+    if (today.isAfter(dueDate.add(const Duration(days: 2)))) {
+      // 2 दिन बाद → overdue
+      print('calllllllled oooooooo');
+      overDueBillAlertDialog(context, myUnpaidBill);
+    } else if (today.isAfter(dueDate.subtract(const Duration(days: 3)))) {
+      // 3 दिन पहले से लेकर due date + 2 दिन तक → due
+      print('calllllllled 1111111');
+      overDueBillAlertDialog(context, myUnpaidBill);
+    } else {
+      print("कोई ड्यू मैसेज नहीं दिखाना है।");
+    }
+  }
+}
+
+/// OVER DUE BILL MANAGEMENT
+String checkBillStatus(BuildContext context, UnpaidBill myUnpaidBill) {
+  DateTime dueDate =
+      DateTime.parse(myUnpaidBill.dueDate.toString()); // e.g. "2025-04-10"
+  String paymentStatus = myUnpaidBill.status.toString(); // 'paid' या 'unpaid'
+  DateTime today = DateTime.now();
+
+  String status = 'no_due';
+
+  if (paymentStatus == 'unpaid') {
+    if (today.isBefore(dueDate.add(const Duration(days: 3)))) {
+      status = 'due';
+    } else {
+      status = 'overdue';
+    }
+  } else {
+    status = 'paid';
+  }
+  print('Current Status: $status');
+
+  return status;
 }

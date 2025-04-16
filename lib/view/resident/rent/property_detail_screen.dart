@@ -1,4 +1,4 @@
-import 'package:ghp_app/constants/export.dart';
+import 'package:ghp_society_management/constants/export.dart';
 import 'package:intl/intl.dart';
 
 class BuyPropertyDetailScreen extends StatefulWidget {

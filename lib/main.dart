@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/firebase_services.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/firebase_services.dart';
 import 'dart:async';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -13,7 +13,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> requestNotificationPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings settings =
-      await messaging.requestPermission(alert: true, badge: true, sound: true);
+  await messaging.requestPermission(alert: true, badge: true, sound: true);
   if (settings.authorizationStatus == AuthorizationStatus.denied) {
     print("User Denied Notification Permission");
   } else {
@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(useMaterial3: true),
+            theme: ThemeData(useMaterial3: true,appBarTheme: AppBarTheme(backgroundColor: AppTheme.blueColor)),
             home: SplashScreen(),
             navigatorKey: navigatorKey,
             // navigatorObservers: [analyticsObserver],

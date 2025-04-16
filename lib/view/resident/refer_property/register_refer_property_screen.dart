@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/refer_property/create_refer_property/create_refer_property_cubit.dart';
-import 'package:ghp_app/controller/refer_property/get_refer_property/get_refer_property_cubit.dart';
-import 'package:ghp_app/controller/refer_property/refer_property_element/refer_property_element_cubit.dart';
-import 'package:ghp_app/controller/refer_property/update_refer_property/update_refer_property_cubit.dart';
-import 'package:ghp_app/model/refer_property_model.dart';
-import 'package:ghp_app/view/session_dialogue.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/refer_property/create_refer_property/create_refer_property_cubit.dart';
+import 'package:ghp_society_management/controller/refer_property/get_refer_property/get_refer_property_cubit.dart';
+import 'package:ghp_society_management/controller/refer_property/refer_property_element/refer_property_element_cubit.dart';
+import 'package:ghp_society_management/controller/refer_property/update_refer_property/update_refer_property_cubit.dart';
+import 'package:ghp_society_management/model/refer_property_model.dart';
+import 'package:ghp_society_management/view/session_dialogue.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterReferPropertyScreen extends StatefulWidget {

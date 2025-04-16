@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/local_storage.dart';
-import 'package:ghp_app/controller/sliders/sliders_cubit.dart';
-import 'package:ghp_app/view/silder_management/sliders.dart';
-import 'package:ghp_app/view/society/select_society_screen.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/local_storage.dart';
+import 'package:ghp_society_management/controller/sliders/sliders_cubit.dart';
+import 'package:ghp_society_management/view/silder_management/sliders.dart';
+import 'package:ghp_society_management/view/society/select_society_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OnboardingScreen extends StatefulWidget {

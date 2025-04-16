@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/visitors/chek_in_check_out/check_in/check_in_cubit.dart';
-import 'package:ghp_app/controller/visitors/chek_in_check_out/check_out/check_out_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitors_details/visitors_details_cubit.dart';
-import 'package:ghp_app/model/visitors_details_model.dart';
-import 'package:ghp_app/view/security_staff/dashboard/bottom_navigation.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/visitors/chek_in_check_out/check_in/check_in_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/chek_in_check_out/check_out/check_out_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitors_details/visitors_details_cubit.dart';
+import 'package:ghp_society_management/model/visitors_details_model.dart';
+import 'package:ghp_society_management/view/security_staff/dashboard/bottom_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 

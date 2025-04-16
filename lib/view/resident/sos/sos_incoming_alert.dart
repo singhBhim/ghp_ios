@@ -1,13 +1,12 @@
 import 'dart:async';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/sos_management/sos_acknowledge/sos_acknowledged_cubit.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_acknowledge/sos_acknowledged_cubit.dart';
 import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 import 'package:vibration/vibration.dart';
 

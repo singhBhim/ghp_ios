@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 
 part 'payment_service_state.dart';
 

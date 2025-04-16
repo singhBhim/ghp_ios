@@ -1,15 +1,15 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/notification/notification_listing/notification_list_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_element/parcel_element_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_pending_counts/parcel_counts_cubit.dart';
-import 'package:ghp_app/controller/parcel/receive_parcel/receive_parcel_cubit.dart';
-import 'package:ghp_app/controller/sos_management/sos_element/sos_element_cubit.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
-import 'package:ghp_app/view/resident/setting/setting_screen.dart';
-import 'package:ghp_app/view/security_staff/dashboard/home.dart';
-import 'package:ghp_app/view/security_staff/parcel_flow_security_staff/parcel_listing.dart';
-import 'package:ghp_app/view/security_staff/resident_checkouts/resident_checkouts.dart';
-import 'package:ghp_app/view/security_staff/scan_qr.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/notification/notification_listing/notification_list_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_element/parcel_element_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_pending_counts/parcel_counts_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/receive_parcel/receive_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_element/sos_element_cubit.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/resident/setting/setting_screen.dart';
+import 'package:ghp_society_management/view/security_staff/dashboard/home.dart';
+import 'package:ghp_society_management/view/security_staff/parcel_flow_security_staff/parcel_listing.dart';
+import 'package:ghp_society_management/view/security_staff/resident_checkouts/resident_checkouts.dart';
+import 'package:ghp_society_management/view/security_staff/scan_qr.dart';
 
 class SecurityGuardDashboard extends StatefulWidget {
   const SecurityGuardDashboard({super.key});

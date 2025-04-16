@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/view/resident/authentication/otp_screen.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/view/resident/authentication/otp_screen.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   final String societyId;

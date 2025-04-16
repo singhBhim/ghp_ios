@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/model/my_bill_details_model.dart';
-import 'package:ghp_app/network/api_manager.dart';
-import 'package:ghp_app/view/session_dialogue.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/model/my_bill_details_model.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
+import 'package:ghp_society_management/view/session_dialogue.dart';
 
 part 'bill_details_state.dart';
 

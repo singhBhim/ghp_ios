@@ -1,17 +1,17 @@
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/view/resident/daily_helps_member/daily_help_member_resident_side.dart';
-import 'package:ghp_app/view/resident/residents_checkouts/resident_checkouts_history_details.dart';
-import 'package:ghp_app/view/resident/resident_profile/edit_profile_screen.dart';
-import 'package:ghp_app/view/resident/resident_profile/resident_gatepass.dart';
-import 'package:ghp_app/view/resident/resident_profile/resident_profile.dart';
-import 'package:ghp_app/view/resident/setting/emergency_contact.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
-import 'package:ghp_app/view/resident/setting/notification_screen.dart';
-import 'package:ghp_app/view/resident/setting/privacy_policy.dart';
-import 'package:ghp_app/view/resident/setting/term_of_use.dart';
-import 'package:ghp_app/view/security_staff/daliy_help/daily_helps_members.dart';
-import 'package:ghp_app/view/society/select_society_screen.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/view/resident/daily_helps_member/daily_help_member_resident_side.dart';
+import 'package:ghp_society_management/view/resident/residents_checkouts/resident_checkouts_history_details.dart';
+import 'package:ghp_society_management/view/resident/resident_profile/edit_profile_screen.dart';
+import 'package:ghp_society_management/view/resident/resident_profile/resident_gatepass.dart';
+import 'package:ghp_society_management/view/resident/resident_profile/resident_profile.dart';
+import 'package:ghp_society_management/view/resident/setting/emergency_contact.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/resident/setting/notification_screen.dart';
+import 'package:ghp_society_management/view/resident/setting/privacy_policy.dart';
+import 'package:ghp_society_management/view/resident/setting/term_of_use.dart';
+import 'package:ghp_society_management/view/security_staff/daliy_help/daily_helps_members.dart';
+import 'package:ghp_society_management/view/society/select_society_screen.dart';
 
 class SettingScreen extends StatefulWidget {
   bool forStaffSide;
@@ -38,7 +38,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
   List<String> settingListTitle2 = [
     'View Profile',
-    'Daily Help',
     'Change Society',
     'Notifications Settings',
     'Emergency Contacts',
@@ -56,7 +55,6 @@ class _SettingScreenState extends State<SettingScreen> {
   void handleTap(BuildContext context, int index) {
     List<Widget> staffScreens = [
       ResidentProfileDetails(),
-      const DailyHelpListingHistory(),
       const SizedBox(),
       NotificationScreen(),
       const EmergencyContactScreen(),
@@ -76,9 +74,9 @@ class _SettingScreenState extends State<SettingScreen> {
     ];
 
     if (widget.forStaffSide) {
-      if (index == 2) {
+      if (index == 1) {
         logOutPermissionDialog(context, isLogout: false);
-      } else if (index == 5) {
+      } else if (index == 4) {
         logOutPermissionDialog(context);
       } else {
         Navigator.of(context)
@@ -126,243 +124,253 @@ class _SettingScreenState extends State<SettingScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppTheme.backgroundColor,
+        appBar: AppBar(
+            title: Text('Settings',
+                style: GoogleFonts.nunitoSans(
+                    textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600)))),
         body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                  padding: EdgeInsets.only(top: 15.h, left: 12.h, bottom: 20.h),
-                  child: Text('Settings',
-                      style: GoogleFonts.nunitoSans(
-                          textStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600)))),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        BlocBuilder<UserProfileCubit, UserProfileState>(
-                          builder: (context, state) {
-                            if (state is UserProfileLoaded) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7),
+                      border: Border.all(color: Colors.grey.withOpacity(0.15))),
+                  child: BlocBuilder<UserProfileCubit, UserProfileState>(
+                    builder: (context, state) {
+                      if (state is UserProfileLoaded) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
                                   children: [
+                                    state.userProfile.first.data!.user!.image !=
+                                            null
+                                        ? CircleAvatar(
+                                            radius: 32.h,
+                                            backgroundImage: NetworkImage(state
+                                                .userProfile
+                                                .first
+                                                .data!
+                                                .user!
+                                                .image
+                                                .toString()))
+                                        : const CircleAvatar(
+                                            radius: 32,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/default.jpg')),
+                                    const SizedBox(width: 10),
                                     Expanded(
-                                      child: Row(
-                                        children: [
-                                          state.userProfile.first.data!.user!
-                                                      .image !=
-                                                  null
-                                              ? CircleAvatar(
-                                                  radius: 32.h,
-                                                  backgroundImage: NetworkImage(
-                                                      state.userProfile.first
-                                                          .data!.user!.image
-                                                          .toString()))
-                                              : const CircleAvatar(
-                                                  radius: 32,
-                                                  backgroundImage: AssetImage(
-                                                      'assets/images/default.jpg')),
-                                          const SizedBox(width: 10),
-                                          Expanded(
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                      state.userProfile.first
-                                                          .data!.user!.name
-                                                          .toString(),
-                                                      style: GoogleFonts
-                                                          .nunitoSans(
-                                                        textStyle: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 16.sp,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      )),
-                                                  Text(
-                                                      "+91 ${state.userProfile.first.data!.user!.phone.toString()}",
-                                                      style: GoogleFonts.nunitoSans(
-                                                          textStyle: TextStyle(
-                                                              color: Colors
-                                                                  .black87,
-                                                              fontSize: 13.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500))),
-                                                  Text(
-                                                      widget.forStaffSide
-                                                          ? capitalizeWords(state
-                                                                  .userProfile
-                                                                  .first
-                                                                  .data!
-                                                                  .user!
-                                                                  .role
-                                                                  .toString())
-                                                              .toString()
-                                                              .replaceAll(
-                                                                  '_', ' ')
-                                                          : "${state.userProfile.first.data!.user!.blockName.toString()} - ${state.userProfile.first.data!.user!.aprtNo.toString()}",
-                                                      style: GoogleFonts.nunitoSans(
-                                                          textStyle: TextStyle(
-                                                              color: Colors
-                                                                  .black87,
-                                                              fontSize: 13.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500)))
-                                                ]),
-                                          ),
-                                        ],
-                                      ),
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                state.userProfile.first.data!
+                                                    .user!.name
+                                                    .toString(),
+                                                style: GoogleFonts.nunitoSans(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                )),
+                                            Text(
+                                                "+91 ${state.userProfile.first.data!.user!.phone.toString()}",
+                                                style: GoogleFonts.nunitoSans(
+                                                    textStyle: TextStyle(
+                                                        color: Colors.black87,
+                                                        fontSize: 13.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500))),
+                                            Text(
+                                                widget.forStaffSide
+                                                    ? capitalizeWords(state
+                                                            .userProfile
+                                                            .first
+                                                            .data!
+                                                            .user!
+                                                            .role
+                                                            .toString())
+                                                        .toString()
+                                                        .replaceAll('_', ' ')
+                                                    : "Tower/Floor: ${state.userProfile.first.data!.user!.blockName.toString()}/${state.userProfile.first.data!.user!.floorNumber.toString()}, Flat No: ${state.userProfile.first.data!.user!.aprtNo.toString()}",
+                                                style: GoogleFonts.nunitoSans(
+                                                    textStyle: TextStyle(
+                                                        color: Colors.black87,
+                                                        fontSize: 13.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500)))
+                                          ]),
                                     ),
-                                    widget.forStaffSide
-                                        ? const SizedBox(height: 100)
-                                        : GestureDetector(
-                                            onTap: () => Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: (builder) =>
-                                                        ResidentGatePass(
-                                                            residentModel: state
-                                                                .userProfile
-                                                                .first
-                                                                .data!
-                                                                .user!))),
-                                            child: SizedBox(
-                                                height: 100,
-                                                width: 80,
-                                                child: Image.asset(
-                                                    'assets/images/qr-image.png')),
-                                          )
                                   ],
                                 ),
-                              );
-                            } else if (state is UserProfileLoading) {
-                              return const CircularProgressIndicator();
-                            } else {
-                              return Text('Hello User',
-                                  style: GoogleFonts.nunitoSans(
-                                      textStyle: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600)));
-                            }
-                          },
-                        ),
-                        ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: widget.forStaffSide
-                                ? settingListTitle2.length
-                                : settingListTitle.length,
-                            shrinkWrap: true,
-                            itemBuilder: ((context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: GestureDetector(
-                                  onTap: () => handleTap(context, index),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                            color: Colors.grey[100]!)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Image.asset(
-                                                  ImageAssets.settingLogo,
-                                                  height: 40.h),
-                                              SizedBox(width: 10.w),
-                                              Expanded(
-                                                  child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                    Text(
-                                                        widget.forStaffSide
-                                                            ? settingListTitle2[
-                                                                index]
-                                                            : settingListTitle[
-                                                                index],
-                                                        style: GoogleFonts.nunitoSans(
-                                                            textStyle: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 14.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600)))
-                                                  ])),
-                                              SizedBox(width: 10.w),
-                                              index == 0
-                                                  ? MaterialButton(
-                                                      onPressed: () => Navigator
-                                                              .of(context)
-                                                          .push(MaterialPageRoute(
-                                                              builder: (builder) =>
-                                                                  const EditProfileScreen())),
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  30)),
-                                                      color:
-                                                          AppTheme.primaryColor,
-                                                      child: const Text(
-                                                          "Edit Profile",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white)))
-                                                  : Container(
-                                                      decoration: BoxDecoration(
-                                                          color: AppTheme
-                                                              .greyColor,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      1000.r)),
-                                                      child: const Padding(
-                                                        padding:
-                                                            EdgeInsets.all(8.0),
-                                                        child: Icon(
-                                                          Icons.navigate_next,
-                                                          color: Colors.black54,
-                                                        ),
-                                                      ),
-                                                    ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }))
-                      ],
-                    ),
+                              ),
+                              widget.forStaffSide
+                                  ? const SizedBox(height: 100)
+                                  : GestureDetector(
+                                      onTap: () => Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (builder) =>
+                                                  ResidentGatePass(
+                                                      residentModel: state
+                                                          .userProfile
+                                                          .first
+                                                          .data!
+                                                          .user!))),
+                                      child: SizedBox(
+                                          height: 100,
+                                          width: 80,
+                                          child: Image.asset(
+                                              'assets/images/qr-image.png')),
+                                    )
+                            ],
+                          ),
+                        );
+                      } else if (state is UserProfileLoading) {
+                        return const CircularProgressIndicator();
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 10),
+                          child: Row(
+                            children: [
+                              const CircleAvatar(
+                                  radius: 32,
+                                  backgroundImage:
+                                      AssetImage('assets/images/default.jpg')),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Hello User",
+                                          style: GoogleFonts.nunitoSans(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )),
+                                      Text("+91 *********",
+                                          style: GoogleFonts.nunitoSans(
+                                              textStyle: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontSize: 13.sp,
+                                                  fontWeight:
+                                                      FontWeight.w500))),
+                                      Text("Not Define",
+                                          style: GoogleFonts.nunitoSans(
+                                              textStyle: TextStyle(
+                                                  color: Colors.black87,
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w500)))
+                                    ]),
+                              ),
+                              SizedBox(
+                                  height: 100,
+                                  width: 80,
+                                  child:
+                                      Image.asset('assets/images/qr-image.png'))
+                            ],
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ),
-              ),
-            ],
+                ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: widget.forStaffSide
+                        ? settingListTitle2.length
+                        : settingListTitle.length,
+                    shrinkWrap: true,
+                    itemBuilder: ((context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        child: GestureDetector(
+                          onTap: () => handleTap(context, index),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.grey[100]!)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Image.asset(ImageAssets.settingLogo,
+                                          height: 40.h),
+                                      SizedBox(width: 10.w),
+                                      Expanded(
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+
+                                              children: [
+                                            Text(
+                                                widget.forStaffSide
+                                                    ? settingListTitle2[index]
+                                                    : settingListTitle[index],
+                                                style: GoogleFonts.nunitoSans(
+                                                    textStyle: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14.sp,
+                                                        fontWeight:
+                                                            FontWeight.w600)))
+                                          ])),
+                                      SizedBox(width: 10.w),
+                                      index == 0
+                                          ? MaterialButton(
+                                              onPressed: () => Navigator.of(
+                                                      context)
+                                                  .push(MaterialPageRoute(
+                                                      builder: (builder) =>
+                                                          const EditProfileScreen())),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
+                                              color: AppTheme.primaryColor,
+                                              child: const Text("Edit Profile",
+                                                  style: TextStyle(
+                                                      color: Colors.white)))
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                  color: AppTheme.greyColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          1000.r)),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Icon(
+                                                  Icons.navigate_next,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }))
+              ],
+            ),
           ),
         ),
       ),

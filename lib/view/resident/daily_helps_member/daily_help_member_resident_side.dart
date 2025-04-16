@@ -1,8 +1,13 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/daliy_helps_member/daily_help_listing/daily_help_cubit.dart';
-import 'package:ghp_app/view/security_staff/daliy_help/daily_help_details.dart';
-import 'package:ghp_app/view/resident/daily_helps_member/daily_help_gatepass.dart';
-import 'package:ghp_app/view/security_staff/scan_qr.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/daliy_helps_member/daily_help_listing/daily_help_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
+import 'package:ghp_society_management/model/daily_help_member_checkout_details_modal.dart';
+import 'package:ghp_society_management/model/daily_help_members_modal.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/security_staff/daliy_help/daily_help_details.dart';
+import 'package:ghp_society_management/view/resident/daily_helps_member/daily_help_gatepass.dart';
+import 'package:ghp_society_management/view/security_staff/scan_qr.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 
 class DailyHelpListingHistoryResidentSide extends StatefulWidget {
@@ -30,6 +35,59 @@ class DailyHelpListingHistoryResidentSideState
   Future onRefresh() async {
     _dailyHelpListingCubit.fetchDailyHelpsApi();
   }
+
+
+
+  /// verify the user
+  void verifyTheUser(
+      BuildContext buildContext, DailyHelpUser userInfo, List<Log> logsData,
+      {bool forResidentSide = false}) {
+    Map<String, String> checkInData = {
+      "user_id": userInfo.id.toString(),
+      "type": "daily_help"
+    };
+
+    if (!forResidentSide) {
+      var lastCheckInDetail = userInfo.lastCheckinDetail;
+
+      if (lastCheckInDetail == null ||
+          lastCheckInDetail.status == 'checked_out') {
+        buildContext
+            .read<ResidentCheckInCubit>()
+            .checkInAPI(statusBody: checkInData);
+      } else if (lastCheckInDetail.status == 'checked_in') {
+        buildContext
+            .read<ResidentCheckOutCubit>()
+            .checkOutApi(statusBody: checkInData);
+      }
+      return; // No need to check further
+    } else {
+      // For non-staff side (logsData processing)
+      if (logsData.isNotEmpty) {
+        var lastLog = logsData.first.memberLogs!.isNotEmpty
+            ? logsData.first.memberLogs!.first
+            : null;
+        print('-------------ooooooooooo$lastLog');
+
+        if (lastLog != null) {
+          if (lastLog.checkinAt == null || lastLog.status == 'out') {
+            buildContext
+                .read<ResidentCheckInCubit>()
+                .checkInAPI(statusBody: checkInData);
+          } else if (lastLog.status == 'in') {
+            buildContext
+                .read<ResidentCheckOutCubit>()
+                .checkOutApi(statusBody: checkInData);
+          }
+          return; // Exit after first valid log check
+        }
+      }
+    }
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -302,19 +360,11 @@ class DailyHelpListingHistoryResidentSideState
                                                     ]),
                                                 SizedBox(width: 10.w)
                                               ]),
-                                              GestureDetector(
-                                                  onTap: () => Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (_) =>
-                                                              QrCodeScanner(
-                                                                  fromResidentSide:
-                                                                      true))),
-                                                  child: SizedBox(
-                                                      height: 60,
-                                                      width: 70,
-                                                      child: Image.asset(
-                                                          'assets/images/qr-image.png'))),
+                                             Padding(
+                                               padding: const EdgeInsets.all(8.0),
+                                               child: menuForDailyHelpMember(context: context, dailyHelpData: newHistoryLogs[index]),
+                                             ),
+
                                             ],
                                           ),
                                         ),
@@ -372,4 +422,85 @@ class DailyHelpListingHistoryResidentSideState
       ),
     );
   }
+
+
+}
+
+List<Map<String, dynamic>> optionList3 = [
+  {"icon": Icons.visibility, "menu": "View Details", "menu_id": 0},
+  {"icon": Icons.qr_code, "menu": "Scan By QR COde", "menu_id": 1},
+  {"icon": Icons.perm_scan_wifi, "menu": "Scan BY Manual", "menu_id": 2},
+];
+Widget menuForDailyHelpMember(
+    {required BuildContext context, required DailyHelp dailyHelpData}) {
+  return CircleAvatar(
+    backgroundColor: Colors.deepPurpleAccent,
+    child: CircleAvatar(
+      backgroundColor: Colors.white,
+      child: PopupMenuButton(
+        elevation: 10,
+        padding: EdgeInsets.zero,
+        color: Colors.white,
+        surfaceTintColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        icon: const Icon(Icons.more_horiz_rounded,
+            color: Colors.deepPurpleAccent, size: 18.0),
+        offset: const Offset(0, 50),
+        itemBuilder: (BuildContext bc) {
+          return optionList3
+              .map(
+                (selectedOption) => PopupMenuItem(
+                  padding: EdgeInsets.zero,
+                  value: selectedOption,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.w, right: 30),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(selectedOption['icon']),
+                            const SizedBox(width: 10),
+                            Text(selectedOption['menu'] ?? "",
+                                style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+              .toList();
+        },
+        onSelected: (value) async {
+          if (value['menu_id'] == 0) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => DailyHelpProfileDetails(dailyHelpId: {
+                          "daily_help_id": dailyHelpData.id.toString()
+                        },fromResidentPage: true)));
+          } else if (value['menu_id'] == 1) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => QrCodeScanner(fromResidentSide: true)));
+          } else if (value['menu_id'] == 2) {
+            Navigator.pop(context);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => DailyHelpProfileDetails(
+                        dailyHelpId: {'daily_help_id': dailyHelpData.id.toString()},
+                        forQRPage: true,
+                        fromResidentPage:
+                        true)));
+          }
+        },
+      ),
+    ),
+  );
 }

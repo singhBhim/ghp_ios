@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/controller/sliders/sliders_cubit.dart';
-import 'package:ghp_app/controller/user_profile/user_profile_cubit.dart';
-import 'package:ghp_app/model/sliders_model.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/controller/sliders/sliders_cubit.dart';
+import 'package:ghp_society_management/controller/user_profile/user_profile_cubit.dart';
+import 'package:ghp_society_management/model/sliders_model.dart';
 
 class SlidersManagement extends StatefulWidget {
   final bool forOnBoarding;
@@ -124,16 +124,18 @@ class _SlidersManagementState extends State<SlidersManagement> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
                         slidersList.length,
-                        (index) => Container(
+                        (index) => AnimatedContainer(
+                          duration: const Duration(milliseconds: 500),
                           margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          width: _currentPage == index ? 12.0 : 8.0,
-                          height: _currentPage == index ? 12.0 : 8.0,
+                          width: _currentPage == index ? 20.0 : 8.0,
+                          height: _currentPage == index ? 8.0 : 8.0,
                           decoration: BoxDecoration(
-                            color: _currentPage == index
-                                ? AppTheme.primaryColor
-                                : const Color(0xFF34306F),
-                            shape: BoxShape.circle,
-                          ),
+                              color: _currentPage == index
+                                  ? AppTheme.blueColor
+                                  : const Color(0xFF34306F),
+                              borderRadius: BorderRadius.circular(30)
+                              // shape: BoxShape.circle,
+                              ),
                         ),
                       ),
                     ),
@@ -228,16 +230,18 @@ class _SlidersManagementState extends State<SlidersManagement> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
                         slidersList.length,
-                        (index) => Container(
+                        (index) => AnimatedContainer(
+                          duration: const Duration(milliseconds: 500),
                           margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          width: _currentPage == index ? 12.0 : 8.0,
-                          height: _currentPage == index ? 12.0 : 8.0,
+                          width: _currentPage == index ? 20.0 : 8.0,
+                          height: _currentPage == index ? 8.0 : 8.0,
                           decoration: BoxDecoration(
-                            color: _currentPage == index
-                                ? AppTheme.primaryColor
-                                : const Color(0xFF34306F),
-                            shape: BoxShape.circle,
-                          ),
+                              color: _currentPage == index
+                                  ? AppTheme.blueColor
+                                  : const Color(0xFF34306F),
+                              borderRadius: BorderRadius.circular(30)
+                              // shape: BoxShape.circle,
+                              ),
                         ),
                       ),
                     ),

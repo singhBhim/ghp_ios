@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/download_share_gatepass.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/download_file/download_document_cubit.dart';
-import 'package:ghp_app/model/user_profile_model.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/download_share_gatepass.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/download_file/download_document_cubit.dart';
+import 'package:ghp_society_management/model/user_profile_model.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -182,49 +182,52 @@ class ResidentGatePassState extends State<ResidentGatePass> {
                                             backgroundImage: const AssetImage(
                                                 'assets/images/default.jpg')),
                                     const SizedBox(width: 10),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                            capitalizeWords(widget
-                                                .residentModel!.name
-                                                .toString()),
-                                            style: GoogleFonts.nunitoSans(
-                                                textStyle: TextStyle(
-                                                    color: Colors.black87,
-                                                    fontSize: 16.sp,
-                                                    fontWeight:
-                                                        FontWeight.w600))),
-                                        Text(
-                                            "+91 ${widget.residentModel!.phone.toString()}",
-                                            style: GoogleFonts.nunitoSans(
-                                                textStyle: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.w600))),
-                                        Text(
-                                            "Tower info : ${widget.residentModel!.blockName.toString()} - ${widget.residentModel!.aprtNo.toString()}",
-                                            style: GoogleFonts.nunitoSans(
-                                                textStyle: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.w600)))
-                                      ],
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              capitalizeWords(widget
+                                                  .residentModel!.name
+                                                  .toString()),
+                                              style: GoogleFonts.nunitoSans(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.black87,
+                                                      fontSize: 16.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600))),
+                                          Text(
+                                              "+91 ${widget.residentModel!.phone.toString()}",
+                                              style: GoogleFonts.nunitoSans(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.black45,
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600))),
+                                          Text(
+                                              "Tower/Floor: ${widget.residentModel!.blockName.toString()}/${widget.residentModel!.floorNumber.toString()}, Flat No: ${widget.residentModel!.aprtNo.toString()}",
+                                              style: GoogleFonts.nunitoSans(
+                                                  color: Colors.black,
+                                                  fontSize: 12))
+                                        ],
+                                      ),
                                     )
                                   ]),
                             ),
                             const SizedBox(height: 30),
-                            Text(
-                                'Show the QR code for the security \nguard to scan',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.nunitoSans(
-                                    textStyle: TextStyle(
-                                        color: Colors.deepPurpleAccent,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w500))),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30),
+                              child: Text(
+                                  'Show the QR code to the security guard for scanning',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.nunitoSans(
+                                      textStyle: TextStyle(
+                                          color: Colors.deepPurpleAccent,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500))),
+                            ),
                             const Spacer(),
                             RepaintBoundary(
                               key: _globalKey, // Key for capturing the QR code

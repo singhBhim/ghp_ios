@@ -1,8 +1,10 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/documents/documents_count/document_count_cubit.dart';
-import 'package:ghp_app/controller/documents/send_request/send_request_docs_cubit.dart';
-import 'package:ghp_app/view/resident/documents/request_by_me.dart';
-import 'package:ghp_app/view/resident/documents/request_my_management.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/documents/documents_count/document_count_cubit.dart';
+import 'package:ghp_society_management/controller/documents/send_request/send_request_docs_cubit.dart';
+import 'package:ghp_society_management/firebase_services.dart';
+import 'package:ghp_society_management/view/resident/documents/request_by_me.dart';
+import 'package:ghp_society_management/view/resident/documents/request_my_management.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
 
 class DocumentsScreen extends StatefulWidget {
   const DocumentsScreen({super.key});
@@ -17,6 +19,9 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
   void initState() {
     super.initState();
     documentCountCubit = DocumentCountCubit()..documentCountType();
+    // Future.delayed(const Duration(seconds: 2), () {
+    //   DialogService().startDialogCheck(navigatorKey.currentContext!);
+    // });
   }
 
   @override
@@ -41,108 +46,87 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
         ),
       ],
       child: Scaffold(
-        backgroundColor: AppTheme.backgroundColor,
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 12.h),
-                child: Text(
-                  'Documents',
-                  style: GoogleFonts.nunitoSans(
+        appBar: AppBar(
+            title: Text('Documents',
+                style: GoogleFonts.nunitoSans(
                     textStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600)))),
+        body: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: () async {
+              documentCountCubit.documentCountType();
+            },
+            child: BlocBuilder<DocumentCountCubit, DocumentCountState>(
+              bloc: documentCountCubit,
+              builder: (context, state) {
+                if (state is DocumentCountLoaded) {
+                  return ListView(
+                    padding: const EdgeInsets.all(10),
+                    children: [
+                      _buildDocumentTile(
+                        title: "Request By Management",
+                        count: state.incomingRequestCount,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const IncomingDocumentsScreen()),
+                          );
+                        },
+                      ),
+                      _buildDocumentTile(
+                        title: "Request By Me",
+                        count: state.outGoingRequestCount,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const OutgoingDocumentsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                } else if (state is DocumentCountLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(
+                      backgroundColor: Colors.deepPurpleAccent,
                     ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(20))),
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      documentCountCubit.documentCountType();
-                    },
-                    child: BlocBuilder<DocumentCountCubit, DocumentCountState>(
-                      bloc: documentCountCubit,
-                      builder: (context, state) {
-                        if (state is DocumentCountLoaded) {
-                          return ListView(
-                            padding: const EdgeInsets.all(10),
-                            children: [
-                              _buildDocumentTile(
-                                title: "Request By Management",
-                                count: state.incomingRequestCount,
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const IncomingDocumentsScreen()),
-                                  );
-                                },
-                              ),
-                              _buildDocumentTile(
-                                title: "Request By Me",
-                                count: state.outGoingRequestCount,
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const OutgoingDocumentsScreen(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          );
-                        } else if (state is DocumentCountLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator.adaptive(
-                              backgroundColor: Colors.deepPurpleAccent,
-                            ),
-                          );
-                        } else if (state is DocumentCountFailed) {
-                          return Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(25),
-                              child: Text(
-                                state.errorMsg,
-                                style: TextStyle(
-                                  color: state is DocumentCountInternetError
-                                      ? Colors.red
-                                      : Colors.deepPurpleAccent,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        } else if (state is DocumentCountInternetError) {
-                          return Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(25),
-                              child: Text(
-                                state.errorMsg,
-                                style: const TextStyle(color: Colors.red),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        } else {
-                          return const SizedBox();
-                        }
-                      },
+                  );
+                } else if (state is DocumentCountFailed) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(25),
+                      child: Text(
+                        state.errorMsg,
+                        style: TextStyle(
+                          color: state is DocumentCountInternetError
+                              ? Colors.red
+                              : Colors.deepPurpleAccent,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            ],
+                  );
+                } else if (state is DocumentCountInternetError) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(25),
+                      child: Text(
+                        state.errorMsg,
+                        style: const TextStyle(color: Colors.red),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
           ),
         ),
       ),

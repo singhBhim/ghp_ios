@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/model/chat_model.dart';
-import 'package:ghp_app/model/group_model.dart';
-import 'package:ghp_app/model/user_model.dart';
-import 'package:ghp_app/view/chat/messaging_screen.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/model/chat_model.dart';
+import 'package:ghp_society_management/model/group_model.dart';
+import 'package:ghp_society_management/model/user_model.dart';
+import 'package:ghp_society_management/view/chat/messaging_screen.dart';
 
 import 'package:uuid/uuid.dart';
 

@@ -1,8 +1,8 @@
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/parcel/parcel_complaint/parcel_complaint_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_details/parcel_details_cubit.dart';
-import 'package:ghp_app/model/parcel_details_model.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_complaint/parcel_complaint_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_details/parcel_details_cubit.dart';
+import 'package:ghp_society_management/model/parcel_details_model.dart';
 import 'package:intl/intl.dart';
 
 class ParcelDetailsSecurityStaffSide extends StatefulWidget {

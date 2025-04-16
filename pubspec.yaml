@@ -1,4 +1,4 @@
-name: ghp_app
+name: ghp_society_management
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -76,6 +76,7 @@ dependencies:
   cloud_firestore: ^5.5.1
   firebase_messaging: ^15.2.4
   mobile_scanner: ^6.0.7
+  razorpay_flutter: ^1.4.0
 
 
 

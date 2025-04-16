@@ -1,48 +1,48 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/daliy_helps_member/daily_help_listing/daily_help_cubit.dart';
-import 'package:ghp_app/controller/daliy_helps_member/daily_helps_checkouts_History_details/daily_help_checkouts_history_cubit.dart';
-import 'package:ghp_app/controller/documents/delete_request/delete_request_cubit.dart';
-import 'package:ghp_app/controller/documents/documents_count/document_count_cubit.dart';
-import 'package:ghp_app/controller/documents/fetch_documents/fetch_documents_cubit.dart';
-import 'package:ghp_app/controller/documents/incoming_documents/incoming_documents_cubit.dart';
-import 'package:ghp_app/controller/documents/outgoing_documents/outgoing_documents_cubit.dart';
-import 'package:ghp_app/controller/documents/send_request/send_request_docs_cubit.dart';
-import 'package:ghp_app/controller/download_file/download_document_cubit.dart';
-import 'package:ghp_app/controller/members/search_member/search_member_cubit.dart';
-import 'package:ghp_app/controller/notification/notification_listing/notification_list_cubit.dart';
-import 'package:ghp_app/controller/parcel/checkout_parcel/checkout_parcel_cubit.dart';
-import 'package:ghp_app/controller/parcel/create_parcel/create_parcel_cubit.dart';
-import 'package:ghp_app/controller/parcel/delete_parcel/delete_parcel_cubit.dart';
-import 'package:ghp_app/controller/parcel/deliver_parcel/deliver_parcel_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_complaint/parcel_complaint_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_details/parcel_details_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_element/parcel_element_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_listing/parcel_listing_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_pending_counts/parcel_counts_cubit.dart';
-import 'package:ghp_app/controller/parcel/receive_parcel/receive_parcel_cubit.dart';
-import 'package:ghp_app/controller/refer_property/create_refer_property/create_refer_property_cubit.dart';
-import 'package:ghp_app/controller/refer_property/delete_refer_property/delete_refer_property_cubit.dart';
-import 'package:ghp_app/controller/refer_property/get_refer_property/get_refer_property_cubit.dart';
-import 'package:ghp_app/controller/refer_property/refer_property_element/refer_property_element_cubit.dart';
-import 'package:ghp_app/controller/refer_property/update_refer_property/update_refer_property_cubit.dart';
-import 'package:ghp_app/controller/rent_or_sell_property/delete_property/delete_property_cubit.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_checkouts/staff_side_checkouts_history_cubit.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_checkouts_history_details/resident_checkouts_details_cubit.dart';
-import 'package:ghp_app/controller/sos_management/sos_acknowledge/sos_acknowledged_cubit.dart';
-import 'package:ghp_app/controller/sos_management/sos_category/sos_category_cubit.dart';
-import 'package:ghp_app/controller/sos_management/sos_element/sos_element_cubit.dart';
-import 'package:ghp_app/controller/sos_management/submit_sos/submit_sos_cubit.dart';
-import 'package:ghp_app/controller/visitors/chek_in_check_out/check_in/check_in_cubit.dart';
-import 'package:ghp_app/controller/visitors/chek_in_check_out/check_out/check_out_cubit.dart';
-import 'package:ghp_app/controller/visitors/chek_in_check_out/visitors_scan/scan_visitors_cubit.dart';
-import 'package:ghp_app/controller/visitors/delete_visitors/delete_visitor_cubit.dart';
-import 'package:ghp_app/controller/visitors/incoming_request/incoming_request_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/accept_request/accept_request_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/not_responding/not_responde_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/resend_request/resend_request_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitors_feedback/visitors_feedback_cubit.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/daliy_helps_member/daily_help_listing/daily_help_cubit.dart';
+import 'package:ghp_society_management/controller/daliy_helps_member/daily_helps_checkouts_History_details/daily_help_checkouts_history_cubit.dart';
+import 'package:ghp_society_management/controller/documents/delete_request/delete_request_cubit.dart';
+import 'package:ghp_society_management/controller/documents/documents_count/document_count_cubit.dart';
+import 'package:ghp_society_management/controller/documents/fetch_documents/fetch_documents_cubit.dart';
+import 'package:ghp_society_management/controller/documents/incoming_documents/incoming_documents_cubit.dart';
+import 'package:ghp_society_management/controller/documents/outgoing_documents/outgoing_documents_cubit.dart';
+import 'package:ghp_society_management/controller/documents/send_request/send_request_docs_cubit.dart';
+import 'package:ghp_society_management/controller/download_file/download_document_cubit.dart';
+import 'package:ghp_society_management/controller/members/search_member/search_member_cubit.dart';
+import 'package:ghp_society_management/controller/notification/notification_listing/notification_list_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/checkout_parcel/checkout_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/create_parcel/create_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/delete_parcel/delete_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/deliver_parcel/deliver_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_complaint/parcel_complaint_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_details/parcel_details_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_element/parcel_element_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_listing/parcel_listing_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_pending_counts/parcel_counts_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/receive_parcel/receive_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/refer_property/create_refer_property/create_refer_property_cubit.dart';
+import 'package:ghp_society_management/controller/refer_property/delete_refer_property/delete_refer_property_cubit.dart';
+import 'package:ghp_society_management/controller/refer_property/get_refer_property/get_refer_property_cubit.dart';
+import 'package:ghp_society_management/controller/refer_property/refer_property_element/refer_property_element_cubit.dart';
+import 'package:ghp_society_management/controller/refer_property/update_refer_property/update_refer_property_cubit.dart';
+import 'package:ghp_society_management/controller/rent_or_sell_property/delete_property/delete_property_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_checkouts/staff_side_checkouts_history_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_checkouts_history_details/resident_checkouts_details_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_acknowledge/sos_acknowledged_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_category/sos_category_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_element/sos_element_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/submit_sos/submit_sos_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/chek_in_check_out/check_in/check_in_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/chek_in_check_out/check_out/check_out_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/chek_in_check_out/visitors_scan/scan_visitors_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/delete_visitors/delete_visitor_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/incoming_request/incoming_request_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/accept_request/accept_request_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/not_responding/not_responde_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/resend_request/resend_request_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitors_feedback/visitors_feedback_cubit.dart';
 
 import '../controller/sos_management/sos_cancel/sos_cancel_cubit.dart';
 import '../controller/sos_management/sos_history/sos_history_cubit.dart';
@@ -115,7 +115,7 @@ class BlocProviders {
         create: (context) => CancelComplaintsCubit()),
     BlocProvider<CreateComplaintsCubit>(
         create: (context) => CreateComplaintsCubit()),
-    // BlocProvider<GroupCubit>(create: (context) => GroupCubit()),
+    BlocProvider<GroupCubit>(create: (context) => GroupCubit()),
     BlocProvider<GetStaffCubit>(create: (context) => GetStaffCubit()),
     BlocProvider<SlidersCubit>(create: (context) => SlidersCubit()),
     BlocProvider<TermsConditionsCubit>(
@@ -197,7 +197,5 @@ class BlocProviders {
         create: (context) => DailyHelpListingCubit()),
     BlocProvider<DailyHelpHistoryDetailsCubit>(
         create: (context) => DailyHelpHistoryDetailsCubit()),
-    BlocProvider<GroupCubit>(
-        create: (context) => GroupCubit()),
   ];
 }

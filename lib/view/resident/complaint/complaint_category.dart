@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/complants/cancel_complaints_cubit/cancel_complaints_cubit.dart';
-import 'package:ghp_app/controller/complants/get_complaints/get_complaints_cubit.dart';
-import 'package:ghp_app/model/complaint_service_provider_model.dart';
-import 'package:ghp_app/view/resident/complaint/register_complain_screen.dart';
-import 'package:ghp_app/view/session_dialogue.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/complants/cancel_complaints_cubit/cancel_complaints_cubit.dart';
+import 'package:ghp_society_management/controller/complants/get_complaints/get_complaints_cubit.dart';
+import 'package:ghp_society_management/controller/user_profile/user_profile_cubit.dart';
+import 'package:ghp_society_management/model/complaint_service_provider_model.dart';
+import 'package:ghp_society_management/model/user_profile_model.dart';
+import 'package:ghp_society_management/view/resident/bills/my_bills.dart';
+import 'package:ghp_society_management/view/resident/complaint/register_complain_screen.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/session_dialogue.dart';
 
 class ComplaintCategoryPage extends StatefulWidget {
   const ComplaintCategoryPage({super.key});
@@ -20,11 +24,14 @@ class ComplaintCategoryPage extends StatefulWidget {
 
 class _ComplaintCategoryPageState extends State<ComplaintCategoryPage> {
   late ComplaintsCubit _complaintsCubit;
+  late UserProfileCubit _userProfileCubit;
 
   @override
   void initState() {
     super.initState();
     _complaintsCubit = ComplaintsCubit()..fetchComplaintsAPI();
+    _userProfileCubit = UserProfileCubit();
+    _userProfileCubit.fetchUserProfile();
   }
 
   int selectedIndex = -1;
@@ -75,59 +82,118 @@ class _ComplaintCategoryPageState extends State<ComplaintCategoryPage> {
                 if (state is ComplaintsLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is ComplaintsLoaded) {
-                  return ListView.builder(
-                      key: Key(selectedIndex.toString()),
-                      shrinkWrap: true,
-                      itemCount: state.complaints.length,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        List<ComplaintCategory> list = state.complaints;
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 8),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(
-                                      color: Colors.grey.withOpacity(0.2))),
-                              child: ListTile(
-                                contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                leading: Image.asset(
-                                    ImageAssets.noticeBoardImage,
-                                    height: 40.h),
-                                title: Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child: Text(list[index].name.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500))),
-                                trailing: GestureDetector(
-                                  onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              RegisterComplaintScreen(
-                                                  categoryId: list[index]
-                                                      .id
-                                                      .toString()))),
+                  return BlocBuilder<UserProfileCubit, UserProfileState>(
+                      bloc: _userProfileCubit,
+                      builder: (context, profileState) {
+                        if (profileState is UserProfileLoaded) {
+                          Future.delayed(const Duration(milliseconds: 5), () {
+                            List<UnpaidBill> billData = profileState
+                                .userProfile.first.data!.unpaidBills!;
+                            if (billData.isNotEmpty) {
+                              checkPaymentReminder(
+                                  context: context,
+                                  myUnpaidBill: profileState.userProfile.first
+                                      .data!.unpaidBills!.first);
+                            }
+                          });
+                        }
+                        return ListView.builder(
+                            key: Key(selectedIndex.toString()),
+                            shrinkWrap: true,
+                            itemCount: state.complaints.length,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              List<ComplaintCategory> list = state.complaints;
+                              return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 8),
                                   child: Container(
                                       decoration: BoxDecoration(
-                                          color: Colors.deepPurpleAccent
-                                              .withOpacity(0.8),
                                           borderRadius:
-                                              BorderRadius.circular(30)),
-                                      child: const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 12, vertical: 8),
-                                          child: Text('Request',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12)))),
-                                ),
-                              )),
-                        );
+                                              BorderRadius.circular(4),
+                                          border: Border.all(
+                                              color: Colors.grey
+                                                  .withOpacity(0.2))),
+                                      child: ListTile(
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 5),
+                                          leading: Image.asset(
+                                              ImageAssets.noticeBoardImage,
+                                              height: 40.h),
+                                          title: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 8),
+                                              child: Text(
+                                                  list[index].name.toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w500))),
+                                          trailing: GestureDetector(
+                                            onTap: () {
+                                              if (profileState
+                                                  is UserProfileLoaded) {
+                                                List<UnpaidBill> billData =
+                                                    profileState
+                                                        .userProfile
+                                                        .first
+                                                        .data!
+                                                        .unpaidBills!;
+
+
+                                                if(billData.isNotEmpty){
+                                                  String status = checkBillStatus(
+                                                      context, billData.first);
+
+                                                  if (status == 'overdue') {
+                                                    overDueBillAlertDialog(
+                                                        context, billData.first);
+                                                  } else {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (_) =>
+                                                                RegisterComplaintScreen(
+                                                                    categoryId: list[
+                                                                    index]
+                                                                        .id
+                                                                        .toString())));
+                                                  }
+                                                }else{
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              RegisterComplaintScreen(
+                                                                  categoryId: list[
+                                                                  index]
+                                                                      .id
+                                                                      .toString())));
+                                                }
+
+
+                                              }
+                                            },
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors
+                                                        .deepPurpleAccent
+                                                        .withOpacity(0.8),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30)),
+                                                child: const Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 12,
+                                                            vertical: 8),
+                                                    child: Text('Request',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12)))),
+                                          ))));
+                            });
                       });
                 } else if (state is ComplaintsFailed) {
                   return Center(

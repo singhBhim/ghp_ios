@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/view/resident/rent/buy_rent_property_screen.dart';
-import 'package:ghp_app/view/resident/rent/create_rent_property_screen.dart';
-import 'package:ghp_app/view/resident/rent/create_sell_property_screen.dart';
-import 'package:ghp_app/view/resident/rent/manage_existing_property_screen.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/view/resident/rent/buy_rent_property_screen.dart';
+import 'package:ghp_society_management/view/resident/rent/create_rent_property_screen.dart';
+import 'package:ghp_society_management/view/resident/rent/create_sell_property_screen.dart';
+import 'package:ghp_society_management/view/resident/rent/manage_existing_property_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RentScreen extends StatefulWidget {

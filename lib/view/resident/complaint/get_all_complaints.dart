@@ -3,19 +3,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/complants/cancel_complaints_cubit/cancel_complaints_cubit.dart';
-import 'package:ghp_app/controller/complants/get_all_complaints/get_all_complaints_cubit.dart';
-import 'package:ghp_app/controller/done_service/done_service_cubit.dart';
-import 'package:ghp_app/controller/start_service/start_service_cubit.dart';
-import 'package:ghp_app/model/complaints_model.dart';
-import 'package:ghp_app/model/user_model.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
-import 'package:ghp_app/view/session_dialogue.dart';
-import 'package:ghp_app/view/staff/home_screen.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/complants/cancel_complaints_cubit/cancel_complaints_cubit.dart';
+import 'package:ghp_society_management/controller/complants/get_all_complaints/get_all_complaints_cubit.dart';
+import 'package:ghp_society_management/controller/done_service/done_service_cubit.dart';
+import 'package:ghp_society_management/controller/start_service/start_service_cubit.dart';
+import 'package:ghp_society_management/model/complaints_model.dart';
+import 'package:ghp_society_management/model/user_model.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/session_dialogue.dart';
+import 'package:ghp_society_management/view/staff/home_screen.dart';
 import 'package:intl/intl.dart';
 
 class GetAllComplaintScreen extends StatefulWidget {
@@ -197,6 +197,7 @@ class GetAllComplaintScreenState extends State<GetAllComplaintScreen> {
       {required BuildContext context,
       required int index,
       required List<ComplaintList> lst}) {
+    UserModel? userList;
     date() {
       if (lst[index].assignedAt != null) {
         DateTime parsedDate = DateTime.parse(lst[index].assignedAt.toString());

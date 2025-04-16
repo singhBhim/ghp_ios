@@ -2,11 +2,11 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/documents/send_request/send_request_docs_cubit.dart';
-import 'package:ghp_app/controller/documents_element/document_elements_cubit.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/documents/send_request/send_request_docs_cubit.dart';
+import 'package:ghp_society_management/controller/documents_element/document_elements_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SendDocumentsRequestScree extends StatefulWidget {

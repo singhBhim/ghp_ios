@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ghp_app/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 

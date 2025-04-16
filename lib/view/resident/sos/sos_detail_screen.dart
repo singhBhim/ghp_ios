@@ -4,18 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/society_contacts/society_contacts_cubit.dart';
-import 'package:ghp_app/controller/sos_management/sos_cancel/sos_cancel_cubit.dart';
-import 'package:ghp_app/controller/sos_management/sos_element/sos_element_cubit.dart';
-import 'package:ghp_app/controller/sos_management/submit_sos/submit_sos_cubit.dart';
-import 'package:ghp_app/model/sos_category_model.dart';
-import 'package:ghp_app/view/resident/sos/sos_timer_countdown.dart';
-import 'package:ghp_app/view/session_dialogue.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/society_contacts/society_contacts_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_cancel/sos_cancel_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_element/sos_element_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/submit_sos/submit_sos_cubit.dart';
+import 'package:ghp_society_management/model/sos_category_model.dart';
+import 'package:ghp_society_management/view/resident/sos/sos_timer_countdown.dart';
+import 'package:ghp_society_management/view/session_dialogue.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SosDetailScreen extends StatefulWidget {
@@ -298,68 +297,26 @@ class _SosDetailScreenState extends State<SosDetailScreen> {
                                         fontWeight: FontWeight.w500))),
                             GestureDetector(
                               onTap: () async {
-                                // 👉 Show Loader Dialog
                                 showLoadingDialog(context, (ctx) {
                                   dialogueContext = ctx;
                                 });
-
-                                try {
-                                  LocationPermission permission =
-                                      await Geolocator.checkPermission();
-
-                                  if (permission == LocationPermission.denied) {
-                                    permission =
-                                        await Geolocator.requestPermission();
-
-                                    if (permission ==
-                                        LocationPermission.denied) {
-                                      print("❌ Location permission denied");
-                                      Navigator.of(dialogueContext)
-                                          .pop(); // 👉 Hide Loader
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                "Location permission is required!")),
-                                      );
-                                      return;
-                                    }
-                                  }
-
-                                  if (permission ==
-                                      LocationPermission.deniedForever) {
-                                    print(
-                                        "❌ Location permission permanently denied");
-                                    Navigator.of(dialogueContext)
-                                        .pop(); // 👉 Hide Loader
-                                    openAppSettings(); // 👉 Redirect to settings
-                                    return;
-                                  }
-
-                                  // ✅ Now Get Location
-                                  Position position =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.high);
-
-                                  setState(() {
-                                    location =
-                                        "Latitude: ${position.latitude}, Longitude: ${position.longitude}";
-                                  });
-
-                                  Navigator.of(dialogueContext).pop();
-
-                                  final Uri shareUri = Uri.parse(
-                                    'https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}',
-                                  );
-
-                                  Share.shareUri(shareUri);
-                                } catch (e) {
-                                  print("❌ Error: $e");
-                                  Navigator.of(dialogueContext).pop();
-                                } finally {
+                                LocationPermission permission =
+                                    await Geolocator.checkPermission();
+                                if (permission == LocationPermission.denied) {
+                                  permission =
+                                      await Geolocator.requestPermission();
                                   Navigator.of(dialogueContext).pop();
                                 }
+                                Position position =
+                                    await Geolocator.getCurrentPosition(
+                                        desiredAccuracy: LocationAccuracy.high);
+                                setState(() {
+                                  location =
+                                      "Latitude: ${position.latitude}, Longitude: ${position.longitude}";
+                                  Navigator.of(dialogueContext).pop();
+                                });
+                                Share.shareUri(Uri.parse(
+                                    'https://www.google.com/maps/search/?api=1&query=${position.latitude},${position.longitude}'));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),

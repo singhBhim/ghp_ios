@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/logout/logout_cubit.dart';
-import 'package:ghp_app/controller/user_profile/user_profile_cubit.dart';
-import 'package:ghp_app/view/dashboard/bottom_nav_screen.dart';
-import 'package:ghp_app/view/header_widgets.dart';
-import 'package:ghp_app/view/resident/event/event_screen.dart';
-import 'package:ghp_app/view/resident/member/members_screen.dart';
-import 'package:ghp_app/view/resident/notice_board/notice_board_screen.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
-import 'package:ghp_app/view/resident/sos/sos_screen.dart';
-import 'package:ghp_app/view/resident/visitors/add_visitor_screen.dart';
-import 'package:ghp_app/view/security_staff/daliy_help/daily_helps_members.dart';
-import 'package:ghp_app/view/security_staff/visitors/visitors_tab.dart';
-import 'package:ghp_app/view/session_dialogue.dart';
-import 'package:ghp_app/view/society/select_society_screen.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/logout/logout_cubit.dart';
+import 'package:ghp_society_management/controller/user_profile/user_profile_cubit.dart';
+import 'package:ghp_society_management/view/dashboard/bottom_nav_screen.dart';
+import 'package:ghp_society_management/view/header_widgets.dart';
+import 'package:ghp_society_management/view/resident/event/event_screen.dart';
+import 'package:ghp_society_management/view/resident/member/members_screen.dart';
+import 'package:ghp_society_management/view/resident/notice_board/notice_board_screen.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/resident/sos/sos_screen.dart';
+import 'package:ghp_society_management/view/resident/visitors/add_visitor_screen.dart';
+import 'package:ghp_society_management/view/security_staff/visitors/visitors_tab.dart';
+import 'package:ghp_society_management/view/session_dialogue.dart';
+import 'package:ghp_society_management/view/society/select_society_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SecurityGuardHome extends StatefulWidget {
@@ -84,7 +83,132 @@ class _SecurityGuardHomeState extends State<SecurityGuardHome> {
         ),
       ],
       child: Scaffold(
-        backgroundColor: AppTheme.backgroundColor,
+        appBar: AppBar(
+            leadingWidth: double.infinity,
+            leading: BlocBuilder<UserProfileCubit, UserProfileState>(
+              builder: (context, state) {
+                if (state is UserProfileLoaded) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    // Future.delayed(Duration.zero,
+                                    //     () => overDueBillAlertDialog(context));
+                                    // profileViewAlertDialog(
+                                    //     context, state.userProfile.first);
+                                  },
+                                  child: state.userProfile.first.data!.user!
+                                              .image !=
+                                          null
+                                      ? CircleAvatar(
+                                          radius: 22.h,
+                                          backgroundImage: NetworkImage(state
+                                              .userProfile
+                                              .first
+                                              .data!
+                                              .user!
+                                              .image
+                                              .toString()))
+                                      : const CircleAvatar(
+                                          radius: 22,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/default.jpg'))),
+                              const SizedBox(width: 10),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        state.userProfile.first.data!.user!.name
+                                            .toString(),
+                                        style: GoogleFonts.nunitoSans(
+                                            textStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w600,
+                                                overflow:
+                                                    TextOverflow.ellipsis))),
+                                    const SizedBox(height: 3),
+                                    Text('Security Staff',
+                                        style: GoogleFonts.nunitoSans(
+                                            textStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.w500)))
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                            ],
+                          ),
+                        ),
+                        headerWidget(
+                            context,
+                            state.userProfile.first.data!.user!.id.toString(),
+                            state.userProfile.first.data!.user!.name.toString(),
+                            state.userProfile.first.data!.user!.image ?? '',
+                            index: 1)
+                      ],
+                    ),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const CircleAvatar(
+                                  radius: 22,
+                                  backgroundImage:
+                                      AssetImage('assets/images/default.jpg')),
+                              const SizedBox(width: 10),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Loading...",
+                                        style: GoogleFonts.nunitoSans(
+                                            textStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w600,
+                                                overflow:
+                                                    TextOverflow.ellipsis))),
+                                    const SizedBox(height: 3),
+                                    Text('TOWER LOADING...',
+                                        style: GoogleFonts.nunitoSans(
+                                            textStyle: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 11.sp,
+                                                fontWeight: FontWeight.w500)))
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 10)
+                            ],
+                          ),
+                        ),
+                        headerWidget(context, '', '', '',
+                            isDemo: true, index: 1)
+                      ],
+                    ),
+                  );
+                }
+              },
+            )),
         floatingActionButton: FloatingActionButton(
             heroTag: "hero2",
             backgroundColor: AppTheme.primaryColor,
@@ -96,102 +220,7 @@ class _SecurityGuardHomeState extends State<SecurityGuardHome> {
         body: SafeArea(
           child: Column(
             children: [
-              BlocBuilder<UserProfileCubit, UserProfileState>(
-                builder: (context, state) {
-                  if (state is UserProfileLoaded) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 12),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                              onTap: () {
-                                profileViewAlertDialog(
-                                    context, state.userProfile.first);
-                              },
-                              child:
-                                  state.userProfile.first.data!.user!.image !=
-                                          null
-                                      ? CircleAvatar(
-                                          radius: 25.h,
-                                          backgroundImage: NetworkImage(state
-                                              .userProfile
-                                              .first
-                                              .data!
-                                              .user!
-                                              .image
-                                              .toString()))
-                                      : const CircleAvatar(
-                                          radius: 25,
-                                          backgroundImage: AssetImage(
-                                              'assets/images/default.jpg'))),
-                          Flexible(
-                            child: ListTile(
-                                contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                title: Text(
-                                    state.userProfile.first.data!.user!.name
-                                        .toString(),
-                                    style: GoogleFonts.nunitoSans(
-                                        textStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.w500,
-                                            overflow: TextOverflow.ellipsis))),
-                                subtitle: Text('Security Staff',
-                                    style: GoogleFonts.nunitoSans(
-                                        textStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w500))),
-                                trailing: securityStaffHeaderWidget(
-                                    context,
-                                    state.userProfile.first.data!.user!.id
-                                        .toString()
-                                        .toString(),
-                                    state.userProfile.first.data!.user!.name
-                                        .toString(),
-                                    state.userProfile.first.data!.user!.image ?? '')),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 12),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const CircleAvatar(
-                              radius: 25,
-                              backgroundImage:
-                                  AssetImage('assets/images/default.jpg')),
-                          Flexible(
-                            child: ListTile(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              title: Text('Hello user',
-                                  style: GoogleFonts.nunitoSans(
-                                      textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w500))),
-                              subtitle: Text('Security Staff',
-                                  style: GoogleFonts.nunitoSans(
-                                      textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w500))),
-                              trailing: securityStaffHeaderWidget(
-                                  context, '', '', ''),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                },
-              ),
-              SizedBox(height: 15.h),
+              const SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 GestureDetector(
                     onTap: () {
@@ -204,7 +233,7 @@ class _SecurityGuardHomeState extends State<SecurityGuardHome> {
                       Text('Members',
                           style: GoogleFonts.nunitoSans(
                               textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500)))
                     ])),
@@ -219,7 +248,7 @@ class _SecurityGuardHomeState extends State<SecurityGuardHome> {
                       Text('Event',
                           style: GoogleFonts.nunitoSans(
                               textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500)))
                     ])),
@@ -234,7 +263,7 @@ class _SecurityGuardHomeState extends State<SecurityGuardHome> {
                       Text('SOS',
                           style: GoogleFonts.nunitoSans(
                               textStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500))),
                     ])),
@@ -252,7 +281,7 @@ class _SecurityGuardHomeState extends State<SecurityGuardHome> {
                       Text('Notice Board',
                           style: GoogleFonts.nunitoSans(
                             textStyle: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
                             ),
@@ -337,17 +366,10 @@ class _SecurityGuardHomeState extends State<SecurityGuardHome> {
               //   ]),
               // ),
               SizedBox(height: 20.h),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: VisitorsTabBar(),
-                  ),
+              const Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: VisitorsTabBar(),
                 ),
               )
             ],

@@ -1,10 +1,10 @@
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/daliy_helps_member/daily_helps_checkouts_History_details/daily_help_checkouts_history_cubit.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
-import 'package:ghp_app/view/dashboard/bottom_nav_screen.dart';
-import 'package:ghp_app/view/security_staff/dashboard/bottom_navigation.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/daliy_helps_member/daily_helps_checkouts_History_details/daily_help_checkouts_history_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
+import 'package:ghp_society_management/view/dashboard/bottom_nav_screen.dart';
+import 'package:ghp_society_management/view/security_staff/dashboard/bottom_navigation.dart';
 import 'package:intl/intl.dart';
 import '../../../model/daily_help_member_checkout_details_modal.dart';
 
@@ -625,10 +625,13 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                           FontWeight
                                                                               .w500))),
                                                           Text(
-                                                              formatCheckoutDate(
-                                                                  staffLog[0]
-                                                                      .checkinAt
-                                                                      .toString()),
+                                                              staffLog.isNotEmpty
+                                                                  ? formatCheckoutDate(
+                                                                      staffLog[
+                                                                              0]
+                                                                          .checkinAt
+                                                                          .toString())
+                                                                  : "",
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
@@ -720,6 +723,16 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                   )
                                                                 ],
                                                               ),
+                                                              subtitle: Row(
+                                                                mainAxisAlignment:
+                                                                MainAxisAlignment.spaceBetween,
+                                                                children: [
+                                                                  Text('Entry By : QR Code',
+                                                                      style: const TextStyle(fontSize: 12)),
+                                                                  Text('Exited By : Manual',
+                                                                      style: const TextStyle(fontSize: 12)),
+                                                                ],
+                                                              ),
                                                             ),
                                                           );
                                                         },
@@ -744,11 +757,13 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                           fontWeight:
                                                                               FontWeight.w500))),
                                                               Text(
-                                                                  formatCheckoutDate(
-                                                                      staffLog[
+                                                                  memberLogs
+                                                                          .isNotEmpty
+                                                                      ? formatCheckoutDate(memberLogs[
                                                                               0]
                                                                           .checkinAt
-                                                                          .toString()),
+                                                                          .toString())
+                                                                      : "",
                                                                   style: const TextStyle(
                                                                       fontSize:
                                                                           14))
@@ -837,39 +852,46 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                       )
                                                                     ],
                                                                   ),
-                                                                  subtitle:
-                                                                      Column(
-                                                                    children: [
-                                                                      Divider(
-                                                                          color: Colors
-                                                                              .grey
-                                                                              .withOpacity(0.2)),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Column(
-                                                                            children: [
-                                                                              Text(memberLogs[residentIndex].dailyHelpMemberDetails!.name.toString(), style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black, fontSize: 11.sp, fontWeight: FontWeight.w600))),
-                                                                              Text("Name", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black54, fontSize: 12.sp, fontWeight: FontWeight.w400))),
-                                                                            ],
-                                                                          ),
-                                                                          Column(
-                                                                            children: [
-                                                                              Text("+91 ${memberLogs[residentIndex].dailyHelpMemberDetails!.phone}", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w600))),
-                                                                              Text("Phone", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black54, fontSize: 11.sp, fontWeight: FontWeight.w400))),
-                                                                            ],
-                                                                          ),
-                                                                          Column(
-                                                                            children: [
-                                                                              Text("${memberLogs[residentIndex].dailyHelpMemberDetails!.member!.blockName.toString()}, ${memberLogs[residentIndex].dailyHelpMemberDetails!.member!.aprtNo.toString()}", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black, fontSize: 11.sp, fontWeight: FontWeight.w600))),
-                                                                              Text("Tower Name", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black54, fontSize: 12.sp, fontWeight: FontWeight.w400))),
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
+                                                                  subtitle: widget
+                                                                          .fromResidentPage
+                                                                      ? Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text('Entry By : QR Code',
+                                                                                style: const TextStyle(fontSize: 12)),
+                                                                            Text('Exited By : Manual',
+                                                                                style: const TextStyle(fontSize: 12)),
+                                                                          ],
+                                                                        )
+                                                                      : Column(
+                                                                          children: [
+                                                                            Divider(color: Colors.grey.withOpacity(0.2)),
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                Column(
+                                                                                  children: [
+                                                                                    Text(memberLogs[residentIndex].dailyHelpMemberDetails!.name.toString(), style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black, fontSize: 11.sp, fontWeight: FontWeight.w600))),
+                                                                                    Text("Name", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black54, fontSize: 12.sp, fontWeight: FontWeight.w400))),
+                                                                                  ],
+                                                                                ),
+                                                                                Column(
+                                                                                  children: [
+                                                                                    Text("+91 ${memberLogs[residentIndex].dailyHelpMemberDetails!.phone}", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.w600))),
+                                                                                    Text("Phone", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black54, fontSize: 11.sp, fontWeight: FontWeight.w400))),
+                                                                                  ],
+                                                                                ),
+                                                                                Column(
+                                                                                  children: [
+                                                                                    Text("${memberLogs[residentIndex].dailyHelpMemberDetails!.member!.blockName.toString()}, ${memberLogs[residentIndex].dailyHelpMemberDetails!.member!.aprtNo.toString()}", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black, fontSize: 11.sp, fontWeight: FontWeight.w600))),
+                                                                                    Text("Tower Name", style: GoogleFonts.ptSans(textStyle: TextStyle(color: Colors.black54, fontSize: 12.sp, fontWeight: FontWeight.w400))),
+                                                                                  ],
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        ),
                                                                 ),
                                                               );
                                                             },

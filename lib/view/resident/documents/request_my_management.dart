@@ -1,7 +1,7 @@
-import 'package:ghp_app/constants/export.dart';
+import 'package:ghp_society_management/constants/export.dart';
 
-import 'package:ghp_app/controller/documents/incoming_documents/incoming_documents_cubit.dart';
-import 'package:ghp_app/view/resident/documents/upload_document_screen.dart';
+import 'package:ghp_society_management/controller/documents/incoming_documents/incoming_documents_cubit.dart';
+import 'package:ghp_society_management/view/resident/documents/upload_document_screen.dart';
 import 'package:intl/intl.dart';
 
 class IncomingDocumentsScreen extends StatefulWidget {

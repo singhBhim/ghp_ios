@@ -3,12 +3,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/accept_request/accept_request_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/not_responding/not_responde_cubit.dart';
-import 'package:ghp_app/model/incoming_visitors_request_model.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/accept_request/accept_request_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/not_responding/not_responde_cubit.dart';
+import 'package:ghp_society_management/model/incoming_visitors_request_model.dart';
 import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 import 'package:vibration/vibration.dart';
 

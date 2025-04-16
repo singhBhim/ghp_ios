@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/controller/service_providers/service_providers_cubit.dart';
-import 'package:ghp_app/view/session_dialogue.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/controller/service_providers/service_providers_cubit.dart';
+import 'package:ghp_society_management/view/session_dialogue.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 import 'package:url_launcher/url_launcher.dart';

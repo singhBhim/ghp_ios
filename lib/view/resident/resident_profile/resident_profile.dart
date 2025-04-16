@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
-import 'package:ghp_app/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
-import 'package:ghp_app/controller/user_profile/user_profile_cubit.dart';
-import 'package:ghp_app/model/user_profile_model.dart';
-import 'package:ghp_app/view/security_staff/dashboard/bottom_navigation.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
+import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
+import 'package:ghp_society_management/controller/user_profile/user_profile_cubit.dart';
+import 'package:ghp_society_management/model/user_profile_model.dart';
+import 'package:ghp_society_management/view/resident/bills/my_bills.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/security_staff/dashboard/bottom_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ResidentProfileDetails extends StatefulWidget {
@@ -69,28 +71,65 @@ class _ResidentProfileDetailsState extends State<ResidentProfileDetails> {
   }
 
   /// verify the user
-  verifyTheUser(BuildContext buildContext, User userInfo) {
+  void verifyTheUser(BuildContext buildContext, User userInfo) {
+    // Step 1: Check if user is inactive
     if (userInfo.status == 'inactive') {
       snackBarMsg(
-          context, "User has been blocked by Admin. Please contact to Admin");
+          context, "User has been blocked by Admin. Please contact the Admin");
       onBack(buildContext);
-    } else {
-      var lastCheckInDetail = userInfo.lastCheckinDetail;
-      Map checkInData = {"user_id": userInfo.id.toString()};
-      if (lastCheckInDetail == null) {
-        buildContext
-            .read<ResidentCheckInCubit>()
-            .checkInAPI(statusBody: checkInData);
+
+      return;
+    }
+
+    // Step 2: Check if unpaid bills exist and any are overdue
+    final unpaidBills = userInfo.myUnpaidBills;
+    if (unpaidBills != null && unpaidBills.isNotEmpty) {
+      final billStatus = checkBillStatus(context, unpaidBills.first);
+      print('------------->>>> $billStatus');
+
+      if (billStatus == 'overdue') {
+        Future.delayed(const Duration(milliseconds: 10), () {
+          overDueBillAlertDialog(context, unpaidBills.first,
+              fromStaffSide: true);
+        });
+        onBack(buildContext);
+
+        return;
       } else {
-        if (lastCheckInDetail.status == 'checked_in') {
+        lastChecking(buildContext, userInfo);
+      }
+    } else {
+      lastChecking(buildContext, userInfo);
+    }
+  }
+
+  lastChecking(BuildContext buildContext, User userInfo) {
+    // Step 3: Handle check-in or check-out
+    final checkInData = {"user_id": userInfo.id.toString()};
+
+    print(checkInData);
+    final lastCheckInDetail = userInfo.lastCheckinDetail;
+
+    if (lastCheckInDetail == null) {
+      buildContext
+          .read<ResidentCheckInCubit>()
+          .checkInAPI(statusBody: checkInData);
+    } else {
+      switch (lastCheckInDetail.status) {
+        case 'checked_in':
           buildContext
               .read<ResidentCheckOutCubit>()
               .checkOutApi(statusBody: checkInData);
-        } else if (lastCheckInDetail.status == 'checked_out') {
+          break;
+        case 'checked_out':
           buildContext
               .read<ResidentCheckInCubit>()
               .checkInAPI(statusBody: checkInData);
-        }
+          break;
+        default:
+          // Optional: Handle unknown status
+          snackBarMsg(context, "Unknown check-in status.");
+          break;
       }
     }
   }

@@ -1,30 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/crop_image.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/logout/logout_cubit.dart';
-import 'package:ghp_app/controller/parcel/parcel_complaint/parcel_complaint_cubit.dart';
-import 'package:ghp_app/controller/parcel/receive_parcel/receive_parcel_cubit.dart';
-import 'package:ghp_app/controller/privacy_policy/privacy_policy_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitors_feedback/visitors_feedback_cubit.dart';
-import 'package:ghp_app/model/members_model.dart';
-import 'package:ghp_app/model/parcel_listing_model.dart';
-import 'package:ghp_app/model/refer_property_model.dart';
-import 'package:ghp_app/model/user_profile_model.dart';
-import 'package:ghp_app/model/visitors_listing_model.dart';
-import 'package:ghp_app/view/resident/resident_profile/resident_gatepass.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ghp_society_management/constants/crop_image.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/parcel/parcel_complaint/parcel_complaint_cubit.dart';
+import 'package:ghp_society_management/controller/parcel/receive_parcel/receive_parcel_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitors_feedback/visitors_feedback_cubit.dart';
+import 'package:ghp_society_management/model/members_model.dart';
+import 'package:ghp_society_management/model/parcel_listing_model.dart';
+import 'package:ghp_society_management/model/refer_property_model.dart';
+import 'package:ghp_society_management/model/user_profile_model.dart';
+import 'package:ghp_society_management/model/visitors_listing_model.dart';
+import 'package:ghp_society_management/payment_gateway_service.dart';
+import 'package:ghp_society_management/view/resident/resident_profile/resident_gatepass.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart' as picker;
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_flutter/qr_flutter.dart';
+import 'dart:async';
 
 /// LOG OUT DIALOG
 void logOutPermissionDialog(BuildContext context, {bool isLogout = true}) =>
@@ -1279,45 +1274,56 @@ profileViewAlertDialog(BuildContext context, UserProfileModel profileDetails) {
                 Padding(
                   padding: EdgeInsets.only(top: 10.w, left: 10.w, right: 10.w),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      profileDetails.data!.user!.image != null
-                          ? CircleAvatar(
-                              radius: 35.h,
-                              backgroundImage: NetworkImage(
-                                  profileDetails.data!.user!.image.toString()))
-                          : const CircleAvatar(
-                              radius: 35,
-                              backgroundImage:
-                                  AssetImage('assets/images/default.jpg')),
-                      SizedBox(width: 10.w),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      Expanded(
+                        child: Row(
                           children: [
-                            Text(profileDetails.data!.user!.name.toString(),
-                                style: GoogleFonts.nunitoSans(
-                                    color: Colors.black,
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w600)),
-                            Text(
-                                "Role Type : ${capitalizeWords(profileDetails.data!.user!.role.toString()).replaceAll("_", ' ')}",
-                                style: GoogleFonts.nunitoSans(
-                                    color: Colors.pink,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600)),
-                            profileDetails.data!.user!.role == 'staff'
-                                ? Text(
-                                    "Category: ${profileDetails.data!.user!.categoryName.toString()}",
-                                    style: GoogleFonts.nunitoSans(
-                                        color: Colors.deepPurpleAccent,
-                                        fontSize: 14))
-                                : const SizedBox(),
-                            profileDetails.data!.user!.role == 'resident'
-                                ? Text(
-                                    "TOWER: ${profileDetails.data!.user!.blockName.toString()} - FLOOR: ${profileDetails.data!.user!.floorNumber.toString()} - PROPERTY NO: ${profileDetails.data!.user!.aprtNo.toString()}",
-                                    style: GoogleFonts.nunitoSans(
-                                        color: Colors.black, fontSize: 10))
-                                : const SizedBox(),
+                            profileDetails.data!.user!.image != null
+                                ? CircleAvatar(
+                                    radius: 35.h,
+                                    backgroundImage: NetworkImage(profileDetails
+                                        .data!.user!.image
+                                        .toString()))
+                                : const CircleAvatar(
+                                    radius: 35,
+                                    backgroundImage: AssetImage(
+                                        'assets/images/default.jpg')),
+                            SizedBox(width: 10.w),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      profileDetails.data!.user!.name
+                                          .toString(),
+                                      style: GoogleFonts.nunitoSans(
+                                          color: Colors.black,
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.w600)),
+                                  Text(
+                                      "Role : ${capitalizeWords(profileDetails.data!.user!.role.toString()).replaceAll("_", ' ')}",
+                                      style: GoogleFonts.nunitoSans(
+                                          color: Colors.pink,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600)),
+                                  profileDetails.data!.user!.role == 'staff'
+                                      ? Text(
+                                          "Category: ${profileDetails.data!.user!.categoryName.toString()}",
+                                          style: GoogleFonts.nunitoSans(
+                                              color: Colors.deepPurpleAccent,
+                                              fontSize: 12))
+                                      : const SizedBox(),
+                                  profileDetails.data!.user!.role == 'resident'
+                                      ? Text(
+                                          "Tower/Floor: ${profileDetails.data!.user!.blockName.toString()}/${profileDetails.data!.user!.floorNumber.toString()}\nFlat No: ${profileDetails.data!.user!.aprtNo.toString()}",
+                                          style: GoogleFonts.nunitoSans(
+                                              color: Colors.black,
+                                              fontSize: 10))
+                                      : const SizedBox(),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -1400,7 +1406,6 @@ profileViewAlertDialog(BuildContext context, UserProfileModel profileDetails) {
                           ),
                           Divider(color: Colors.grey.withOpacity(0.1)),
                           Row(
-                            
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Email ID : ',
@@ -1474,7 +1479,6 @@ profileViewAlertDialog(BuildContext context, UserProfileModel profileDetails) {
   );
 }
 
-/// TERMS CONDITIONS
 /// VISITORS DESCRIPTION DIALOG
 void privacyPolicyDialog(
     BuildContext context, Function(bool values) setPageValue) {
@@ -1509,9 +1513,8 @@ void privacyPolicyDialog(
                           } else if (state is PrivacyPolicyLoaded) {
                             final htmlData = state.privacyPolicyModel.data;
                             return SingleChildScrollView(
-                                child:  Html(
-                                    data:
-                                    htmlData.privacyPolicy.content.toString()));
+                                child: Html(
+                                  data:  htmlData.privacyPolicy.content.toString()));
                           } else if (state is PrivacyPolicyFailed) {
                             return Center(
                                 child: Text(state.errorMessage.toString(),
@@ -1703,16 +1706,20 @@ void referPropertyDialog(
                         ]),
                     Divider(color: Colors.grey.withOpacity(0.1)),
                     Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Remark : ',
                               style: GoogleFonts.nunitoSans(
                                   textStyle: TextStyle(
                                       color: Colors.black45, fontSize: 15.sp))),
-                          Text(referPropertyList.remark.toString(),
-                              style: GoogleFonts.nunitoSans(
-                                  textStyle: TextStyle(
-                                      color: Colors.black87, fontSize: 15.sp)))
+                          Expanded(
+                            child: Text(referPropertyList.remark.toString(),
+                                style: GoogleFonts.nunitoSans(
+                                    textStyle: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 15.sp))),
+                          )
                         ]),
                     Divider(color: Colors.grey.withOpacity(0.1)),
                     Row(
@@ -1835,3 +1842,162 @@ void deleteRentSellPropertyDialog(
         );
       },
     );
+
+/// OVERDUE BILL ALERT DIALOG
+Future<void> overDueBillAlertDialog(
+    BuildContext context, UnpaidBill myUnpaidBill,
+    {bool fromStaffSide = false}) async {
+  DateTime dueDate = DateTime.parse(myUnpaidBill.dueDate.toString()); // e.
+  String formattedDueDate = DateFormat('dd MMMM yyyy').format(dueDate);
+
+  return showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        insetPadding: const EdgeInsets.symmetric(horizontal: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(8)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Alert",
+                      style: GoogleFonts.nunitoSans(
+                          color: Colors.black,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600)),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Icon(Icons.close, color: Colors.black),
+                  )
+                ],
+              ),
+              Divider(color: Colors.grey.withOpacity(0.2)),
+              const SizedBox(height: 5),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(color: Colors.red.withOpacity(0.3))),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.warning_amber, color: Colors.red),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Warning',
+                                style: GoogleFonts.nunitoSans(
+                                    color: const Color(0x7FF30402),
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600)),
+                            Text(
+                              fromStaffSide
+                                  ? 'Entry restricted due to pending maintenance bill :  ₹${myUnpaidBill.amount.toString()}.'
+                                  : 'Your maintenance bill has been due on $formattedDueDate.Please pay ₹${myUnpaidBill.amount.toString()}',
+                              style: GoogleFonts.nunitoSans(
+                                color: Colors.red,
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              fromStaffSide
+                  ? const SizedBox()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        MaterialButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            child: Text("Cancel",
+                                style: GoogleFonts.nunitoSans(
+                                    color: Colors.black,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600))),
+                        const SizedBox(width: 10),
+                        MaterialButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            payBillFun(
+                                double.parse(myUnpaidBill.amount.toString()),
+                                context);
+                          },
+                          color: Colors.red,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Text(
+                            "Pay Now",
+                            style: GoogleFonts.nunitoSans(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+/*class DialogService {
+  static final DialogService _instance = DialogService._internal();
+  factory DialogService() => _instance;
+  DialogService._internal();
+
+  bool _isDialogActive = false;
+  Timer? _timer;
+  String billStatus = 'pending';
+
+  void startDialogCheck(BuildContext context) {
+    if (_timer != null && _timer!.isActive) return;
+
+    print("✅ Timer Started...");
+
+    _timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      print("🔄 Timer Tick: Checking Bill Status...");
+
+      if (!_isDialogActive && billStatus == "pending") {
+        print("🚨 Dialog Triggering...");
+        _isDialogActive = true; // डायलॉग एक्टिवेट हो गया
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          overDueBillAlertDialog(context).then((_) {
+            _isDialogActive =
+                false; // जब यूजर डायलॉग बंद करे, तब इसे false करें
+          });
+        });
+      }
+    });
+  }
+}*/

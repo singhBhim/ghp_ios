@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 part 'parcel_counts_state.dart';
 
 class ParcelCountsCubit extends Cubit<ParcelCountsState> {

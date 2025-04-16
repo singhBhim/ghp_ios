@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/model/property_details_model.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/model/property_details_model.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 part 'property_details_state.dart';
 
 class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {

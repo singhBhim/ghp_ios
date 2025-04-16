@@ -1,8 +1,8 @@
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/notification/notification_listing/notification_list_cubit.dart';
-import 'package:ghp_app/view/dashboard/bottom_nav_screen.dart';
-import 'package:ghp_app/view/security_staff/dashboard/bottom_navigation.dart';
-import 'package:ghp_app/view/staff/bottom_nav_screen.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/notification/notification_listing/notification_list_cubit.dart';
+import 'package:ghp_society_management/view/dashboard/bottom_nav_screen.dart';
+import 'package:ghp_society_management/view/security_staff/dashboard/bottom_navigation.dart';
+import 'package:ghp_society_management/view/staff/bottom_nav_screen.dart';
 import 'package:intl/intl.dart';
 
 class NotificationListing extends StatefulWidget {
@@ -58,6 +58,7 @@ class _NotificationListingState extends State<NotificationListing> {
 
   @override
   Widget build(BuildContext context) {
+    print("-----------${widget.index}");
     return WillPopScope(
       onWillPop: onBack,
       child: Scaffold(

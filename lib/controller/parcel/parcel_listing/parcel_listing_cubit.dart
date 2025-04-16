@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/model/parcel_listing_model.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/model/parcel_listing_model.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 part 'parcel_listing_state.dart';
 
 class ParcelListingCubit extends Cubit<ParcelListingState> {

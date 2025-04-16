@@ -1,18 +1,18 @@
 import 'dart:async';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/controller/notification/notification_listing/notification_list_cubit.dart';
-import 'package:ghp_app/controller/visitors/chek_in_check_out/check_in/check_in_cubit.dart';
-import 'package:ghp_app/controller/visitors/chek_in_check_out/check_out/check_out_cubit.dart';
-import 'package:ghp_app/controller/visitors/chek_in_check_out/visitors_scan/scan_visitors_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/not_responding/not_responde_cubit.dart';
-import 'package:ghp_app/controller/visitors/visitor_request/resend_request/resend_request_cubit.dart';
-import 'package:ghp_app/model/visitors_listing_model.dart';
-import 'package:ghp_app/timer_countdown.dart';
-import 'package:ghp_app/view/security_staff/dashboard/home.dart';
-import 'package:ghp_app/view/security_staff/scan_qr.dart';
-import 'package:ghp_app/view/security_staff/visitors/visitors_details_page.dart';
-import 'package:ghp_app/view/security_staff/visitors/visitors_list_page.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/controller/notification/notification_listing/notification_list_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/chek_in_check_out/check_in/check_in_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/chek_in_check_out/check_out/check_out_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/chek_in_check_out/visitors_scan/scan_visitors_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/not_responding/not_responde_cubit.dart';
+import 'package:ghp_society_management/controller/visitors/visitor_request/resend_request/resend_request_cubit.dart';
+import 'package:ghp_society_management/model/visitors_listing_model.dart';
+import 'package:ghp_society_management/timer_countdown.dart';
+import 'package:ghp_society_management/view/security_staff/dashboard/home.dart';
+import 'package:ghp_society_management/view/security_staff/scan_qr.dart';
+import 'package:ghp_society_management/view/security_staff/visitors/visitors_details_page.dart';
+import 'package:ghp_society_management/view/security_staff/visitors/visitors_list_page.dart';
 import 'package:intl/intl.dart';
 
 class VisitorsTabBar extends StatefulWidget {

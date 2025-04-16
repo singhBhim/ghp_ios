@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/model/complaint_service_provider_model.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/model/complaint_service_provider_model.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 part 'get_complaints_state.dart';
 
 class ComplaintsCubit extends Cubit<ComplaintsState> {

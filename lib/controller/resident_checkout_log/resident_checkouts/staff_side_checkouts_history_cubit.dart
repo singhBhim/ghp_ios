@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:ghp_app/constants/config.dart';
-import 'package:ghp_app/model/resident_checkouts_history_model.dart';
-import 'package:ghp_app/network/api_manager.dart';
+import 'package:ghp_society_management/constants/config.dart';
+import 'package:ghp_society_management/model/resident_checkouts_history_model.dart';
+import 'package:ghp_society_management/network/api_manager.dart';
 part 'staff_side_checkouts_history_state.dart';
 
 class StaffSideResidentCheckoutsHistoryCubit

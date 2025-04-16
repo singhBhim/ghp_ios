@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ghp_app/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
 
 showLoadingDialog(BuildContext context, Function setDialogueContext) {
   showDialog(

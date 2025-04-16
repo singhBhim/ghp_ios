@@ -1,12 +1,12 @@
 // ignore_for_file: must_be_immutable
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/bill_details/bill_details_cubit.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/local_storage.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/bill_details/bill_details_cubit.dart';
+import 'package:ghp_society_management/payment_gateway_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -18,6 +18,7 @@ class BillDetailScreen extends StatefulWidget {
   @override
   State<BillDetailScreen> createState() => _BillDetailScreenState();
 }
+//
 
 class _BillDetailScreenState extends State<BillDetailScreen> {
   int selectedValue = 0;
@@ -89,163 +90,213 @@ class _BillDetailScreenState extends State<BillDetailScreen> {
                           String createdDate = formatter.format(parsedDate2);
 
                           return SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                        color: Colors.grey.withOpacity(0.3))),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                            color:
+                                                Colors.grey.withOpacity(0.3))),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Expanded(
-                                            child: Text(
-                                                billDetails.service.name
-                                                    .toString(),
-                                                style: GoogleFonts.nunitoSans(
-                                                    textStyle: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 18.sp,
-                                                        fontWeight:
-                                                            FontWeight.w600)))),
-                                        Expanded(
-                                          child: Text(
-                                              capitalizeWords(billDetails.status
-                                                  .toString()),
-                                              style: GoogleFonts.nunitoSans(
-                                                  textStyle: TextStyle(
-                                                      color:
-                                                          billDetails.status ==
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Text(
+                                                    billDetails.service.name
+                                                        .toString(),
+                                                    style: GoogleFonts.nunitoSans(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 18.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)))),
+                                            Expanded(
+                                              child: Text(
+                                                  capitalizeWords(billDetails
+                                                      .status
+                                                      .toString()),
+                                                  style: GoogleFonts.nunitoSans(
+                                                      textStyle: TextStyle(
+                                                          color: billDetails
+                                                                      .status ==
                                                                   'unpaid'
                                                               ? Colors.red
                                                               : Colors.green,
-                                                      fontSize: 18.sp))),
+                                                          fontSize: 18.sp))),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4),
-                                        child: Divider(
-                                            color:
-                                                Colors.grey.withOpacity(0.2))),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            child: Text('Invoice No : ',
-                                                style: GoogleFonts.nunitoSans(
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4),
+                                            child: Divider(
+                                                color: Colors.grey
+                                                    .withOpacity(0.2))),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Text('Invoice No : ',
+                                                    style:
+                                                        GoogleFonts.nunitoSans(
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontSize:
+                                                                    15.sp)))),
+                                            Expanded(
+                                              child: Text(
+                                                  billDetails.invoiceNumber
+                                                      .toString(),
+                                                  style: GoogleFonts.nunitoSans(
                                                     textStyle: TextStyle(
                                                         color: Colors.black87,
-                                                        fontSize: 15.sp)))),
-                                        Expanded(
-                                          child: Text(
-                                              billDetails.invoiceNumber
-                                                  .toString(),
-                                              style: GoogleFonts.nunitoSans(
-                                                textStyle: TextStyle(
-                                                    color: Colors.black87,
-                                                    fontSize: 15.sp),
-                                              )),
+                                                        fontSize: 15.sp),
+                                                  )),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4),
-                                        child: Divider(
-                                            color:
-                                                Colors.grey.withOpacity(0.2))),
-                                    Row(children: [
-                                      Expanded(
-                                          child: Text('Bill Amount ',
-                                              style: GoogleFonts.nunitoSans(
-                                                  textStyle: TextStyle(
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4),
+                                            child: Divider(
+                                                color: Colors.grey
+                                                    .withOpacity(0.2))),
+                                        Row(children: [
+                                          Expanded(
+                                              child: Text('Bill Amount ',
+                                                  style: GoogleFonts.nunitoSans(
+                                                      textStyle: TextStyle(
+                                                          color: Colors.black87,
+                                                          fontSize: 15.sp)))),
+                                          Expanded(
+                                              child: Text(
+                                                  '₹ ${billDetails.amount.toString()}',
+                                                  style: TextStyle(
                                                       color: Colors.black87,
-                                                      fontSize: 15.sp)))),
-                                      Expanded(
-                                          child: Text(
-                                              '₹ ${billDetails.amount.toString()}',
-                                              style: TextStyle(
-                                                  color: Colors.black87,
-                                                  fontSize: 15.sp)))
-                                    ]),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4),
-                                        child: Divider(
-                                            color:
-                                                Colors.grey.withOpacity(0.2))),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            child: Text('Service : ',
-                                                style: GoogleFonts.nunitoSans(
+                                                      fontSize: 15.sp)))
+                                        ]),
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4),
+                                            child: Divider(
+                                                color: Colors.grey
+                                                    .withOpacity(0.2))),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Text('Service : ',
+                                                    style:
+                                                        GoogleFonts.nunitoSans(
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontSize:
+                                                                    15.sp)))),
+                                            Expanded(
+                                              child: Text(
+                                                  billDetails.service.name
+                                                      .toString(),
+                                                  style: GoogleFonts.nunitoSans(
                                                     textStyle: TextStyle(
                                                         color: Colors.black87,
-                                                        fontSize: 15.sp)))),
-                                        Expanded(
-                                          child: Text(
-                                              billDetails.service.name
-                                                  .toString(),
-                                              style: GoogleFonts.nunitoSans(
-                                                textStyle: TextStyle(
-                                                    color: Colors.black87,
-                                                    fontSize: 15.sp),
-                                              )),
+                                                        fontSize: 15.sp),
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4),
+                                            child: Divider(
+                                                color: Colors.grey
+                                                    .withOpacity(0.2))),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Text('Due Date : ',
+                                                    style:
+                                                        GoogleFonts.nunitoSans(
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontSize:
+                                                                    15.sp)))),
+                                            Expanded(
+                                                child: Text(formattedDate,
+                                                    style:
+                                                        GoogleFonts.nunitoSans(
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontSize:
+                                                                    15.sp))))
+                                          ],
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4),
+                                            child: Divider(
+                                                color: Colors.grey
+                                                    .withOpacity(0.2))),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Text('Created Date : ',
+                                                    style:
+                                                        GoogleFonts.nunitoSans(
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontSize:
+                                                                    15.sp)))),
+                                            Expanded(
+                                                child: Text(createdDate,
+                                                    style:
+                                                        GoogleFonts.nunitoSans(
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontSize:
+                                                                    15.sp))))
+                                          ],
                                         ),
                                       ],
                                     ),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4),
-                                        child: Divider(
-                                            color:
-                                                Colors.grey.withOpacity(0.2))),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            child: Text('Due Date : ',
-                                                style: GoogleFonts.nunitoSans(
-                                                    textStyle: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 15.sp)))),
-                                        Expanded(
-                                            child: Text(formattedDate,
-                                                style: GoogleFonts.nunitoSans(
-                                                    textStyle: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 15.sp))))
-                                      ],
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4),
-                                        child: Divider(
-                                            color:
-                                                Colors.grey.withOpacity(0.2))),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            child: Text('Created Date : ',
-                                                style: GoogleFonts.nunitoSans(
-                                                    textStyle: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 15.sp)))),
-                                        Expanded(
-                                            child: Text(createdDate,
-                                                style: GoogleFonts.nunitoSans(
-                                                    textStyle: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 15.sp))))
-                                      ],
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(height: 20),
+                                billDetails.status == 'paid'
+                                    ? MaterialButton(
+                                        height: 45,
+                                        minWidth:
+                                            MediaQuery.sizeOf(context).width *
+                                                0.9,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
+                                        onPressed: () async {
+                                          await LocalStorage.localStorage
+                                              .setString('bill_id',
+                                                  billDetails.id.toString());
+                                          payBillFun(
+                                              double.parse(billDetails.amount
+                                                  .toString()),
+                                              context);
+                                        },
+                                        color: Colors.deepPurpleAccent,
+                                        child: const Text('Pay Now',
+                                            style:
+                                                TextStyle(color: Colors.white)))
+                                    : const SizedBox()
+                              ],
                             ),
                           );
                         } else if (state is BillDetailsFailed) {

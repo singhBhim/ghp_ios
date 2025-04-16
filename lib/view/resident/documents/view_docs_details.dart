@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
 import '../../../model/outgoing_document_model.dart';
 
 class ViewDocsDetails extends StatefulWidget {
@@ -37,7 +36,7 @@ class _ViewDocsDetailsState extends State<ViewDocsDetails> {
                           Navigator.of(context).pop();
                         },
                         child:
-                            const Icon(Icons.arrow_back, color: Colors.white),
+                        const Icon(Icons.arrow_back, color: Colors.white),
                       ),
                       SizedBox(width: 10.w),
                       Text(

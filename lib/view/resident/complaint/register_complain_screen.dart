@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_document_picker/flutter_document_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghp_app/constants/app_images.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/constants/dialog.dart';
-import 'package:ghp_app/constants/snack_bar.dart';
-import 'package:ghp_app/controller/complants/create_complaints/create_complaints_cubit.dart';
-import 'package:ghp_app/controller/sos_management/sos_element/sos_element_cubit.dart';
-import 'package:ghp_app/view/session_dialogue.dart';
+import 'package:ghp_society_management/constants/app_images.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/constants/dialog.dart';
+import 'package:ghp_society_management/constants/snack_bar.dart';
+import 'package:ghp_society_management/controller/complants/create_complaints/create_complaints_cubit.dart';
+import 'package:ghp_society_management/controller/sos_management/sos_element/sos_element_cubit.dart';
+import 'package:ghp_society_management/view/session_dialogue.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -168,16 +168,16 @@ class _RegisterComplaintScreenState extends State<RegisterComplaintScreen> {
                                         style: TextStyle(
                                             color: Colors.grey, fontSize: 14)),
                                     underline:
-                                        Container(color: Colors.transparent),
+                                    Container(color: Colors.transparent),
                                     isExpanded: true,
                                     value: selectedValue,
                                     items: state.sosElement.first.data.areas
                                         .map((item) => DropdownMenuItem<String>(
-                                            value: item.name,
-                                            child: Text(item.name,
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black))))
+                                        value: item.name,
+                                        child: Text(item.name,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black))))
                                         .toList(),
                                     onChanged: (value) {
                                       setState(() {
@@ -192,13 +192,13 @@ class _RegisterComplaintScreenState extends State<RegisterComplaintScreen> {
                                         decoration: BoxDecoration(
                                             color: AppTheme.greyColor,
                                             borderRadius:
-                                                BorderRadius.circular(10))),
+                                            BorderRadius.circular(10))),
                                     dropdownStyleData: DropdownStyleData(
                                         maxHeight: MediaQuery.sizeOf(context).height /
                                             2,
                                         decoration: BoxDecoration(
                                             borderRadius:
-                                                BorderRadius.circular(10))),
+                                            BorderRadius.circular(10))),
                                     menuItemStyleData: const MenuItemStyleData(
                                         padding: EdgeInsets.symmetric(horizontal: 16)));
                               } else {
@@ -236,7 +236,7 @@ class _RegisterComplaintScreenState extends State<RegisterComplaintScreen> {
                                 errorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15.0),
                                   borderSide:
-                                      BorderSide(color: AppTheme.greyColor),
+                                  BorderSide(color: AppTheme.greyColor),
                                 ),
                                 focusedErrorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15.0),
@@ -645,17 +645,17 @@ class _RegisterComplaintScreenState extends State<RegisterComplaintScreen> {
                 // अगर thumbnailFile null है तो डिफ़ॉल्ट इमेज दिखाओ
                 thumbnailFile != null
                     ? Image.file(
-                        thumbnailFile!,
-                        width: 100,
-                        height: 120,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) {
-                          return Image.asset('assets/images/default.jpg',
-                              fit: BoxFit.cover);
-                        },
-                      )
+                  thumbnailFile!,
+                  width: 100,
+                  height: 120,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) {
+                    return Image.asset('assets/images/default.jpg',
+                        fit: BoxFit.cover);
+                  },
+                )
                     : Image.asset('assets/images/default.jpg',
-                        width: 100, height: 120, fit: BoxFit.cover),
+                    width: 100, height: 120, fit: BoxFit.cover),
 
                 Container(
                   width: 100,

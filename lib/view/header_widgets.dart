@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ghp_app/constants/export.dart';
-import 'package:ghp_app/model/group_model.dart';
-import 'package:ghp_app/view/chat/chat_screen.dart';
-import 'package:ghp_app/view/resident/notification_list/notification_listing.dart';
-import 'package:ghp_app/view/resident/setting/log_out_dialog.dart';
-import 'package:ghp_app/view/staff/chat_screen.dart';
+import 'package:ghp_society_management/constants/export.dart';
+import 'package:ghp_society_management/model/group_model.dart';
+import 'package:ghp_society_management/view/chat/chat_screen.dart';
+import 'package:ghp_society_management/view/resident/notification_list/notification_listing.dart';
+import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
+import 'package:ghp_society_management/view/staff/chat_screen.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// SECURITY STAFF HEADER
@@ -28,8 +28,9 @@ Widget securityStaffHeaderWidget(
                     builder: (_) => const NotificationListing(index: 1)),
               ),
               child: CircleAvatar(
-                backgroundColor: AppTheme.resolvedButtonColor.withOpacity(0.3),
-                child: Image.asset(ImageAssets.bellImage, height: 20.h),
+                backgroundColor: AppTheme.resolvedButtonColor.withOpacity(0.2),
+                child: Image.asset(ImageAssets.bellImage,
+                    height: 20.h, color: AppTheme.resolvedButtonColor),
               ),
             ),
           ),
@@ -88,8 +89,9 @@ Widget securityStaffHeaderWidget(
       GestureDetector(
         onTap: () => logOutPermissionDialog(context, isLogout: true),
         child: CircleAvatar(
-          backgroundColor: AppTheme.resolvedButtonColor.withOpacity(0.3),
-          child: Image.asset(ImageAssets.staffLogoutImage, height: 20.h),
+          backgroundColor: AppTheme.resolvedButtonColor.withOpacity(0.2),
+          child: Image.asset(ImageAssets.staffLogoutImage,
+              height: 20.h, color: AppTheme.resolvedButtonColor),
         ),
       ),
     ],
@@ -99,28 +101,27 @@ Widget securityStaffHeaderWidget(
 /// 📩 Chat Icon Widget
 Widget chatIcon(int unreadCount, BuildContext context, String userId,
     String userImage, String userName,
-    {bool forResident = false}) {
+    {bool forResident = false, bool isDemo = false}) {
   return GestureDetector(
-    onTap: () => Navigator.of(context).push(
-      MaterialPageRoute(
-          builder: (builder) =>
-
-          forResident
-              ? ChatScreen(
-                  userImage: userImage, userId: userId, userName: userName)
-              : StaffChatScreen(
-                  userImage: userImage, userId: userId, userName: userName)
-      ),
-    ),
+    onTap: () {
+      if (!isDemo) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (builder) => forResident
+                ? ChatScreen(
+                    userImage: userImage, userId: userId, userName: userName)
+                : StaffChatScreen(
+                    userImage: userImage, userId: userId, userName: userName)));
+      }
+    },
     child: Stack(
       alignment: Alignment.topRight,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: CircleAvatar(
-              backgroundColor: AppTheme.resolvedButtonColor.withOpacity(0.3),
-              child: Image.asset(ImageAssets.messageImage, height: 20.h)),
-        ),
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Image.asset(ImageAssets.messageImage,
+                    height: 20.h, color: AppTheme.resolvedButtonColor))),
         if (unreadCount > 0)
           Positioned(
             right: 0,
@@ -128,9 +129,7 @@ Widget chatIcon(int unreadCount, BuildContext context, String userId,
             child: Container(
               padding: const EdgeInsets.all(5),
               decoration: const BoxDecoration(
-                color: Colors.redAccent,
-                shape: BoxShape.circle,
-              ),
+                  color: Colors.redAccent, shape: BoxShape.circle),
               constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
               child: Text(
                 unreadCount.toString(),
@@ -173,9 +172,9 @@ Widget serviceProviderHeaderWidget(
                           builder: (_) => const NotificationListing(index: 2))),
                   child: CircleAvatar(
                       backgroundColor:
-                          AppTheme.resolvedButtonColor.withOpacity(0.3),
-                      child:
-                          Image.asset(ImageAssets.bellImage, height: 20.h)))),
+                          AppTheme.resolvedButtonColor.withOpacity(0.2),
+                      child: Image.asset(ImageAssets.bellImage,
+                          height: 20.h, color: AppTheme.resolvedButtonColor)))),
           counts > 0
               ? Positioned(
                   right: 0,
@@ -231,10 +230,11 @@ Widget serviceProviderHeaderWidget(
           logOutPermissionDialog(context, isLogout: true);
         },
         child: CircleAvatar(
-          backgroundColor: AppTheme.resolvedButtonColor.withOpacity(0.3),
+          backgroundColor: AppTheme.resolvedButtonColor.withOpacity(0.2),
           child: Image.asset(
             ImageAssets.staffLogoutImage,
             height: 20.h,
+            color: AppTheme.resolvedButtonColor,
           ),
         ),
       ),
@@ -243,7 +243,8 @@ Widget serviceProviderHeaderWidget(
 }
 
 /// RESIDENCE HEADER WIDGETS
-Widget headerWidget(BuildContext context, userId, userName, userImage) {
+Widget headerWidget(BuildContext context, userId, userName, userImage,
+    {bool isDemo = false, int index = 0}) {
   final int counts = LocalStorage.localStorage.getInt('counts') ?? 0;
   return Row(
     mainAxisAlignment: MainAxisAlignment.end,
@@ -270,7 +271,7 @@ Widget headerWidget(BuildContext context, userId, userName, userImage) {
               int totalUnread =
                   unreadSnapshot.data?.fold(0, (a, b) => a! + b) ?? 0;
               return chatIcon(totalUnread, context, userId, userImage, userName,
-                  forResident: true);
+                  forResident: true, isDemo: isDemo);
             },
           );
         },
@@ -282,45 +283,49 @@ Widget headerWidget(BuildContext context, userId, userName, userImage) {
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const NotificationListing(index: 0))),
+                  onTap: () {
+                    if (!isDemo) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) =>
+                                  NotificationListing(index: index)));
+                    }
+                  },
                   child: CircleAvatar(
-                      backgroundColor:
-                          AppTheme.resolvedButtonColor.withOpacity(0.3),
-                      child:
-                          Image.asset(ImageAssets.bellImage, height: 20.h)))),
+                      backgroundColor: Colors.white,
+                      child: Image.asset(ImageAssets.bellImage,
+                          height: 20.h, color: AppTheme.resolvedButtonColor)))),
           counts > 0
               ? Positioned(
                   right: 0,
                   top: 0,
                   child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                        color: Colors.redAccent, shape: BoxShape.circle),
-                    constraints:
-                        const BoxConstraints(minWidth: 18, minHeight: 18),
-                    child: Text(
-                      counts.toString(),
-                      style: const TextStyle(fontSize: 10, color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )
+                      padding: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
+                          color: Colors.redAccent, shape: BoxShape.circle),
+                      constraints:
+                          const BoxConstraints(minWidth: 18, minHeight: 18),
+                      child: Text(counts.toString(),
+                          style: const TextStyle(
+                              fontSize: 10, color: Colors.white),
+                          textAlign: TextAlign.center)))
               : SizedBox.fromSize()
         ],
       ),
       const SizedBox(width: 10),
       GestureDetector(
         onTap: () {
-          logOutPermissionDialog(context, isLogout: true);
+          if (!isDemo) {
+            logOutPermissionDialog(context, isLogout: true);
+          }
         },
         child: CircleAvatar(
-          backgroundColor: AppTheme.resolvedButtonColor.withOpacity(0.3),
+          backgroundColor: Colors.white,
           child: Image.asset(
             ImageAssets.staffLogoutImage,
             height: 20.h,
+            color: AppTheme.resolvedButtonColor,
           ),
         ),
       ),

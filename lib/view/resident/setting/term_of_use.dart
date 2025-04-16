@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:ghp_app/constants/app_theme.dart';
-import 'package:ghp_app/controller/terms_conditions/terms_conditions_cubit.dart';
+import 'package:ghp_society_management/constants/app_theme.dart';
+import 'package:ghp_society_management/controller/terms_conditions/terms_conditions_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TermOfUseScreen extends StatefulWidget {
@@ -67,7 +66,7 @@ class _TermOfUseScreenState extends State<TermOfUseScreen> {
                         final htmlData = state.termsConditionsModel.data;
                         return SingleChildScrollView(
                             child: Html(
-                                data: htmlData.termsOfUse!.content.toString()));
+                           data:     htmlData.termsOfUse!.content.toString()));
                       } else if (state is TermsConditionsFailed) {
                         return Center(
                             child: Text(state.errorMessage.toString(),

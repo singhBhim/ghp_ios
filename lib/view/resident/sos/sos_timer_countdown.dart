@@ -1,5 +1,5 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:ghp_app/constants/export.dart';
+import 'package:ghp_society_management/constants/export.dart';
 
 /// VIEW MEMBER DETAILS DIALOG
 void sosTimerCountdownDialog(
