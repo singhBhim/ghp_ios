@@ -12,8 +12,8 @@ import 'package:ghp_society_management/view/security_staff/resident_checkouts/re
 import 'package:ghp_society_management/view/security_staff/scan_qr.dart';
 
 class SecurityGuardDashboard extends StatefulWidget {
-  const SecurityGuardDashboard({super.key});
-
+  int? index = 0;
+  SecurityGuardDashboard({super.key, this.index});
   @override
   State<SecurityGuardDashboard> createState() => SecurityGuardDashboardState();
 }
@@ -30,12 +30,23 @@ class SecurityGuardDashboardState extends State<SecurityGuardDashboard> {
     context.read<SosElementCubit>().fetchSosElement();
     context.read<ParcelCountsCubit>().fetchParcelCounts();
     _pageController = PageController();
+    // Delay the jumpToPage call to ensure the PageController is attached
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.index != null && widget.index! > 0) {
+        _pageController.jumpToPage(widget.index!);
+        setState(() {
+          currentIndex = widget.index!;
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
+
+    print('---------->>>>>>>>>>>${widget.index}');
   }
 
   final List<Widget> lst = [

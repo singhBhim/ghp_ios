@@ -11,12 +11,15 @@ import '../../../model/daily_help_member_checkout_details_modal.dart';
 class DailyHelpProfileDetails extends StatefulWidget {
   bool forQRPage;
   bool fromResidentPage;
+  bool forDetailsPage;
   final Map<String, dynamic>? dailyHelpId;
-  DailyHelpProfileDetails(
-      {super.key,
-      this.dailyHelpId,
-      this.forQRPage = false,
-      this.fromResidentPage = false});
+  DailyHelpProfileDetails({
+    super.key,
+    this.dailyHelpId,
+    this.forQRPage = false,
+    this.fromResidentPage = false,
+    this.forDetailsPage = false,
+  });
 
   @override
   State<DailyHelpProfileDetails> createState() =>
@@ -50,7 +53,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
         MaterialPageRoute(
             builder: (_) => widget.fromResidentPage
                 ? const Dashboard()
-                : const SecurityGuardDashboard()),
+                : SecurityGuardDashboard(index: 4)),
         (route) => false);
     return true;
   }
@@ -62,55 +65,66 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
           MaterialPageRoute(
               builder: (_) => widget.fromResidentPage
                   ? const Dashboard()
-                  : const SecurityGuardDashboard()),
+                  : SecurityGuardDashboard(index: 4)),
           (route) => false);
     });
   }
 
   /// verify the user
   void verifyTheUser(
-      BuildContext buildContext, DailyHelpUser userInfo, List<Log> logsData,
-      {bool forResidentSide = false}) {
-    Map<String, String> checkInData = {
+    BuildContext context,
+    DailyHelpUser userInfo,
+    List<Log> logsData, {
+    bool forResidentSide = false,
+  }) {
+    final checkInData = {
       "user_id": userInfo.id.toString(),
-      "type": "daily_help"
+      "type": "daily_help",
+      "entry_type": widget.forQRPage ? "qr" : "manual",
     };
 
     if (!forResidentSide) {
-      var lastCheckInDetail = userInfo.lastCheckinDetail;
-
-      if (lastCheckInDetail == null ||
-          lastCheckInDetail.status == 'checked_out') {
-        buildContext
-            .read<ResidentCheckInCubit>()
-            .checkInAPI(statusBody: checkInData);
-      } else if (lastCheckInDetail.status == 'checked_in') {
-        buildContext
-            .read<ResidentCheckOutCubit>()
-            .checkOutApi(statusBody: checkInData);
-      }
-      return; // No need to check further
+      _handleStaffSide(context, userInfo, checkInData);
     } else {
-      // For non-staff side (logsData processing)
-      if (logsData.isNotEmpty) {
-        var lastLog = logsData.first.memberLogs!.isNotEmpty
-            ? logsData.first.memberLogs!.first
-            : null;
-        print('-------------ooooooooooo$lastLog');
+      _handleResidentSide(context, logsData, checkInData);
+    }
+  }
 
-        if (lastLog != null) {
-          if (lastLog.checkinAt == null || lastLog.status == 'out') {
-            buildContext
-                .read<ResidentCheckInCubit>()
-                .checkInAPI(statusBody: checkInData);
-          } else if (lastLog.status == 'in') {
-            buildContext
-                .read<ResidentCheckOutCubit>()
-                .checkOutApi(statusBody: checkInData);
-          }
-          return; // Exit after first valid log check
-        }
-      }
+  void _handleStaffSide(
+    BuildContext context,
+    DailyHelpUser userInfo,
+    Map<String, String> checkInData,
+  ) {
+    final lastCheckIn = userInfo.lastCheckinDetail;
+
+    if (lastCheckIn == null || lastCheckIn.status == 'checked_out') {
+      context.read<ResidentCheckInCubit>().checkInAPI(statusBody: checkInData);
+    } else if (lastCheckIn.status == 'checked_in') {
+      context
+          .read<ResidentCheckOutCubit>()
+          .checkOutApi(statusBody: checkInData);
+    }
+  }
+
+  void _handleResidentSide(BuildContext context, List<Log> logsData,
+      Map<String, String> checkInData) {
+    if (logsData.isEmpty) {
+      context.read<ResidentCheckInCubit>().checkInAPI(statusBody: checkInData);
+      return;
+    }
+
+    final lastLog = logsData.first.memberLogs?.isNotEmpty == true
+        ? logsData.first.memberLogs!.first
+        : null;
+
+    if (lastLog == null ||
+        lastLog.checkinAt == null ||
+        lastLog.status == 'out') {
+      context.read<ResidentCheckInCubit>().checkInAPI(statusBody: checkInData);
+    } else if (lastLog.status == 'in') {
+      context
+          .read<ResidentCheckOutCubit>()
+          .checkOutApi(statusBody: checkInData);
     }
   }
 
@@ -241,7 +255,9 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                         EdgeInsets.only(top: 20.h, left: 6.h, bottom: 20.h),
                     child: Row(children: [
                       GestureDetector(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () {
+                            onCallBack();
+                          },
                           child: const Icon(Icons.arrow_back,
                               color: Colors.white)),
                       SizedBox(width: 10.w),
@@ -274,7 +290,11 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                             } else if (state is DailyHelpHistoryDetailsLoaded) {
                               Data? usersData =
                                   state.dailyHelpMemberDetailsModal.data;
-                              if (widget.forQRPage) {
+
+                              print(
+                                  '-------------->>>>>>>>>>>>${widget.fromResidentPage}  - ${widget.forDetailsPage}   ${widget.forQRPage}');
+                              if (!widget.forDetailsPage) {
+                                print('fffffffffff');
                                 verifyTheUser(
                                     context, usersData!.user!, usersData.logs!,
                                     forResidentSide: widget.fromResidentPage);
@@ -338,7 +358,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                 fontSize:
                                                                     14.sp))),
                                                 Text(
-                                                    "Sift Time : ${usersData.user!.staff!.shiftFrom != null ? formatShiftTime(usersData.user!.staff!.shiftFrom!.toString()) : ''} - ${usersData.user!.staff!.shiftTo != null ? formatShiftTime(usersData.user!.staff!.shiftTo.toString()) : ''}",
+                                                    "Shift Time : ${usersData.user!.staff!.shiftFrom != null ? formatShiftTime(usersData.user!.staff!.shiftFrom!.toString()) : ''} - ${usersData.user!.staff!.shiftTo != null ? formatShiftTime(usersData.user!.staff!.shiftTo.toString()) : ''}",
                                                     style:
                                                         GoogleFonts.nunitoSans(
                                                             textStyle: TextStyle(
@@ -375,7 +395,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                           textStyle: TextStyle(
                                                               color: Colors
                                                                   .black45,
-                                                              fontSize: 15.sp,
+                                                              fontSize: 14.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500))),
@@ -389,7 +409,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                           textStyle: TextStyle(
                                                               color: Colors
                                                                   .black87,
-                                                              fontSize: 15.sp,
+                                                              fontSize: 14.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500)))
@@ -411,7 +431,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                           textStyle: TextStyle(
                                                               color: Colors
                                                                   .black45,
-                                                              fontSize: 15.sp,
+                                                              fontSize: 14.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500))),
@@ -425,7 +445,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                           textStyle: TextStyle(
                                                               color: Colors
                                                                   .black87,
-                                                              fontSize: 15.sp,
+                                                              fontSize: 14.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500)))
@@ -447,7 +467,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                           textStyle: TextStyle(
                                                               color: Colors
                                                                   .black45,
-                                                              fontSize: 15.sp,
+                                                              fontSize: 14.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500))),
@@ -457,7 +477,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                           textStyle: TextStyle(
                                                               color: Colors
                                                                   .black87,
-                                                              fontSize: 15.sp,
+                                                              fontSize: 14.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500)))
@@ -479,7 +499,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                           textStyle: TextStyle(
                                                               color: Colors
                                                                   .black45,
-                                                              fontSize: 15.sp,
+                                                              fontSize: 14.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500))),
@@ -495,7 +515,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                       .italic,
                                                               color: Colors
                                                                   .black87,
-                                                              fontSize: 15.sp,
+                                                              fontSize: 14.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500)))
@@ -631,7 +651,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                               0]
                                                                           .checkinAt
                                                                           .toString())
-                                                                  : "",
+                                                                  : "N/A",
                                                               style:
                                                                   const TextStyle(
                                                                       fontSize:
@@ -650,6 +670,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                             (_, staffIndex) {
                                                           checkOut() {
                                                             DateTime outTime;
+
                                                             if (staffLog[
                                                                         staffIndex]
                                                                     .checkoutAt !=
@@ -723,14 +744,24 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                   )
                                                                 ],
                                                               ),
-                                                              subtitle: Row(
-                                                                mainAxisAlignment:
-                                                                MainAxisAlignment.spaceBetween,
+                                                              subtitle: Column(
                                                                 children: [
-                                                                  Text('Entry By : QR Code',
-                                                                      style: const TextStyle(fontSize: 12)),
-                                                                  Text('Exited By : Manual',
-                                                                      style: const TextStyle(fontSize: 12)),
+                                                                  Divider(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .withOpacity(
+                                                                              0.2)),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                          "Entry By : ${staffLog[staffIndex].checkinType ?? 'N/A'}"),
+                                                                      Text(
+                                                                          "Exit By : ${staffLog[staffIndex].checkoutType ?? 'N/A'}")
+                                                                    ],
+                                                                  ),
                                                                 ],
                                                               ),
                                                             ),
@@ -763,7 +794,7 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                               0]
                                                                           .checkinAt
                                                                           .toString())
-                                                                      : "",
+                                                                      : "N/A",
                                                                   style: const TextStyle(
                                                                       fontSize:
                                                                           14))
@@ -852,22 +883,33 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                       )
                                                                     ],
                                                                   ),
-                                                                  subtitle: widget
-                                                                          .fromResidentPage
-                                                                      ? Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceBetween,
-                                                                          children: [
-                                                                            Text('Entry By : QR Code',
-                                                                                style: const TextStyle(fontSize: 12)),
-                                                                            Text('Exited By : Manual',
-                                                                                style: const TextStyle(fontSize: 12)),
-                                                                          ],
-                                                                        )
-                                                                      : Column(
-                                                                          children: [
-                                                                            Divider(color: Colors.grey.withOpacity(0.2)),
-                                                                            Row(
+                                                                  subtitle:
+                                                                      Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Divider(
+                                                                          color: Colors
+                                                                              .grey
+                                                                              .withOpacity(0.2)),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Text(
+                                                                              "Entry By : ${memberLogs[residentIndex].checkinType ?? 'N/A'}"),
+                                                                          Text(
+                                                                              "Exit By : ${memberLogs[residentIndex].checkoutType ?? 'N/A'}")
+                                                                        ],
+                                                                      ),
+                                                                      widget.fromResidentPage
+                                                                          ? const SizedBox()
+                                                                          : Divider(
+                                                                              color: Colors.grey.withOpacity(0.2)),
+                                                                      widget.fromResidentPage
+                                                                          ? const SizedBox()
+                                                                          : Row(
                                                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                               children: [
                                                                                 Column(
@@ -890,8 +932,8 @@ class DailyHelpProfileDetailsState extends State<DailyHelpProfileDetails> {
                                                                                 ),
                                                                               ],
                                                                             ),
-                                                                          ],
-                                                                        ),
+                                                                    ],
+                                                                  ),
                                                                 ),
                                                               );
                                                             },

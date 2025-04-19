@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final residentCheckoutsHistoryDetailsModal = residentCheckoutsHistoryDetailsModalFromJson(jsonString);
+
 import 'dart:convert';
 
 ResidentCheckoutsHistoryDetailsModal
@@ -13,39 +17,52 @@ class ResidentCheckoutsHistoryDetailsModal {
   String? message;
   ResidentCheckoutsHistoryDetailsData? data;
 
-  ResidentCheckoutsHistoryDetailsModal({this.status, this.message, this.data});
+  ResidentCheckoutsHistoryDetailsModal({
+    this.status,
+    this.message,
+    this.data,
+  });
 
   factory ResidentCheckoutsHistoryDetailsModal.fromJson(
           Map<String, dynamic> json) =>
       ResidentCheckoutsHistoryDetailsModal(
-          status: json["status"],
-          message: json["message"],
-          data: json["data"] == null
-              ? null
-              : ResidentCheckoutsHistoryDetailsData.fromJson(json["data"]));
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null
+            ? null
+            : ResidentCheckoutsHistoryDetailsData.fromJson(json["data"]),
+      );
 
-  Map<String, dynamic> toJson() =>
-      {"status": status, "message": message, "data": data?.toJson()};
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class ResidentCheckoutsHistoryDetailsData {
   User? user;
   List<Log>? logs;
 
-  ResidentCheckoutsHistoryDetailsData({this.user, this.logs});
+  ResidentCheckoutsHistoryDetailsData({
+    this.user,
+    this.logs,
+  });
 
   factory ResidentCheckoutsHistoryDetailsData.fromJson(
           Map<String, dynamic> json) =>
       ResidentCheckoutsHistoryDetailsData(
-          user: json["user"] == null ? null : User.fromJson(json["user"]),
-          logs: json["logs"] == null
-              ? []
-              : List<Log>.from(json["logs"]!.map((x) => Log.fromJson(x))));
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        logs: json["logs"] == null
+            ? []
+            : List<Log>.from(json["logs"]!.map((x) => Log.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
         "user": user?.toJson(),
-        "logs":
-            logs == null ? [] : List<dynamic>.from(logs!.map((x) => x.toJson()))
+        "logs": logs == null
+            ? []
+            : List<dynamic>.from(logs!.map((x) => x.toJson())),
       };
 }
 
@@ -55,7 +72,9 @@ class Log {
   String? status;
   dynamic requestedAt;
   DateTime? checkinAt;
+  String? checkinType;
   dynamic checkoutAt;
+  dynamic checkoutType;
   dynamic requestBy;
   int? checkinBy;
   dynamic checkoutBy;
@@ -65,6 +84,10 @@ class Log {
   DateTime? updatedAt;
   dynamic parcelId;
   int? byResident;
+  dynamic byDailyHelp;
+  dynamic dailyHelpForMember;
+  CheckedInBy? checkedInBy;
+  dynamic checkedOutBy;
 
   Log({
     this.id,
@@ -72,7 +95,9 @@ class Log {
     this.status,
     this.requestedAt,
     this.checkinAt,
+    this.checkinType,
     this.checkoutAt,
+    this.checkoutType,
     this.requestBy,
     this.checkinBy,
     this.checkoutBy,
@@ -82,6 +107,10 @@ class Log {
     this.updatedAt,
     this.parcelId,
     this.byResident,
+    this.byDailyHelp,
+    this.dailyHelpForMember,
+    this.checkedInBy,
+    this.checkedOutBy,
   });
 
   factory Log.fromJson(Map<String, dynamic> json) => Log(
@@ -92,7 +121,9 @@ class Log {
         checkinAt: json["checkin_at"] == null
             ? null
             : DateTime.parse(json["checkin_at"]),
+        checkinType: json["checkin_type"],
         checkoutAt: json["checkout_at"],
+        checkoutType: json["checkout_type"],
         requestBy: json["request_by"],
         checkinBy: json["checkin_by"],
         checkoutBy: json["checkout_by"],
@@ -106,6 +137,12 @@ class Log {
             : DateTime.parse(json["updated_at"]),
         parcelId: json["parcel_id"],
         byResident: json["by_resident"],
+        byDailyHelp: json["by_daily_help"],
+        dailyHelpForMember: json["daily_help_for_member"],
+        checkedInBy: json["checked_in_by"] == null
+            ? null
+            : CheckedInBy.fromJson(json["checked_in_by"]),
+        checkedOutBy: json["checked_out_by"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -114,7 +151,9 @@ class Log {
         "status": status,
         "requested_at": requestedAt,
         "checkin_at": checkinAt?.toIso8601String(),
+        "checkin_type": checkinType,
         "checkout_at": checkoutAt,
+        "checkout_type": checkoutType,
         "request_by": requestBy,
         "checkin_by": checkinBy,
         "checkout_by": checkoutBy,
@@ -124,6 +163,78 @@ class Log {
         "updated_at": updatedAt?.toIso8601String(),
         "parcel_id": parcelId,
         "by_resident": byResident,
+        "by_daily_help": byDailyHelp,
+        "daily_help_for_member": dailyHelpForMember,
+        "checked_in_by": checkedInBy?.toJson(),
+        "checked_out_by": checkedOutBy,
+      };
+}
+
+class CheckedInBy {
+  int? id;
+  String? uid;
+  String? role;
+  String? status;
+  String? name;
+  String? email;
+  dynamic emailVerifiedAt;
+  String? image;
+  String? phone;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? deviceId;
+  String? imageUrl;
+
+  CheckedInBy({
+    this.id,
+    this.uid,
+    this.role,
+    this.status,
+    this.name,
+    this.email,
+    this.emailVerifiedAt,
+    this.image,
+    this.phone,
+    this.createdAt,
+    this.updatedAt,
+    this.deviceId,
+    this.imageUrl,
+  });
+
+  factory CheckedInBy.fromJson(Map<String, dynamic> json) => CheckedInBy(
+        id: json["id"],
+        uid: json["uid"],
+        role: json["role"],
+        status: json["status"],
+        name: json["name"],
+        email: json["email"],
+        emailVerifiedAt: json["email_verified_at"],
+        image: json["image"],
+        phone: json["phone"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        deviceId: json["device_id"],
+        imageUrl: json["image_url"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "uid": uid,
+        "role": role,
+        "status": status,
+        "name": name,
+        "email": email,
+        "email_verified_at": emailVerifiedAt,
+        "image": image,
+        "phone": phone,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "device_id": deviceId,
+        "image_url": imageUrl,
       };
 }
 

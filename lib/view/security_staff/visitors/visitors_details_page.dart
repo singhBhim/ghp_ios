@@ -56,7 +56,7 @@ class _VisitorsDetailsPage2State extends State<VisitorsDetailsPage2> {
   Future<bool> onCallBack() async {
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const SecurityGuardDashboard()),
+        MaterialPageRoute(builder: (_) => SecurityGuardDashboard()),
         (route) => false);
     return true;
   }
@@ -66,7 +66,7 @@ class _VisitorsDetailsPage2State extends State<VisitorsDetailsPage2> {
     Future.delayed(Duration.zero, () {
       Navigator.pushAndRemoveUntil(
           buildContext,
-          MaterialPageRoute(builder: (_) => const SecurityGuardDashboard()),
+          MaterialPageRoute(builder: (_) => SecurityGuardDashboard()),
           (route) => false);
     });
   }

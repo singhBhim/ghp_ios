@@ -103,6 +103,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
                                   builder: (_) => DailyHelpProfileDetails(
                                       dailyHelpId: {'daily_help_id': id},
                                       forQRPage: true,
+                                      forDetailsPage: false,
                                       fromResidentPage:
                                           widget.fromResidentSide)));
                         });

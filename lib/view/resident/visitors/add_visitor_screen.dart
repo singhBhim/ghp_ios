@@ -286,6 +286,7 @@ class _AddVisitorScreenState extends State<AddVisitorScreen> {
 
   TextEditingController searchController = TextEditingController();
   Future<void> _showSearchDialog() async {
+    List<SearchMemberInfo>? filteredItems = List.from(_searchMemberCubit.searchMemberInfo);
 
     await showDialog(
       barrierDismissible: true,
@@ -301,7 +302,7 @@ class _AddVisitorScreenState extends State<AddVisitorScreen> {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8)
                   ),
                   width: MediaQuery.of(context).size.width,
                   child: BlocBuilder<SearchMemberCubit, SearchMemberState>(
@@ -321,8 +322,7 @@ class _AddVisitorScreenState extends State<AddVisitorScreen> {
                           )
                         );
                       }
-                      List<SearchMemberInfo> filteredItems =
-                      List.from(_searchMemberCubit.searchMemberInfo);
+
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -359,30 +359,28 @@ class _AddVisitorScreenState extends State<AddVisitorScreen> {
                                         color: Colors.grey.withOpacity(0.5)))),
                             onChanged: (query) {
                               setState(() {
-                                filteredItems = _searchMemberCubit
-                                    .searchMemberInfo
-                                    .where((item) => item.name
-                                    .toString()
+                                filteredItems = _searchMemberCubit.searchMemberInfo
+                                    .where((item) => item.name.toString()
                                     .toLowerCase()
                                     .contains(query.toLowerCase()))
                                     .toList();
                               });
                             },
                           ),
+
                           const SizedBox(height: 10),
-                          SizedBox(
-                            height: 300,
-                            child: filteredItems.isEmpty
-                                ? const Center(
-                                child: Text("Member Not Found!",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.deepPurpleAccent)))
-                                : ListView.builder(
-                              itemCount: filteredItems.length,
-                              itemBuilder: (context, index) {
+
+                          filteredItems == null || filteredItems!.isEmpty
+                              ? const Center(
+                              child: Text("Member Not Found!",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.deepPurpleAccent)))
+                              : Expanded(
+                                child: ListView.builder(
+                                                              itemCount: filteredItems?.length ?? 0,
+                                                              itemBuilder: (context, index) {
                                 return Container(
-                                  // height: 45,
                                   margin:
                                   const EdgeInsets.only(bottom: 8),
                                   decoration: BoxDecoration(
@@ -394,14 +392,14 @@ class _AddVisitorScreenState extends State<AddVisitorScreen> {
                                   child: ListTile(
                                     dense: true,
                                     title: Text(
-                                        "${capitalizeWords(filteredItems[index].name.toString())} Floor: ${filteredItems[index].floorNumber.toString()}  Aprt: ${filteredItems[index].aprtNo.toString()} Tower: ${filteredItems[index].block!.name.toString()}"),
+                                        "${capitalizeWords(filteredItems![index].name.toString())} Floor: ${filteredItems![index].floorNumber.toString()}  Aprt: ${filteredItems![index].aprtNo.toString()} Tower: ${filteredItems![index].block!.name.toString()}"),
                                     onTap: () {
                                       setState(() {
                                         residenceController.text =
-                                            filteredItems[index]
+                                            filteredItems![index]
                                                 .name
                                                 .toString();
-                                        residenceId = filteredItems[index]
+                                        residenceId = filteredItems![index]
                                             .userId
                                             .toString();
                                       });
@@ -409,9 +407,9 @@ class _AddVisitorScreenState extends State<AddVisitorScreen> {
                                     },
                                   ),
                                 );
-                              },
-                            ),
-                          ),
+                                                              },
+                                                            ),
+                              ),
                         ],
                       );
                     },

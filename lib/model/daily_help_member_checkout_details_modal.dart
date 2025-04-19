@@ -11,34 +11,48 @@ class DailyHelpsMemberDetailModal {
   String? message;
   Data? data;
 
-  DailyHelpsMemberDetailModal({this.status, this.message, this.data});
+  DailyHelpsMemberDetailModal({
+    this.status,
+    this.message,
+    this.data,
+  });
 
   factory DailyHelpsMemberDetailModal.fromJson(Map<String, dynamic> json) =>
       DailyHelpsMemberDetailModal(
-          status: json["status"],
-          message: json["message"],
-          data: json["data"] == null ? null : Data.fromJson(json["data"]));
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
-  Map<String, dynamic> toJson() =>
-      {"status": status, "message": message, "data": data?.toJson()};
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
   DailyHelpUser? user;
   List<Log>? logs;
 
-  Data({this.user, this.logs});
+  Data({
+    this.user,
+    this.logs,
+  });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-      user: json["user"] == null ? null : DailyHelpUser.fromJson(json["user"]),
-      logs: json["logs"] == null
-          ? []
-          : List<Log>.from(json["logs"]!.map((x) => Log.fromJson(x))));
+        user:
+            json["user"] == null ? null : DailyHelpUser.fromJson(json["user"]),
+        logs: json["logs"] == null
+            ? []
+            : List<Log>.from(json["logs"]!.map((x) => Log.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
         "user": user?.toJson(),
-        "logs":
-            logs == null ? [] : List<dynamic>.from(logs!.map((x) => x.toJson()))
+        "logs": logs == null
+            ? []
+            : List<dynamic>.from(logs!.map((x) => x.toJson())),
       };
 }
 
@@ -46,7 +60,10 @@ class Log {
   List<LastCheckinDetail>? securityStaffLogs;
   List<LastCheckinDetail>? memberLogs;
 
-  Log({this.securityStaffLogs, this.memberLogs});
+  Log({
+    this.securityStaffLogs,
+    this.memberLogs,
+  });
 
   factory Log.fromJson(Map<String, dynamic> json) => Log(
         securityStaffLogs: json["security_staff_logs"] == null
@@ -75,7 +92,9 @@ class LastCheckinDetail {
   String? status;
   dynamic requestedAt;
   DateTime? checkinAt;
+  String? checkinType;
   DateTime? checkoutAt;
+  String? checkoutType;
   dynamic requestBy;
   int? checkinBy;
   int? checkoutBy;
@@ -87,7 +106,9 @@ class LastCheckinDetail {
   dynamic byResident;
   int? byDailyHelp;
   int? dailyHelpForMember;
-  DailyHelpMemberDetails? dailyHelpMemberDetails;
+  CheckedInBy? dailyHelpMemberDetails;
+  CheckedInBy? checkedInBy;
+  CheckedInBy? checkedOutBy;
 
   LastCheckinDetail({
     this.id,
@@ -95,7 +116,9 @@ class LastCheckinDetail {
     this.status,
     this.requestedAt,
     this.checkinAt,
+    this.checkinType,
     this.checkoutAt,
+    this.checkoutType,
     this.requestBy,
     this.checkinBy,
     this.checkoutBy,
@@ -108,6 +131,8 @@ class LastCheckinDetail {
     this.byDailyHelp,
     this.dailyHelpForMember,
     this.dailyHelpMemberDetails,
+    this.checkedInBy,
+    this.checkedOutBy,
   });
 
   factory LastCheckinDetail.fromJson(Map<String, dynamic> json) =>
@@ -119,9 +144,11 @@ class LastCheckinDetail {
         checkinAt: json["checkin_at"] == null
             ? null
             : DateTime.parse(json["checkin_at"]),
+        checkinType: json["checkin_type"],
         checkoutAt: json["checkout_at"] == null
             ? null
             : DateTime.parse(json["checkout_at"]),
+        checkoutType: json["checkout_type"],
         requestBy: json["request_by"],
         checkinBy: json["checkin_by"],
         checkoutBy: json["checkout_by"],
@@ -139,8 +166,13 @@ class LastCheckinDetail {
         dailyHelpForMember: json["daily_help_for_member"],
         dailyHelpMemberDetails: json["daily_help_member_details"] == null
             ? null
-            : DailyHelpMemberDetails.fromJson(
-                json["daily_help_member_details"]),
+            : CheckedInBy.fromJson(json["daily_help_member_details"]),
+        checkedInBy: json["checked_in_by"] == null
+            ? null
+            : CheckedInBy.fromJson(json["checked_in_by"]),
+        checkedOutBy: json["checked_out_by"] == null
+            ? null
+            : CheckedInBy.fromJson(json["checked_out_by"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -149,7 +181,9 @@ class LastCheckinDetail {
         "status": status,
         "requested_at": requestedAt,
         "checkin_at": checkinAt?.toIso8601String(),
+        "checkin_type": checkinType,
         "checkout_at": checkoutAt?.toIso8601String(),
+        "checkout_type": checkoutType,
         "request_by": requestBy,
         "checkin_by": checkinBy,
         "checkout_by": checkoutBy,
@@ -162,10 +196,12 @@ class LastCheckinDetail {
         "by_daily_help": byDailyHelp,
         "daily_help_for_member": dailyHelpForMember,
         "daily_help_member_details": dailyHelpMemberDetails?.toJson(),
+        "checked_in_by": checkedInBy?.toJson(),
+        "checked_out_by": checkedOutBy?.toJson(),
       };
 }
 
-class DailyHelpMemberDetails {
+class CheckedInBy {
   int? id;
   String? uid;
   String? role;
@@ -181,7 +217,7 @@ class DailyHelpMemberDetails {
   String? imageUrl;
   Member? member;
 
-  DailyHelpMemberDetails({
+  CheckedInBy({
     this.id,
     this.uid,
     this.role,
@@ -198,8 +234,7 @@ class DailyHelpMemberDetails {
     this.member,
   });
 
-  factory DailyHelpMemberDetails.fromJson(Map<String, dynamic> json) =>
-      DailyHelpMemberDetails(
+  factory CheckedInBy.fromJson(Map<String, dynamic> json) => CheckedInBy(
         id: json["id"],
         uid: json["uid"],
         role: json["role"],
@@ -392,14 +427,14 @@ class Staff {
   int? societyId;
   String? gender;
   DateTime? dob;
-  dynamic assignedArea;
+  String? assignedArea;
   String? employeeId;
   String? shiftFrom;
   String? shiftTo;
   String? offDays;
   String? emerName;
-  dynamic emerRelation;
-  dynamic emerPhone;
+  String? emerRelation;
+  String? emerPhone;
   DateTime? dateOfJoin;
   DateTime? contractEndDate;
   String? monthlySalary;

@@ -109,6 +109,9 @@ class _CreateParcelSecurityStaffSideState
 
   TextEditingController searchController = TextEditingController();
   Future<void> _showSearchDialog() async {
+    List<SearchMemberInfo>? filteredItems =
+        List.from(_searchMemberCubit.searchMemberInfo);
+
     await showDialog(
       barrierDismissible: true,
       context: context,
@@ -139,29 +142,24 @@ class _CreateParcelSecurityStaffSideState
                                 style: const TextStyle(
                                     color: Colors.deepPurpleAccent)));
                       }
-                      if (state is SearchMemberInternetError) {
-                        return Center(
-                            child: Text(state.errorMessage.toString(),
-                                style: const TextStyle(
-                                    color: Colors.deepPurpleAccent)));
-                      }
-                      List<SearchMemberInfo> filteredItems =
-                          List.from(_searchMemberCubit.searchMemberInfo);
+
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Select member",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500)),
-                                IconButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    icon: const Icon(Icons.clear,
-                                        color: Colors.black87))
-                              ]),
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("Select member",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500)),
+                              IconButton(
+                                onPressed: () => Navigator.pop(context),
+                                icon: const Icon(Icons.clear,
+                                    color: Colors.black87),
+                              ),
+                            ],
+                          ),
                           Divider(
                               height: 0, color: Colors.grey.withOpacity(0.5)),
                           const SizedBox(height: 10),
@@ -189,19 +187,17 @@ class _CreateParcelSecurityStaffSideState
                             },
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            height: 300,
-                            child: filteredItems.isEmpty
-                                ? const Center(
-                                    child: Text("Member Not Found!",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.deepPurpleAccent)))
-                                : ListView.builder(
-                                    itemCount: filteredItems.length,
+                          filteredItems == null || filteredItems!.isEmpty
+                              ? const Center(
+                                  child: Text("Member Not Found!",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.deepPurpleAccent)))
+                              : Expanded(
+                                  child: ListView.builder(
+                                    itemCount: filteredItems?.length ?? 0,
                                     itemBuilder: (context, index) {
                                       return Container(
-                                        // height: 45,
                                         margin:
                                             const EdgeInsets.only(bottom: 8),
                                         decoration: BoxDecoration(
@@ -213,16 +209,17 @@ class _CreateParcelSecurityStaffSideState
                                         child: ListTile(
                                           dense: true,
                                           title: Text(
-                                              "${capitalizeWords(filteredItems[index].name.toString())} -  Floor(${filteredItems[index].floorNumber.toString()}) -  Aprt(${filteredItems[index].aprtNo.toString()}) - Tower(${filteredItems[index].block!.name.toString()})"),
+                                              "${capitalizeWords(filteredItems![index].name.toString())} -  Floor(${filteredItems![index].floorNumber.toString()}) -  Aprt(${filteredItems![index].aprtNo.toString()}) - Tower(${filteredItems![index].block!.name.toString()})"),
                                           onTap: () {
                                             setState(() {
                                               residenceController.text =
-                                                  filteredItems[index]
+                                                  filteredItems![index]
                                                       .name
                                                       .toString();
-                                              residenceID = filteredItems[index]
-                                                  .userId
-                                                  .toString();
+                                              residenceID =
+                                                  filteredItems![index]
+                                                      .userId
+                                                      .toString();
                                             });
                                             Navigator.pop(context);
                                           },
@@ -230,7 +227,7 @@ class _CreateParcelSecurityStaffSideState
                                       );
                                     },
                                   ),
-                          ),
+                                ),
                         ],
                       );
                     },

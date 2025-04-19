@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final residentCheckoutsHistoryModal = residentCheckoutsHistoryModalFromJson(jsonString);
+
 import 'dart:convert';
 
 ResidentCheckoutsHistoryModal residentCheckoutsHistoryModalFromJson(
@@ -138,12 +142,12 @@ class Resident {
   DateTime? updatedAt;
   String? deviceId;
   int? memberId;
-  dynamic societyId;
-  dynamic staffId;
+  int? societyId;
+  int? staffId;
   String? imageUrl;
   ResidentCheckoutsHistoryList? lastCheckinDetail;
   Member? member;
-  dynamic staff;
+  Staff? staff;
 
   Resident({
     this.id,
@@ -193,7 +197,7 @@ class Resident {
             : ResidentCheckoutsHistoryList.fromJson(
                 json["last_checkin_detail"]),
         member: json["member"] == null ? null : Member.fromJson(json["member"]),
-        staff: json["staff"],
+        staff: json["staff"] == null ? null : Staff.fromJson(json["staff"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -215,27 +219,33 @@ class Resident {
         "image_url": imageUrl,
         "last_checkin_detail": lastCheckinDetail?.toJson(),
         "member": member?.toJson(),
-        "staff": staff,
+        "staff": staff?.toJson(),
       };
 }
 
 class ResidentCheckoutsHistoryList {
   int? id;
   dynamic visitorId;
-  String? status;
+  Status? status;
   dynamic requestedAt;
   DateTime? checkinAt;
-  dynamic checkoutAt;
+  String? checkinType;
+  DateTime? checkoutAt;
+  String? checkoutType;
   dynamic requestBy;
   int? checkinBy;
-  dynamic checkoutBy;
+  int? checkoutBy;
   dynamic visitorOf;
   int? societyId;
   DateTime? createdAt;
   DateTime? updatedAt;
   dynamic parcelId;
   int? byResident;
+  dynamic byDailyHelp;
+  dynamic dailyHelpForMember;
   Resident? resident;
+  CheckedBy? checkedInBy;
+  CheckedBy? checkedOutBy;
 
   ResidentCheckoutsHistoryList({
     this.id,
@@ -243,7 +253,9 @@ class ResidentCheckoutsHistoryList {
     this.status,
     this.requestedAt,
     this.checkinAt,
+    this.checkinType,
     this.checkoutAt,
+    this.checkoutType,
     this.requestBy,
     this.checkinBy,
     this.checkoutBy,
@@ -253,19 +265,27 @@ class ResidentCheckoutsHistoryList {
     this.updatedAt,
     this.parcelId,
     this.byResident,
+    this.byDailyHelp,
+    this.dailyHelpForMember,
     this.resident,
+    this.checkedInBy,
+    this.checkedOutBy,
   });
 
   factory ResidentCheckoutsHistoryList.fromJson(Map<String, dynamic> json) =>
       ResidentCheckoutsHistoryList(
         id: json["id"],
         visitorId: json["visitor_id"],
-        status: json["status"],
+        status: statusValues.map[json["status"]]!,
         requestedAt: json["requested_at"],
         checkinAt: json["checkin_at"] == null
             ? null
             : DateTime.parse(json["checkin_at"]),
-        checkoutAt: json["checkout_at"],
+        checkinType: json["checkin_type"],
+        checkoutAt: json["checkout_at"] == null
+            ? null
+            : DateTime.parse(json["checkout_at"]),
+        checkoutType: json["checkout_type"],
         requestBy: json["request_by"],
         checkinBy: json["checkin_by"],
         checkoutBy: json["checkout_by"],
@@ -279,18 +299,28 @@ class ResidentCheckoutsHistoryList {
             : DateTime.parse(json["updated_at"]),
         parcelId: json["parcel_id"],
         byResident: json["by_resident"],
+        byDailyHelp: json["by_daily_help"],
+        dailyHelpForMember: json["daily_help_for_member"],
         resident: json["resident"] == null
             ? null
             : Resident.fromJson(json["resident"]),
+        checkedInBy: json["checked_in_by"] == null
+            ? null
+            : CheckedBy.fromJson(json["checked_in_by"]),
+        checkedOutBy: json["checked_out_by"] == null
+            ? null
+            : CheckedBy.fromJson(json["checked_out_by"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "visitor_id": visitorId,
-        "status": status,
+        "status": statusValues.reverse[status],
         "requested_at": requestedAt,
         "checkin_at": checkinAt?.toIso8601String(),
-        "checkout_at": checkoutAt,
+        "checkin_type": checkinType,
+        "checkout_at": checkoutAt?.toIso8601String(),
+        "checkout_type": checkoutType,
         "request_by": requestBy,
         "checkin_by": checkinBy,
         "checkout_by": checkoutBy,
@@ -300,7 +330,11 @@ class ResidentCheckoutsHistoryList {
         "updated_at": updatedAt?.toIso8601String(),
         "parcel_id": parcelId,
         "by_resident": byResident,
+        "by_daily_help": byDailyHelp,
+        "daily_help_for_member": dailyHelpForMember,
         "resident": resident?.toJson(),
+        "checked_in_by": checkedInBy?.toJson(),
+        "checked_out_by": checkedOutBy?.toJson(),
       };
 }
 
@@ -348,6 +382,216 @@ class Member {
       };
 }
 
+class Staff {
+  int? id;
+  String? role;
+  dynamic complaintCategoryId;
+  String? name;
+  String? status;
+  String? phone;
+  String? email;
+  String? address;
+  String? cardType;
+  String? cardNumber;
+  String? cardFile;
+  int? userId;
+  int? societyId;
+  String? gender;
+  DateTime? dob;
+  String? assignedArea;
+  String? employeeId;
+  String? shiftFrom;
+  String? shiftTo;
+  String? offDays;
+  dynamic emerName;
+  dynamic emerRelation;
+  dynamic emerPhone;
+  dynamic dateOfJoin;
+  dynamic contractEndDate;
+  String? monthlySalary;
+  int? dailyHelp;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  dynamic deletedAt;
+
+  Staff({
+    this.id,
+    this.role,
+    this.complaintCategoryId,
+    this.name,
+    this.status,
+    this.phone,
+    this.email,
+    this.address,
+    this.cardType,
+    this.cardNumber,
+    this.cardFile,
+    this.userId,
+    this.societyId,
+    this.gender,
+    this.dob,
+    this.assignedArea,
+    this.employeeId,
+    this.shiftFrom,
+    this.shiftTo,
+    this.offDays,
+    this.emerName,
+    this.emerRelation,
+    this.emerPhone,
+    this.dateOfJoin,
+    this.contractEndDate,
+    this.monthlySalary,
+    this.dailyHelp,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+  });
+
+  factory Staff.fromJson(Map<String, dynamic> json) => Staff(
+        id: json["id"],
+        role: json["role"],
+        complaintCategoryId: json["complaint_category_id"],
+        name: json["name"],
+        status: json["status"],
+        phone: json["phone"],
+        email: json["email"],
+        address: json["address"],
+        cardType: json["card_type"],
+        cardNumber: json["card_number"],
+        cardFile: json["card_file"],
+        userId: json["user_id"],
+        societyId: json["society_id"],
+        gender: json["gender"],
+        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
+        assignedArea: json["assigned_area"],
+        employeeId: json["employee_id"],
+        shiftFrom: json["shift_from"],
+        shiftTo: json["shift_to"],
+        offDays: json["off_days"],
+        emerName: json["emer_name"],
+        emerRelation: json["emer_relation"],
+        emerPhone: json["emer_phone"],
+        dateOfJoin: json["date_of_join"],
+        contractEndDate: json["contract_end_date"],
+        monthlySalary: json["monthly_salary"],
+        dailyHelp: json["daily_help"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        deletedAt: json["deleted_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "role": role,
+        "complaint_category_id": complaintCategoryId,
+        "name": name,
+        "status": status,
+        "phone": phone,
+        "email": email,
+        "address": address,
+        "card_type": cardType,
+        "card_number": cardNumber,
+        "card_file": cardFile,
+        "user_id": userId,
+        "society_id": societyId,
+        "gender": gender,
+        "dob":
+            "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
+        "assigned_area": assignedArea,
+        "employee_id": employeeId,
+        "shift_from": shiftFrom,
+        "shift_to": shiftTo,
+        "off_days": offDays,
+        "emer_name": emerName,
+        "emer_relation": emerRelation,
+        "emer_phone": emerPhone,
+        "date_of_join": dateOfJoin,
+        "contract_end_date": contractEndDate,
+        "monthly_salary": monthlySalary,
+        "daily_help": dailyHelp,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "deleted_at": deletedAt,
+      };
+}
+
+class CheckedBy {
+  int? id;
+  String? uid;
+  String? role;
+  String? status;
+  String? name;
+  String? email;
+  dynamic emailVerifiedAt;
+  String? image;
+  String? phone;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  String? deviceId;
+  String? imageUrl;
+
+  CheckedBy({
+    this.id,
+    this.uid,
+    this.role,
+    this.status,
+    this.name,
+    this.email,
+    this.emailVerifiedAt,
+    this.image,
+    this.phone,
+    this.createdAt,
+    this.updatedAt,
+    this.deviceId,
+    this.imageUrl,
+  });
+
+  factory CheckedBy.fromJson(Map<String, dynamic> json) => CheckedBy(
+        id: json["id"],
+        uid: json["uid"],
+        role: json["role"],
+        status: json["status"],
+        name: json["name"],
+        email: json["email"],
+        emailVerifiedAt: json["email_verified_at"],
+        image: json["image"],
+        phone: json["phone"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        deviceId: json["device_id"],
+        imageUrl: json["image_url"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "uid": uid,
+        "role": role,
+        "status": status,
+        "name": name,
+        "email": email,
+        "email_verified_at": emailVerifiedAt,
+        "image": image,
+        "phone": phone,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "device_id": deviceId,
+        "image_url": imageUrl,
+      };
+}
+
+enum Status { CHECKED_IN, CHECKED_OUT }
+
+final statusValues = EnumValues(
+    {"checked_in": Status.CHECKED_IN, "checked_out": Status.CHECKED_OUT});
+
 class Link {
   String? url;
   String? label;
@@ -370,4 +614,16 @@ class Link {
         "label": label,
         "active": active,
       };
+}
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

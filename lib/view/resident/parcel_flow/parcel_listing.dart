@@ -232,7 +232,7 @@ class _ParcelListingPageState extends State<ParcelListingPage> {
                   List<UnpaidBill> billData =
                       profileState.userProfile.first.data!.unpaidBills!;
 
-                  if (billData.isNotEmpty || billData != null) {
+                  if (billData.isNotEmpty) {
                     String status = checkBillStatus(context, billData.first);
 
                     if (status == 'overdue') {

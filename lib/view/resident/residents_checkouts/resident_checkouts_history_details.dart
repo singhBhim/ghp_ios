@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:ghp_society_management/constants/export.dart';
 import 'package:ghp_society_management/controller/resident_checkout_log/resident_checkouts_history_details/resident_checkouts_details_cubit.dart';
 import 'package:ghp_society_management/model/resident_checkout_history_details_model.dart';
@@ -358,6 +360,8 @@ class _ResidentCheckoutsHistoryDetailsState
                                                   ? Text(
                                                       'Date : ${formatDateOnly(residentsCheckoutsData.logs![0].checkinAt!.toString())}',
                                                       style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
                                                           fontSize: 14))
                                                   : const SizedBox(),
                                               const SizedBox(height: 10),
@@ -375,24 +379,37 @@ class _ResidentCheckoutsHistoryDetailsState
                                                       title: Text(
                                                           'In-Time : ${checkIn()}',
                                                           style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
                                                               fontSize: 12)),
                                                       subtitle: Text(
-                                                          'Entry By : QR Code',
+                                                          'Entry By : ${residentsCheckoutsData.logs![index].checkinType ?? ''}',
                                                           style: const TextStyle(
                                                               fontSize: 12)),
                                                       trailing: Column(
-                                                        mainAxisAlignment:MainAxisAlignment.center,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
                                                         children: [
                                                           Text(
                                                               'Out-Time : ${checkOut()}',
                                                               style: const TextStyle(
-                                                                  fontSize: 12)),
-                                                          SizedBox(height: 4),
-
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      12)),
+                                                          const SizedBox(
+                                                              height: 4),
                                                           Text(
-                                                              'Exited By : Manual',
+                                                              'Exited By : ${residentsCheckoutsData.logs![index].checkoutType ?? ''}',
                                                               style: const TextStyle(
-                                                                  fontSize: 12)),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                  fontSize:
+                                                                      12)),
                                                         ],
                                                       ))),
                                             ],

@@ -1,14 +1,11 @@
 import 'package:ghp_society_management/constants/export.dart';
 import 'package:ghp_society_management/controller/daliy_helps_member/daily_help_listing/daily_help_cubit.dart';
-import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-in/resident_check_in_cubit.dart';
-import 'package:ghp_society_management/controller/resident_checkout_log/resident_check-out/resident_checkout_cubit.dart';
-import 'package:ghp_society_management/model/daily_help_member_checkout_details_modal.dart';
-import 'package:ghp_society_management/model/daily_help_members_modal.dart';
-import 'package:ghp_society_management/view/resident/setting/log_out_dialog.dart';
 import 'package:ghp_society_management/view/security_staff/daliy_help/daily_help_details.dart';
 import 'package:ghp_society_management/view/resident/daily_helps_member/daily_help_gatepass.dart';
 import 'package:ghp_society_management/view/security_staff/scan_qr.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
+
+import '../../security_staff/daliy_help/daily_helps_members.dart';
 
 class DailyHelpListingHistoryResidentSide extends StatefulWidget {
   const DailyHelpListingHistoryResidentSide({super.key});
@@ -35,59 +32,6 @@ class DailyHelpListingHistoryResidentSideState
   Future onRefresh() async {
     _dailyHelpListingCubit.fetchDailyHelpsApi();
   }
-
-
-
-  /// verify the user
-  void verifyTheUser(
-      BuildContext buildContext, DailyHelpUser userInfo, List<Log> logsData,
-      {bool forResidentSide = false}) {
-    Map<String, String> checkInData = {
-      "user_id": userInfo.id.toString(),
-      "type": "daily_help"
-    };
-
-    if (!forResidentSide) {
-      var lastCheckInDetail = userInfo.lastCheckinDetail;
-
-      if (lastCheckInDetail == null ||
-          lastCheckInDetail.status == 'checked_out') {
-        buildContext
-            .read<ResidentCheckInCubit>()
-            .checkInAPI(statusBody: checkInData);
-      } else if (lastCheckInDetail.status == 'checked_in') {
-        buildContext
-            .read<ResidentCheckOutCubit>()
-            .checkOutApi(statusBody: checkInData);
-      }
-      return; // No need to check further
-    } else {
-      // For non-staff side (logsData processing)
-      if (logsData.isNotEmpty) {
-        var lastLog = logsData.first.memberLogs!.isNotEmpty
-            ? logsData.first.memberLogs!.first
-            : null;
-        print('-------------ooooooooooo$lastLog');
-
-        if (lastLog != null) {
-          if (lastLog.checkinAt == null || lastLog.status == 'out') {
-            buildContext
-                .read<ResidentCheckInCubit>()
-                .checkInAPI(statusBody: checkInData);
-          } else if (lastLog.status == 'in') {
-            buildContext
-                .read<ResidentCheckOutCubit>()
-                .checkOutApi(statusBody: checkInData);
-          }
-          return; // Exit after first valid log check
-        }
-      }
-    }
-  }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -225,8 +169,8 @@ class DailyHelpListingHistoryResidentSideState
                                                           .lastCheckinDetail!
                                                           .checkoutAt ==
                                                       null
-                                                  ? "Last In - Time : "
-                                                  : "Last Out - Time : ",
+                                                  ? "Last Check-In : "
+                                                  : "Last Check-Out : ",
                                               style: GoogleFonts.ptSans(
                                                   textStyle: TextStyle(
                                                       color: Colors.black54,
@@ -260,147 +204,140 @@ class DailyHelpListingHistoryResidentSideState
                                   : const SizedBox();
                             }
 
-                            Widget layoutChild() => GestureDetector(
-                                  onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              DailyHelpProfileDetails(
-                                                  dailyHelpId: {
-                                                    "daily_help_id":
-                                                        newHistoryLogs[index]
-                                                            .id
-                                                            .toString()
-                                                  }))),
-                                  child: Container(
-                                    margin: const EdgeInsets.only(bottom: 5),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6),
-                                        border: Border.all(
-                                            color: Colors.grey[300]!)),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, top: 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(children: [
-                                                ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                    child: FadeInImage(
-                                                        height: 50.h,
-                                                        width: 50.w,
-                                                        fit: BoxFit.cover,
-                                                        imageErrorBuilder: (_,
-                                                                child,
-                                                                stackTrack) =>
-                                                            Image.asset(
-                                                                'assets/images/default.jpg',
-                                                                height: 60.h,
-                                                                width: 55.w,
-                                                                fit: BoxFit
-                                                                    .cover),
-                                                        image: NetworkImage(
-                                                            newHistoryLogs[index]
-                                                                .imageUrl
+                            Widget layoutChild() => Container(
+                                  margin: const EdgeInsets.only(bottom: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      border:
+                                          Border.all(color: Colors.grey[300]!)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, top: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(children: [
+                                              ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  child: FadeInImage(
+                                                      height: 50.h,
+                                                      width: 50.w,
+                                                      fit: BoxFit.cover,
+                                                      imageErrorBuilder: (_,
+                                                              child,
+                                                              stackTrack) =>
+                                                          Image.asset(
+                                                              'assets/images/default.jpg',
+                                                              height: 60.h,
+                                                              width: 55.w,
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                      image: NetworkImage(
+                                                          newHistoryLogs[index]
+                                                              .imageUrl
+                                                              .toString()),
+                                                      placeholder: const AssetImage(
+                                                          'assets/images/default.jpg'))),
+                                              SizedBox(width: 10.w),
+                                              Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        capitalizeWords(
+                                                            newHistoryLogs[
+                                                                    index]
+                                                                .name
                                                                 .toString()),
-                                                        placeholder:
-                                                            const AssetImage(
-                                                                'assets/images/default.jpg'))),
-                                                SizedBox(width: 10.w),
-                                                Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                          capitalizeWords(
-                                                              newHistoryLogs[
-                                                                      index]
-                                                                  .name
-                                                                  .toString()),
-                                                          style: GoogleFonts.ptSans(
-                                                              textStyle: TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize:
-                                                                      16.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500))),
-                                                      Text(
-                                                          "+91 ${newHistoryLogs[index].phone.toString()}",
-                                                          style: GoogleFonts.ptSans(
-                                                              textStyle: TextStyle(
-                                                                  color: Colors
-                                                                      .black45,
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500))),
-                                                      Text(
-                                                          "Role : ${newHistoryLogs[index].role.toString().replaceAll("_", ' ')}",
-                                                          style: GoogleFonts.ptSans(
-                                                              textStyle: TextStyle(
-                                                                  color: Colors
-                                                                      .deepPurpleAccent,
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500))),
-                                                    ]),
-                                                SizedBox(width: 10.w)
-                                              ]),
-                                             Padding(
-                                               padding: const EdgeInsets.all(8.0),
-                                               child: menuForDailyHelpMember(context: context, dailyHelpData: newHistoryLogs[index]),
-                                             ),
-
-                                            ],
-                                          ),
+                                                        style: GoogleFonts.ptSans(
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500))),
+                                                    Text(
+                                                        "+91 ${newHistoryLogs[index].phone.toString()}",
+                                                        style: GoogleFonts.ptSans(
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .black45,
+                                                                fontSize: 14.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500))),
+                                                    Text(
+                                                        "Role : ${newHistoryLogs[index].role.toString().replaceAll("_", ' ')}",
+                                                        style: GoogleFonts.ptSans(
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .deepPurpleAccent,
+                                                                fontSize: 14.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500))),
+                                                  ]),
+                                              SizedBox(width: 10.w)
+                                            ]),
+                                            popMenusForStaff(
+                                                fromResidentPage: true,
+                                                context: context,
+                                                requestData:
+                                                    newHistoryLogs[index])
+                                            // GestureDetector(
+                                            //     onTap: () => Navigator.push(
+                                            //         context,
+                                            //         MaterialPageRoute(
+                                            //             builder: (_) =>
+                                            //                 QrCodeScanner(
+                                            //                     fromResidentSide:
+                                            //                         true))),
+                                            //     child: SizedBox(
+                                            //         height: 60,
+                                            //         width: 70,
+                                            //         child: Image.asset(
+                                            //             'assets/images/qr-image.png'))),
+                                          ],
                                         ),
-                                        Divider(
-                                            color:
-                                                Colors.grey.withOpacity(0.2)),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              SizedBox(child: lastChecking()),
-                                              SizedBox(
-                                                height: 32,
-                                                child: TextButton(
-                                                    onPressed: () => Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (_) =>
-                                                                DailyHelpGatePass(
-                                                                    dailyHelpUser:
-                                                                        newHistoryLogs[
-                                                                            index]))),
-                                                    child: const Text(
-                                                      "GATE PASS",
-                                                      style: TextStyle(
-                                                          fontSize: 12),
-                                                    )),
-                                              )
-                                            ],
-                                          ),
+                                      ),
+                                      Divider(
+                                          color: Colors.grey.withOpacity(0.2)),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(child: lastChecking()),
+                                            SizedBox(
+                                              height: 32,
+                                              child: TextButton(
+                                                  onPressed: () => Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              DailyHelpGatePass(
+                                                                  dailyHelpUser:
+                                                                      newHistoryLogs[
+                                                                          index]))),
+                                                  child: const Text(
+                                                    "GATE PASS",
+                                                    style:
+                                                        TextStyle(fontSize: 12),
+                                                  )),
+                                            )
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 );
 
@@ -422,85 +359,4 @@ class DailyHelpListingHistoryResidentSideState
       ),
     );
   }
-
-
-}
-
-List<Map<String, dynamic>> optionList3 = [
-  {"icon": Icons.visibility, "menu": "View Details", "menu_id": 0},
-  {"icon": Icons.qr_code, "menu": "Scan By QR COde", "menu_id": 1},
-  {"icon": Icons.perm_scan_wifi, "menu": "Scan BY Manual", "menu_id": 2},
-];
-Widget menuForDailyHelpMember(
-    {required BuildContext context, required DailyHelp dailyHelpData}) {
-  return CircleAvatar(
-    backgroundColor: Colors.deepPurpleAccent,
-    child: CircleAvatar(
-      backgroundColor: Colors.white,
-      child: PopupMenuButton(
-        elevation: 10,
-        padding: EdgeInsets.zero,
-        color: Colors.white,
-        surfaceTintColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-        icon: const Icon(Icons.more_horiz_rounded,
-            color: Colors.deepPurpleAccent, size: 18.0),
-        offset: const Offset(0, 50),
-        itemBuilder: (BuildContext bc) {
-          return optionList3
-              .map(
-                (selectedOption) => PopupMenuItem(
-                  padding: EdgeInsets.zero,
-                  value: selectedOption,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10.w, right: 30),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(selectedOption['icon']),
-                            const SizedBox(width: 10),
-                            Text(selectedOption['menu'] ?? "",
-                                style: GoogleFonts.poppins(
-                                    color: Colors.black,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400))
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-              .toList();
-        },
-        onSelected: (value) async {
-          if (value['menu_id'] == 0) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => DailyHelpProfileDetails(dailyHelpId: {
-                          "daily_help_id": dailyHelpData.id.toString()
-                        },fromResidentPage: true)));
-          } else if (value['menu_id'] == 1) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => QrCodeScanner(fromResidentSide: true)));
-          } else if (value['menu_id'] == 2) {
-            Navigator.pop(context);
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => DailyHelpProfileDetails(
-                        dailyHelpId: {'daily_help_id': dailyHelpData.id.toString()},
-                        forQRPage: true,
-                        fromResidentPage:
-                        true)));
-          }
-        },
-      ),
-    ),
-  );
 }

@@ -15,8 +15,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ResidentProfileDetails extends StatefulWidget {
   bool forQRPage;
+  bool forDetails;
+
   final Map<String, dynamic>? residentId;
-  ResidentProfileDetails({super.key, this.residentId, this.forQRPage = false});
+  ResidentProfileDetails(
+      {super.key,
+      this.residentId,
+      this.forQRPage = false,
+      this.forDetails = false});
 
   @override
   State<ResidentProfileDetails> createState() => _ResidentProfileDetailsState();
@@ -29,10 +35,10 @@ class _ResidentProfileDetailsState extends State<ResidentProfileDetails> {
   void initState() {
     super.initState();
     _userProfileCubit = UserProfileCubit();
-    if (widget.forQRPage) {
-      fetchDetails();
-    } else {
+    if (widget.forDetails) {
       _userProfileCubit.fetchUserProfile();
+    } else {
+      fetchDetails();
     }
   }
 
@@ -56,7 +62,7 @@ class _ResidentProfileDetailsState extends State<ResidentProfileDetails> {
   Future<bool> onCallBack() async {
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const SecurityGuardDashboard()),
+        MaterialPageRoute(builder: (_) =>  SecurityGuardDashboard()),
         (route) => false);
     return true;
   }
@@ -65,7 +71,8 @@ class _ResidentProfileDetailsState extends State<ResidentProfileDetails> {
     Future.delayed(Duration.zero, () {
       Navigator.pushAndRemoveUntil(
           buildContext,
-          MaterialPageRoute(builder: (_) => const SecurityGuardDashboard()),
+          MaterialPageRoute(
+              builder: (_) =>  SecurityGuardDashboard(index: 1)),
           (route) => false);
     });
   }
@@ -105,11 +112,14 @@ class _ResidentProfileDetailsState extends State<ResidentProfileDetails> {
 
   lastChecking(BuildContext buildContext, User userInfo) {
     // Step 3: Handle check-in or check-out
-    final checkInData = {"user_id": userInfo.id.toString()};
 
-    print(checkInData);
+    final checkInData = {
+      "user_id": userInfo.id.toString(),
+      "entry_type": widget.forQRPage ? "qr" : 'manual'
+    };
+
+    print('------------->>>>$checkInData');
     final lastCheckInDetail = userInfo.lastCheckinDetail;
-
     if (lastCheckInDetail == null) {
       buildContext
           .read<ResidentCheckInCubit>()
@@ -221,7 +231,7 @@ class _ResidentProfileDetailsState extends State<ResidentProfileDetails> {
                           } else if (state is UserProfileLoaded) {
                             User usersData =
                                 state.userProfile.first.data!.user!;
-                            if (widget.forQRPage) {
+                            if (!widget.forDetails) {
                               verifyTheUser(context, usersData);
                             }
 
