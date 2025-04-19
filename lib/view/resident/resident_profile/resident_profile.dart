@@ -62,7 +62,7 @@ class _ResidentProfileDetailsState extends State<ResidentProfileDetails> {
   Future<bool> onCallBack() async {
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) =>  SecurityGuardDashboard()),
+        MaterialPageRoute(builder: (_) => SecurityGuardDashboard()),
         (route) => false);
     return true;
   }
@@ -71,8 +71,7 @@ class _ResidentProfileDetailsState extends State<ResidentProfileDetails> {
     Future.delayed(Duration.zero, () {
       Navigator.pushAndRemoveUntil(
           buildContext,
-          MaterialPageRoute(
-              builder: (_) =>  SecurityGuardDashboard(index: 1)),
+          MaterialPageRoute(builder: (_) => SecurityGuardDashboard(index: 1)),
           (route) => false);
     });
   }
@@ -110,37 +109,34 @@ class _ResidentProfileDetailsState extends State<ResidentProfileDetails> {
     }
   }
 
-  lastChecking(BuildContext buildContext, User userInfo) {
-    // Step 3: Handle check-in or check-out
-
-    final checkInData = {
+  void lastChecking(BuildContext context, User userInfo) {
+    final String entryType = widget.forQRPage ? "qr" : "manual";
+    final Map<String, dynamic> checkInData = {
       "user_id": userInfo.id.toString(),
-      "entry_type": widget.forQRPage ? "qr" : 'manual'
+      "entry_type": entryType,
     };
 
-    print('------------->>>>$checkInData');
+    print('Check-in Data: $checkInData');
+
     final lastCheckInDetail = userInfo.lastCheckinDetail;
+
     if (lastCheckInDetail == null) {
-      buildContext
-          .read<ResidentCheckInCubit>()
-          .checkInAPI(statusBody: checkInData);
+      // No previous check-in, do check-in
+      context.read<ResidentCheckInCubit>().checkInAPI(statusBody: checkInData);
+      return;
+    }
+
+    final String status = lastCheckInDetail.status!;
+
+    if (status == 'checked_in') {
+      context
+          .read<ResidentCheckOutCubit>()
+          .checkOutApi(statusBody: checkInData);
+    } else if (status == 'checked_out') {
+      context.read<ResidentCheckInCubit>().checkInAPI(statusBody: checkInData);
     } else {
-      switch (lastCheckInDetail.status) {
-        case 'checked_in':
-          buildContext
-              .read<ResidentCheckOutCubit>()
-              .checkOutApi(statusBody: checkInData);
-          break;
-        case 'checked_out':
-          buildContext
-              .read<ResidentCheckInCubit>()
-              .checkInAPI(statusBody: checkInData);
-          break;
-        default:
-          // Optional: Handle unknown status
-          snackBarMsg(context, "Unknown check-in status.");
-          break;
-      }
+      // Optional: Handle unknown status
+      snackBarMsg(context, "Unknown check-in status: $status");
     }
   }
 
